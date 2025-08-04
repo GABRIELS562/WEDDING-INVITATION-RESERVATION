@@ -754,10 +754,10 @@ const WeddingWebsite = () => {
             border: '3px solid rgba(201, 169, 110, 0.3)'
           }}>
             <div style={{
-              backgroundImage: `url('https://cpv.co.za/wp-content/uploads/2024/02/image-70.jpg')`,
+              backgroundImage: `url('https://cpv.co.za/wp-content/uploads/2024/03/image-91-2.jpg')`,
               backgroundSize: 'cover',
               backgroundPosition: 'center center',
-              height: window.innerWidth <= 768 ? '300px' : '500px',
+              height: window.innerWidth <= 768 ? '350px' : '600px',
               position: 'relative'
             }}>
               <div style={{
