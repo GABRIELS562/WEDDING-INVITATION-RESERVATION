@@ -127,32 +127,32 @@ const WeddingWebsite = () => {
         }}>
           <div style={{
             fontSize: '1.2rem',
-            color: '#4A3A28',
+            color: '#2C1810',
             marginBottom: '1rem',
             letterSpacing: '3px',
             textTransform: 'uppercase',
-            fontWeight: '600',
-            textShadow: '2px 2px 4px rgba(255,255,255,0.9), 1px 1px 2px rgba(0,0,0,0.6)'
+            fontWeight: '700',
+            textShadow: '2px 2px 4px rgba(255,255,255,0.95), 1px 1px 2px rgba(0,0,0,0.8)'
           }}>Save the Date</div>
           
           <h1 style={{ 
             fontSize: window.innerWidth <= 768 ? '2.8rem' : '4.5rem', 
             margin: '0 0 1rem 0', 
-            color: '#8B4513',
-            fontWeight: '700',
+            color: '#1A0F08',
+            fontWeight: '800',
             fontStyle: 'italic',
             letterSpacing: window.innerWidth <= 768 ? '2px' : '3px',
-            textShadow: '3px 3px 6px rgba(0,0,0,0.5), 1px 1px 3px rgba(255,255,255,0.9)',
+            textShadow: '3px 3px 6px rgba(255,255,255,0.95), 2px 2px 4px rgba(0,0,0,0.7)',
             lineHeight: '1.2'
           }}>Kirsten & Dale</h1>
           
           <div style={{
             width: '150px',
             height: '2px',
-            backgroundColor: '#B8860B',
+            backgroundColor: '#8B4513',
             margin: '2rem auto',
             position: 'relative',
-            boxShadow: '0 0 10px rgba(184, 134, 11, 0.5)'
+            boxShadow: '0 0 10px rgba(139, 69, 19, 0.7), 0 2px 4px rgba(255,255,255,0.8)'
           }}>
             <div style={{
               position: 'absolute',
@@ -161,45 +161,46 @@ const WeddingWebsite = () => {
               transform: 'translateX(-50%)',
               width: '16px',
               height: '16px',
-              backgroundColor: '#B8860B',
+              backgroundColor: '#8B4513',
               borderRadius: '50%',
-              boxShadow: '0 0 15px rgba(184, 134, 11, 0.6)'
+              boxShadow: '0 0 15px rgba(139, 69, 19, 0.8), 0 2px 4px rgba(255,255,255,0.9)'
             }}></div>
           </div>
           
           <p style={{ 
             fontSize: '1.8rem', 
             margin: '0 0 2rem 0', 
-            color: '#5D4E37',
-            fontWeight: '400',
+            color: '#3D2A1F',
+            fontWeight: '500',
             fontStyle: 'italic',
-            textShadow: '2px 2px 4px rgba(255,255,255,0.8), 1px 1px 2px rgba(0,0,0,0.5)'
+            textShadow: '2px 2px 4px rgba(255,255,255,0.9), 1px 1px 2px rgba(0,0,0,0.7)'
           }}>are getting married</p>
           
           <div style={{
             fontSize: '2.5rem',
-            color: '#B8860B',
-            fontWeight: '700',
+            color: '#8B4513',
+            fontWeight: '800',
             letterSpacing: '2px',
             marginBottom: '0.5rem',
-            textShadow: '2px 2px 4px rgba(0,0,0,0.4), 1px 1px 2px rgba(255,255,255,0.7)'
+            textShadow: '3px 3px 6px rgba(255,255,255,0.9), 2px 2px 4px rgba(0,0,0,0.6)'
           }}>October 31st</div>
           
           <div style={{ 
             fontSize: '1.5rem', 
-            color: '#5D4E37',
-            fontWeight: '400',
+            color: '#3D2A1F',
+            fontWeight: '500',
             letterSpacing: '1px',
-            textShadow: '1px 1px 2px rgba(255,255,255,0.8), 1px 1px 2px rgba(0,0,0,0.4)'
+            textShadow: '2px 2px 4px rgba(255,255,255,0.9), 1px 1px 2px rgba(0,0,0,0.6)'
           }}>2025</div>
           
           <div style={{
             marginTop: '3rem',
             fontSize: '1.1rem',
-            color: '#5D4E37',
+            color: '#2C1810',
             fontStyle: 'italic',
-            opacity: '0.9',
-            textShadow: '1px 1px 2px rgba(255,255,255,0.9), 1px 1px 2px rgba(0,0,0,0.5)'
+            fontWeight: '500',
+            opacity: '1',
+            textShadow: '2px 2px 4px rgba(255,255,255,0.95), 1px 1px 2px rgba(0,0,0,0.7)'
           }}>Cape Point Vineyards, Cape Town</div>
         </div>
       </section>
