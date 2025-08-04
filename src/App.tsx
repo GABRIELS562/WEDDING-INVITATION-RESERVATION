@@ -97,104 +97,184 @@ const WeddingWebsite = () => {
         </div>
       </nav>
 
-      {/* Hero Section */}
+      {/* Hero Section - Side by Side Layout */}
       <section id="hero" style={{ 
         minHeight: '100vh', 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        backgroundImage: `
-          linear-gradient(rgba(201, 169, 110, 0.2), rgba(139, 115, 85, 0.3)),
-          url('/hero-image.jpg')
-        `,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundAttachment: 'fixed',
-        textAlign: 'center',
-        padding: '2rem',
+        display: 'flex',
+        flexDirection: window.innerWidth <= 768 ? 'column' : 'row',
         position: 'relative'
       }}>
+        {/* Photo Side - Heart-shaped hands completely visible */}
         <div style={{
-          backgroundColor: 'rgba(255, 255, 255, 0.1)',
-          padding: window.innerWidth <= 768 ? '2.5rem 2rem' : '4rem 3rem',
-          borderRadius: '20px',
-          boxShadow: '0 20px 60px rgba(139, 115, 85, 0.2)',
-          backdropFilter: 'blur(20px)',
-          border: '1px solid rgba(255, 255, 255, 0.25)',
-          textShadow: '1px 1px 2px rgba(0,0,0,0.3)',
-          maxWidth: '90vw',
-          width: '100%'
+          flex: window.innerWidth <= 768 ? '1' : '6',
+          minHeight: window.innerWidth <= 768 ? '50vh' : '100vh',
+          backgroundImage: `url('/hero-image.jpg')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center center',
+          position: 'relative',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center'
         }}>
+          {/* Minimal corner badge - doesn't interfere with hands */}
           <div style={{
-            fontSize: '1.2rem',
-            color: '#6B5B47',
-            marginBottom: '1rem',
-            letterSpacing: '3px',
-            textTransform: 'uppercase',
-            fontWeight: '500',
-            textShadow: '1px 1px 2px rgba(255,255,255,0.8)'
-          }}>Save the Date</div>
-          
-          <h1 style={{ 
-            fontSize: window.innerWidth <= 768 ? '2.8rem' : '4.5rem', 
-            margin: '0 0 1rem 0', 
-            color: '#B8860B',
-            fontWeight: '600',
-            fontStyle: 'italic',
-            letterSpacing: window.innerWidth <= 768 ? '2px' : '3px',
-            textShadow: '2px 2px 4px rgba(0,0,0,0.4), 1px 1px 2px rgba(255,255,255,0.5)',
-            lineHeight: '1.2'
-          }}>Kirsten & Dale</h1>
-          
-          <div style={{
-            width: '150px',
-            height: '2px',
-            backgroundColor: '#C9A96E',
-            margin: '2rem auto',
-            position: 'relative'
-          }}>
-            <div style={{
-              position: 'absolute',
-              top: '-8px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: '16px',
-              height: '16px',
-              backgroundColor: '#C9A96E',
-              borderRadius: '50%'
-            }}></div>
-          </div>
-          
-          <p style={{ 
-            fontSize: '1.8rem', 
-            margin: '0 0 2rem 0', 
-            color: '#8B7355',
-            fontWeight: '300',
-            fontStyle: 'italic'
-          }}>are getting married</p>
-          
-          <div style={{
-            fontSize: '2.5rem',
-            color: '#C9A96E',
-            fontWeight: '600',
-            letterSpacing: '2px',
-            marginBottom: '0.5rem'
-          }}>October 31st</div>
-          
-          <div style={{ 
-            fontSize: '1.5rem', 
+            position: 'absolute',
+            top: '2rem',
+            left: '2rem',
+            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            padding: '0.8rem 1.2rem',
+            borderRadius: '50px',
+            boxShadow: '0 10px 30px rgba(0, 0, 0, 0.15)',
+            backdropFilter: 'blur(15px)',
+            border: '1px solid rgba(201, 169, 110, 0.3)',
+            fontSize: '0.85rem',
             color: '#8B7355',
             fontWeight: '300',
             letterSpacing: '1px'
-          }}>2025</div>
-          
+          }}>
+            💕 Save the Date
+          </div>
+        </div>
+
+        {/* Content Side - Elegant information panel */}
+        <div style={{
+          flex: window.innerWidth <= 768 ? '1' : '4',
+          minHeight: window.innerWidth <= 768 ? '50vh' : '100vh',
+          background: 'linear-gradient(135deg, #FEFCF7 0%, #F8F6F0 100%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: window.innerWidth <= 768 ? '3rem 1.5rem' : '4rem 3rem',
+          position: 'relative'
+        }}>
+          {/* Elegant content container */}
           <div style={{
-            marginTop: '3rem',
-            fontSize: '1.1rem',
-            color: '#8B7355',
-            fontStyle: 'italic',
-            opacity: '0.8'
-          }}>Cape Point Vineyards, Cape Town</div>
+            textAlign: 'center',
+            maxWidth: '400px',
+            width: '100%',
+            backgroundColor: 'rgba(255, 255, 255, 0.8)',
+            padding: window.innerWidth <= 768 ? '2.5rem 2rem' : '4rem 3rem',
+            borderRadius: '25px',
+            boxShadow: '0 30px 80px rgba(139, 115, 85, 0.15)',
+            border: '2px solid rgba(201, 169, 110, 0.2)'
+          }}>
+            <div style={{
+              fontSize: window.innerWidth <= 768 ? '0.9rem' : '1rem',
+              color: '#8B7355',
+              marginBottom: '2rem',
+              letterSpacing: '3px',
+              textTransform: 'uppercase',
+              fontWeight: '400',
+              opacity: '0.8'
+            }}>You're Invited</div>
+            
+            <h1 style={{ 
+              fontSize: window.innerWidth <= 768 ? '3rem' : '4rem', 
+              margin: '0 0 1.5rem 0', 
+              color: '#C9A96E',
+              fontWeight: '400',
+              fontStyle: 'italic',
+              letterSpacing: '2px',
+              lineHeight: '1.1'
+            }}>Kirsten<br/>&<br/>Dale</h1>
+            
+            <div style={{
+              width: '120px',
+              height: '2px',
+              backgroundColor: '#C9A96E',
+              margin: '2rem auto',
+              position: 'relative'
+            }}>
+              <div style={{
+                position: 'absolute',
+                top: '-6px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: '12px',
+                height: '12px',
+                backgroundColor: '#C9A96E',
+                borderRadius: '50%'
+              }}></div>
+            </div>
+            
+            <p style={{ 
+              fontSize: window.innerWidth <= 768 ? '1.3rem' : '1.6rem', 
+              margin: '0 0 2.5rem 0', 
+              color: '#8B7355',
+              fontWeight: '300',
+              fontStyle: 'italic'
+            }}>are getting married</p>
+            
+            <div style={{
+              backgroundColor: 'rgba(201, 169, 110, 0.1)',
+              padding: '2.5rem 2rem',
+              borderRadius: '20px',
+              border: '2px solid rgba(201, 169, 110, 0.2)',
+              marginBottom: '2rem'
+            }}>
+              <div style={{
+                fontSize: window.innerWidth <= 768 ? '2.5rem' : '3rem',
+                color: '#C9A96E',
+                fontWeight: '500',
+                letterSpacing: '1px',
+                marginBottom: '0.5rem'
+              }}>October 31st</div>
+              
+              <div style={{ 
+                fontSize: window.innerWidth <= 768 ? '1.5rem' : '1.8rem', 
+                color: '#8B7355',
+                fontWeight: '300'
+              }}>2025</div>
+            </div>
+            
+            <div style={{
+              fontSize: window.innerWidth <= 768 ? '1rem' : '1.1rem',
+              color: '#8B7355',
+              fontStyle: 'italic',
+              opacity: '0.85',
+              lineHeight: '1.6',
+              borderTop: '1px solid rgba(201, 169, 110, 0.3)',
+              paddingTop: '1.5rem'
+            }}>
+              Cape Point Vineyards<br/>
+              <span style={{ fontSize: '0.9em', opacity: '0.7' }}>Cape Town, South Africa</span>
+            </div>
+          </div>
+
+          {/* Decorative elements */}
+          <div style={{
+            position: 'absolute',
+            top: '2rem',
+            right: '2rem',
+            width: '60px',
+            height: '60px',
+            borderRadius: '50%',
+            background: 'linear-gradient(135deg, #C9A96E, #D4B574)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '1.5rem',
+            opacity: '0.2'
+          }}>
+            💒
+          </div>
+
+          <div style={{
+            position: 'absolute',
+            bottom: '2rem',
+            left: '2rem',
+            width: '40px',
+            height: '40px',
+            borderRadius: '50%',
+            background: 'rgba(201, 169, 110, 0.2)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontSize: '1.2rem',
+            opacity: '0.3'
+          }}>
+            🌿
+          </div>
         </div>
       </section>
 
