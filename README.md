@@ -1,16 +1,18 @@
-# Wedding Website & RSVP System
+# Wedding Invitation & Reservation System
 
-A beautiful, modern wedding website with individual guest authentication and RSVP functionality, built exactly like WithJoy.com.
+A beautiful, modern wedding website with individual guest authentication and RSVP functionality, built exactly like WithJoy.com. Perfect for managing wedding invitations and guest reservations with a professional, elegant interface.
 
-## Features
+## ✨ Features
 
-- ✨ **Individual Guest Authentication** - Each guest gets a unique token/URL
-- 📝 **Complete RSVP System** - Guest attendance, meal preferences, dietary restrictions
-- 📊 **Google Sheets Backend** - All RSVP data stored in Google Sheets
-- 📧 **Email Confirmations** - Automatic email confirmations via EmailJS
-- 🎨 **Beautiful Design** - Modern, responsive design with smooth animations
-- 📱 **Mobile Responsive** - Perfect on all devices
-- 🚀 **Zero Hosting Costs** - Deploy for free on Vercel/Netlify
+- 🔐 **Individual Guest Authentication** - Each guest gets a unique token/URL for secure access
+- 📝 **Complete RSVP System** - Guest attendance, meal preferences, dietary restrictions, and special requests
+- 📊 **Google Sheets Backend** - All RSVP data automatically stored and organized in Google Sheets
+- 📧 **Email Confirmations** - Automatic email confirmations and updates via EmailJS
+- 🎨 **Beautiful Design** - Modern, elegant design with smooth animations and transitions
+- 📱 **Mobile Responsive** - Perfect experience on all devices (phone, tablet, desktop)
+- 🚀 **Zero Hosting Costs** - Deploy for free on Vercel/Netlify with custom domain support
+- 🎉 **Real-time Updates** - Live RSVP tracking and guest management
+- 🛡️ **Secure & Private** - Guest data protection with token-based authentication
 
 ## Tech Stack
 
@@ -26,8 +28,8 @@ A beautiful, modern wedding website with individual guest authentication and RSV
 ### 1. Clone & Install
 
 ```bash
-git clone <your-repo>
-cd wedding-website
+git clone https://github.com/YOUR_USERNAME/WEDDING-INVITATION-RESERVATION.git
+cd WEDDING-INVITATION-RESERVATION
 npm install
 ```
 
