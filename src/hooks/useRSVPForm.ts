@@ -9,12 +9,14 @@ export interface RSVPFormData {
   isAttending: boolean | null;
   guestName: string;
   email: string;
+  whatsappNumber?: string;
   mealChoice: string;
   dietaryRestrictions: string;
   plusOneName: string;
   plusOneMealChoice: string;
   plusOneDietaryRestrictions: string;
   wantsEmailConfirmation: boolean;
+  wantsWhatsAppConfirmation?: boolean;
   specialRequests: string;
 }
 
@@ -87,12 +89,14 @@ const getDefaultFormData = (): RSVPFormData => ({
   isAttending: null,
   guestName: '',
   email: '',
+  whatsappNumber: '',
   mealChoice: '',
   dietaryRestrictions: '',
   plusOneName: '',
   plusOneMealChoice: '',
   plusOneDietaryRestrictions: '',
   wantsEmailConfirmation: true,
+  wantsWhatsAppConfirmation: false,
   specialRequests: ''
 });
 
@@ -338,6 +342,7 @@ export const useRSVPForm = (): UseRSVPFormReturn => {
         token,
         guestName: formData.guestName,
         email: formData.email || undefined,
+        whatsappNumber: formData.whatsappNumber || undefined,
         isAttending: formData.isAttending!,
         mealChoice: formData.isAttending ? formData.mealChoice || undefined : undefined,
         dietaryRestrictions: formData.isAttending ? formData.dietaryRestrictions || undefined : undefined,
@@ -345,6 +350,7 @@ export const useRSVPForm = (): UseRSVPFormReturn => {
         plusOneMealChoice: formData.isAttending && formData.plusOneName && formData.plusOneMealChoice ? formData.plusOneMealChoice : undefined,
         plusOneDietaryRestrictions: formData.isAttending && formData.plusOneName && formData.plusOneDietaryRestrictions ? formData.plusOneDietaryRestrictions : undefined,
         wantsEmailConfirmation: formData.wantsEmailConfirmation,
+        wantsWhatsAppConfirmation: formData.wantsWhatsAppConfirmation || false,
         specialRequests: formData.specialRequests || undefined,
         submittedAt: new Date().toISOString()
       };

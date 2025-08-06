@@ -31,7 +31,9 @@ interface GuestRSVPRow {
   plus_one_meal: string;
   plus_one_dietary: string;
   email_address: string;
+  whatsapp_number: string;
   email_confirmation_sent: string;
+  whatsapp_confirmation_sent: string;
   submission_id: string;
 }
 
@@ -396,7 +398,9 @@ class GoogleSheetsService {
       plus_one_meal: rsvpData.plusOneMealChoice || '',
       plus_one_dietary: rsvpData.plusOneDietaryRestrictions || '',
       email_address: rsvpData.email || '',
+      whatsapp_number: rsvpData.whatsappNumber || '',
       email_confirmation_sent: rsvpData.wantsEmailConfirmation ? 'PENDING' : 'NO',
+      whatsapp_confirmation_sent: rsvpData.wantsWhatsAppConfirmation ? 'PENDING' : 'NO',
       submission_id: '' // Will be set by calling method
     };
   }
@@ -416,8 +420,10 @@ class GoogleSheetsService {
       plus_one_meal: row[7] || '',
       plus_one_dietary: row[8] || '',
       email_address: row[9] || '',
-      email_confirmation_sent: row[10] || '',
-      submission_id: row[11] || ''
+      whatsapp_number: row[10] || '',
+      email_confirmation_sent: row[11] || '',
+      whatsapp_confirmation_sent: row[12] || '',
+      submission_id: row[13] || ''
     };
   }
 
@@ -429,6 +435,7 @@ class GoogleSheetsService {
       token: rowData.guest_token,
       guestName: rowData.guest_name,
       email: rowData.email_address || undefined,
+      whatsappNumber: rowData.whatsapp_number || undefined,
       isAttending: rowData.attending === 'YES',
       mealChoice: rowData.meal_choice || undefined,
       dietaryRestrictions: rowData.dietary_restrictions || undefined,
@@ -436,6 +443,7 @@ class GoogleSheetsService {
       plusOneMealChoice: rowData.plus_one_meal || undefined,
       plusOneDietaryRestrictions: rowData.plus_one_dietary || undefined,
       wantsEmailConfirmation: rowData.email_confirmation_sent !== 'NO',
+      wantsWhatsAppConfirmation: rowData.whatsapp_confirmation_sent !== 'NO',
       submittedAt: rowData.timestamp
     };
   }
@@ -781,7 +789,7 @@ class GoogleSheetsService {
 const defaultConfig: GoogleSheetsConfig = {
   spreadsheetId: process.env.REACT_APP_GOOGLE_SPREADSHEET_ID || '',
   apiKey: process.env.REACT_APP_GOOGLE_SHEETS_API_KEY || '',
-  range: 'RSVP_Individual!A1:L',
+  range: 'RSVP_Individual!A1:N',
   retryAttempts: 3,
   retryDelay: 1000
 };

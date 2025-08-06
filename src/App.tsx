@@ -1,6 +1,10 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom';
+import { RSVPFormComponent } from './components/RSVPFormComponent';
+import { GuestInvitationManager } from './components/GuestInvitationManager';
 
 const WeddingWebsite = () => {
+  const params = useParams();
+  const guestToken = params.token;
   return (
     <div style={{ 
       fontFamily: "'Playfair Display', 'Georgia', serif",
@@ -250,66 +254,92 @@ const WeddingWebsite = () => {
             <div style={{ 
               textAlign: 'center',
               padding: '3rem',
-              backgroundColor: 'rgba(255, 255, 255, 0.7)',
+              minHeight: window.innerWidth <= 768 ? '300px' : '450px',
+              backgroundImage: `
+                linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2)),
+                url('/images/ceremony.jpg')
+              `,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center 30%',
+              backgroundRepeat: 'no-repeat',
+              backgroundAttachment: 'local',
               borderRadius: '20px',
-              boxShadow: '0 10px 40px rgba(139, 115, 85, 0.1)',
-              border: '1px solid rgba(201, 169, 110, 0.2)'
+              boxShadow: '0 15px 50px rgba(139, 115, 85, 0.2)',
+              border: '2px solid rgba(201, 169, 110, 0.3)',
+              position: 'relative',
+              overflow: 'hidden',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center'
             }}>
-              <div style={{
-                fontSize: '4rem',
-                marginBottom: '2rem'
-              }}>💒</div>
               <h3 style={{ 
                 fontSize: '2rem', 
                 marginBottom: '1.5rem', 
-                color: '#C9A96E',
-                fontWeight: '400',
-                fontStyle: 'italic'
+                color: '#1A0F08',
+                fontWeight: '800',
+                fontStyle: 'italic',
+                textShadow: '3px 3px 6px rgba(255,255,255,0.95), 2px 2px 4px rgba(0,0,0,0.7)'
               }}>The Ceremony</h3>
               <p style={{ 
-                color: '#8B7355', 
+                color: '#2C1810', 
                 margin: '1rem 0',
                 fontSize: '1.3rem',
-                fontWeight: '600'
+                fontWeight: '700',
+                textShadow: '2px 2px 4px rgba(255,255,255,0.95), 1px 1px 2px rgba(0,0,0,0.8)'
               }}>4:00 PM</p>
               <p style={{ 
-                color: '#8B7355', 
+                color: '#1A0F08', 
                 margin: '1rem 0',
                 fontSize: '1.1rem',
-                fontStyle: 'italic'
+                fontStyle: 'italic',
+                fontWeight: '700',
+                textShadow: '3px 3px 6px rgba(255,255,255,0.95), 2px 2px 4px rgba(0,0,0,0.8)'
               }}>Surrounded by vineyards with Table Mountain as our backdrop</p>
             </div>
             
             <div style={{ 
               textAlign: 'center',
               padding: '3rem',
-              backgroundColor: 'rgba(255, 255, 255, 0.7)',
+              minHeight: window.innerWidth <= 768 ? '300px' : '450px',
+              backgroundImage: `
+                linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2)),
+                url('/images/celebration.jpg')
+              `,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center 40%',
+              backgroundRepeat: 'no-repeat',
+              backgroundAttachment: 'local',
               borderRadius: '20px',
-              boxShadow: '0 10px 40px rgba(139, 115, 85, 0.1)',
-              border: '1px solid rgba(201, 169, 110, 0.2)'
+              boxShadow: '0 15px 50px rgba(139, 115, 85, 0.2)',
+              border: '2px solid rgba(201, 169, 110, 0.3)',
+              position: 'relative',
+              overflow: 'hidden',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center'
             }}>
-              <div style={{
-                fontSize: '4rem',
-                marginBottom: '2rem'
-              }}>🥂</div>
               <h3 style={{ 
                 fontSize: '2rem', 
                 marginBottom: '1.5rem', 
-                color: '#C9A96E',
-                fontWeight: '400',
-                fontStyle: 'italic'
+                color: '#1A0F08',
+                fontWeight: '800',
+                fontStyle: 'italic',
+                textShadow: '3px 3px 6px rgba(255,255,255,0.95), 2px 2px 4px rgba(0,0,0,0.7)'
               }}>The Celebration</h3>
               <p style={{ 
-                color: '#8B7355', 
+                color: '#2C1810', 
                 margin: '1rem 0',
                 fontSize: '1.3rem',
-                fontWeight: '600'
+                fontWeight: '700',
+                textShadow: '2px 2px 4px rgba(255,255,255,0.95), 1px 1px 2px rgba(0,0,0,0.8)'
               }}>6:00 PM</p>
               <p style={{ 
-                color: '#8B7355', 
+                color: '#1A0F08', 
                 margin: '1rem 0',
                 fontSize: '1.1rem',
-                fontStyle: 'italic'
+                fontStyle: 'italic',
+                fontWeight: '700',
+                textShadow: '3px 3px 6px rgba(255,255,255,0.95), 2px 2px 4px rgba(0,0,0,0.8)'
               }}>Dinner, dancing, and award-winning wines under the stars</p>
             </div>
           </div>
@@ -430,290 +460,7 @@ const WeddingWebsite = () => {
             </p>
           </div>
           
-          <div style={{ maxWidth: '500px', margin: '0 auto', width: '100%' }}>
-            <div style={{
-              backgroundColor: 'rgba(248, 246, 240, 0.8)',
-              padding: window.innerWidth <= 768 ? '2.5rem 1.5rem' : '4rem 3rem',
-              borderRadius: '20px',
-              boxShadow: '0 20px 60px rgba(139, 115, 85, 0.15)',
-              border: '1px solid rgba(201, 169, 110, 0.2)'
-            }}>
-              <form style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
-                <div>
-                  <label style={{ 
-                    display: 'block', 
-                    marginBottom: '0.8rem', 
-                    color: '#8B7355',
-                    fontSize: '1.1rem',
-                    fontWeight: '400',
-                    letterSpacing: '0.5px'
-                  }}>Your Name *</label>
-                  <input 
-                    type="text" 
-                    style={{ 
-                      width: '100%', 
-                      padding: '1rem 1.2rem', 
-                      border: '2px solid #E5D5B7', 
-                      borderRadius: '12px',
-                      fontSize: '1.1rem',
-                      fontFamily: "'Playfair Display', 'Georgia', serif",
-                      color: '#8B7355',
-                      backgroundColor: '#FEFCF7',
-                      transition: 'border-color 0.3s ease'
-                    }}
-                    placeholder="Enter your full name"
-                  />
-                </div>
-                
-                <div>
-                  <label style={{ 
-                    display: 'block', 
-                    marginBottom: '0.8rem', 
-                    color: '#8B7355',
-                    fontSize: '1.1rem',
-                    fontWeight: '400',
-                    letterSpacing: '0.5px'
-                  }}>Email Address *</label>
-                  <input 
-                    type="email" 
-                    style={{ 
-                      width: '100%', 
-                      padding: '1rem 1.2rem', 
-                      border: '2px solid #E5D5B7', 
-                      borderRadius: '12px',
-                      fontSize: '1.1rem',
-                      fontFamily: "'Playfair Display', 'Georgia', serif",
-                      color: '#8B7355',
-                      backgroundColor: '#FEFCF7',
-                      transition: 'border-color 0.3s ease'
-                    }}
-                    placeholder="your.email@example.com"
-                  />
-                </div>
-                
-                <div>
-                  <label style={{ 
-                    display: 'block', 
-                    marginBottom: '0.8rem', 
-                    color: '#8B7355',
-                    fontSize: '1.1rem',
-                    fontWeight: '400',
-                    letterSpacing: '0.5px'
-                  }}>Will you be joining us? *</label>
-                  <select style={{ 
-                    width: '100%', 
-                    padding: '1rem 1.2rem', 
-                    border: '2px solid #E5D5B7', 
-                    borderRadius: '12px',
-                    fontSize: '1.1rem',
-                    fontFamily: "'Playfair Display', 'Georgia', serif",
-                    color: '#8B7355',
-                    backgroundColor: '#FEFCF7',
-                    cursor: 'pointer'
-                  }}>
-                    <option>✨ Yes, I'll be there with bells on!</option>
-                    <option>💔 Unfortunately, I can't make it</option>
-                  </select>
-                </div>
-                
-                <div>
-                  <label style={{ 
-                    display: 'block', 
-                    marginBottom: '0.8rem', 
-                    color: '#8B7355',
-                    fontSize: '1.1rem',
-                    fontWeight: '400',
-                    letterSpacing: '0.5px'
-                  }}>Menu Selection *</label>
-                  <div style={{
-                    backgroundColor: 'rgba(201, 169, 110, 0.05)',
-                    padding: '1.5rem',
-                    borderRadius: '12px',
-                    border: '2px solid #E5D5B7',
-                    marginBottom: '1rem'
-                  }}>
-                    <p style={{
-                      color: '#C9A96E',
-                      fontSize: '1rem',
-                      fontWeight: '500',
-                      marginBottom: '1rem',
-                      textAlign: 'center'
-                    }}>🍷 Cape Point Vineyards Wedding Menu</p>
-                    
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
-                      <label style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.8rem',
-                        cursor: 'pointer',
-                        padding: '0.8rem',
-                        backgroundColor: 'rgba(255, 255, 255, 0.7)',
-                        borderRadius: '8px',
-                        border: '1px solid rgba(201, 169, 110, 0.2)'
-                      }}>
-                        <input type="radio" name="menu" value="beef" style={{ accentColor: '#C9A96E' }} />
-                        <div>
-                          <strong style={{ color: '#8B7355' }}>🥩 Beef Tenderloin</strong>
-                          <br />
-                          <span style={{ color: '#8B7355', fontSize: '0.95rem', fontStyle: 'italic' }}>
-                            Grilled beef tenderloin with roasted vegetables and red wine jus
-                          </span>
-                        </div>
-                      </label>
-                      
-                      <label style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.8rem',
-                        cursor: 'pointer',
-                        padding: '0.8rem',
-                        backgroundColor: 'rgba(255, 255, 255, 0.7)',
-                        borderRadius: '8px',
-                        border: '1px solid rgba(201, 169, 110, 0.2)'
-                      }}>
-                        <input type="radio" name="menu" value="chicken" style={{ accentColor: '#C9A96E' }} />
-                        <div>
-                          <strong style={{ color: '#8B7355' }}>🐔 Free-Range Chicken</strong>
-                          <br />
-                          <span style={{ color: '#8B7355', fontSize: '0.95rem', fontStyle: 'italic' }}>
-                            Herb-crusted chicken breast with seasonal vegetables and lemon butter sauce
-                          </span>
-                        </div>
-                      </label>
-                      
-                      <label style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.8rem',
-                        cursor: 'pointer',
-                        padding: '0.8rem',
-                        backgroundColor: 'rgba(255, 255, 255, 0.7)',
-                        borderRadius: '8px',
-                        border: '1px solid rgba(201, 169, 110, 0.2)'
-                      }}>
-                        <input type="radio" name="menu" value="fish" style={{ accentColor: '#C9A96E' }} />
-                        <div>
-                          <strong style={{ color: '#8B7355' }}>🐟 Line Fish</strong>
-                          <br />
-                          <span style={{ color: '#8B7355', fontSize: '0.95rem', fontStyle: 'italic' }}>
-                            Fresh Cape line fish with Mediterranean vegetables and white wine reduction
-                          </span>
-                        </div>
-                      </label>
-                      
-                      <label style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.8rem',
-                        cursor: 'pointer',
-                        padding: '0.8rem',
-                        backgroundColor: 'rgba(255, 255, 255, 0.7)',
-                        borderRadius: '8px',
-                        border: '1px solid rgba(201, 169, 110, 0.2)'
-                      }}>
-                        <input type="radio" name="menu" value="vegetarian" style={{ accentColor: '#C9A96E' }} />
-                        <div>
-                          <strong style={{ color: '#8B7355' }}>🥕 Vegetarian Delight</strong>
-                          <br />
-                          <span style={{ color: '#8B7355', fontSize: '0.95rem', fontStyle: 'italic' }}>
-                            Roasted vegetable tart with goat's cheese and herb salad
-                          </span>
-                        </div>
-                      </label>
-                      
-                      <label style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '0.8rem',
-                        cursor: 'pointer',
-                        padding: '0.8rem',
-                        backgroundColor: 'rgba(255, 255, 255, 0.7)',
-                        borderRadius: '8px',
-                        border: '1px solid rgba(201, 169, 110, 0.2)'
-                      }}>
-                        <input type="radio" name="menu" value="vegan" style={{ accentColor: '#C9A96E' }} />
-                        <div>
-                          <strong style={{ color: '#8B7355' }}>🌱 Vegan Option</strong>
-                          <br />
-                          <span style={{ color: '#8B7355', fontSize: '0.95rem', fontStyle: 'italic' }}>
-                            Plant-based protein with quinoa, roasted vegetables, and tahini dressing
-                          </span>
-                        </div>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-                
-                
-                <div>
-                  <label style={{ 
-                    display: 'block', 
-                    marginBottom: '0.8rem', 
-                    color: '#8B7355',
-                    fontSize: '1.1rem',
-                    fontWeight: '400',
-                    letterSpacing: '0.5px'
-                  }}>Special Message & Dietary Requirements</label>
-                  <textarea 
-                    style={{ 
-                      width: '100%', 
-                      padding: '1rem 1.2rem', 
-                      border: '2px solid #E5D5B7', 
-                      borderRadius: '12px',
-                      fontSize: '1.1rem',
-                      fontFamily: "'Playfair Display', 'Georgia', serif",
-                      color: '#8B7355',
-                      backgroundColor: '#FEFCF7',
-                      minHeight: '120px',
-                      resize: 'vertical'
-                    }}
-                    placeholder="Share your excitement, dietary requirements (allergies, special needs), song requests, or any special messages for the happy couple..."
-                  />
-                </div>
-                
-                <button 
-                  type="submit" 
-                  style={{ 
-                    width: '100%', 
-                    backgroundColor: '#C9A96E', 
-                    color: 'white', 
-                    padding: '1.2rem 2rem', 
-                    border: 'none', 
-                    borderRadius: '50px',
-                    fontSize: '1.2rem',
-                    fontWeight: '400',
-                    letterSpacing: '1px',
-                    cursor: 'pointer',
-                    transition: 'all 0.3s ease',
-                    boxShadow: '0 8px 25px rgba(201, 169, 110, 0.3)',
-                    fontFamily: "'Playfair Display', 'Georgia', serif"
-                  }}
-                >
-                  Send Our RSVP ✨
-                </button>
-              </form>
-              
-              <div style={{
-                textAlign: 'center',
-                marginTop: '2.5rem',
-                padding: '1.5rem',
-                backgroundColor: 'rgba(201, 169, 110, 0.1)',
-                borderRadius: '12px',
-                border: '1px solid rgba(201, 169, 110, 0.2)'
-              }}>
-                <p style={{
-                  color: '#8B7355',
-                  fontSize: '1rem',
-                  fontStyle: 'italic',
-                  margin: 0,
-                  lineHeight: '1.6'
-                }}>
-                  Please RSVP by <strong>September 30th, 2025</strong><br/>
-                  We can't wait to celebrate with you! 🍾
-                </p>
-              </div>
-            </div>
-          </div>
+          <RSVPFormComponent guestToken={guestToken} />
         </div>
       </section>
 
@@ -997,12 +744,34 @@ const WeddingWebsite = () => {
   );
 };
 
+const AdminPage = () => {
+  return (
+    <div style={{ minHeight: '100vh', backgroundColor: '#F8F6F0' }}>
+      <div style={{
+        padding: '2rem',
+        textAlign: 'center',
+        backgroundColor: '#fff',
+        borderBottom: '1px solid #E5D5B7'
+      }}>
+        <h1 style={{ color: '#C9A96E', fontSize: '2.5rem', margin: 0 }}>
+          Kirsten & Dale Wedding Admin
+        </h1>
+        <p style={{ color: '#8B7355', fontSize: '1.1rem', margin: '0.5rem 0 0 0' }}>
+          Guest Invitation & RSVP Management
+        </p>
+      </div>
+      <GuestInvitationManager baseUrl={window.location.origin} />
+    </div>
+  );
+};
+
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<WeddingWebsite />} />
         <Route path="/guest/:token" element={<WeddingWebsite />} />
+        <Route path="/admin" element={<AdminPage />} />
       </Routes>
     </Router>
   );

@@ -61,6 +61,7 @@ export interface RSVPSubmission {
   token: string;
   guestName: string;
   email?: string;
+  whatsappNumber?: string;
   isAttending: boolean;
   mealChoice?: string;
   dietaryRestrictions?: string;
@@ -68,6 +69,7 @@ export interface RSVPSubmission {
   plusOneMealChoice?: string;
   plusOneDietaryRestrictions?: string;
   wantsEmailConfirmation: boolean;
+  wantsWhatsAppConfirmation?: boolean;
   specialRequests?: string;
   submittedAt: string;
 }

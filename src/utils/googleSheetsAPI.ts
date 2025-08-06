@@ -197,6 +197,7 @@ class GoogleSheetsAPI {
           rsvpData.token,
           rsvpData.guestName,
           rsvpData.email || '',
+          rsvpData.whatsappNumber || '',
           rsvpData.isAttending ? 'Yes' : 'No',
           rsvpData.mealChoice || '',
           rsvpData.dietaryRestrictions || '',
@@ -204,6 +205,7 @@ class GoogleSheetsAPI {
           rsvpData.plusOneMealChoice || '',
           rsvpData.plusOneDietaryRestrictions || '',
           rsvpData.wantsEmailConfirmation ? 'Yes' : 'No',
+          rsvpData.wantsWhatsAppConfirmation ? 'Yes' : 'No',
           rsvpData.specialRequests || ''
         ]
       ];
@@ -254,6 +256,7 @@ class GoogleSheetsAPI {
             rsvpData.token,
             rsvpData.guestName,
             rsvpData.email || '',
+            rsvpData.whatsappNumber || '',
             rsvpData.isAttending ? 'Yes' : 'No',
             rsvpData.mealChoice || '',
             rsvpData.dietaryRestrictions || '',
@@ -261,6 +264,7 @@ class GoogleSheetsAPI {
             rsvpData.plusOneMealChoice || '',
             rsvpData.plusOneDietaryRestrictions || '',
             rsvpData.wantsEmailConfirmation ? 'Yes' : 'No',
+            rsvpData.wantsWhatsAppConfirmation ? 'Yes' : 'No',
             rsvpData.specialRequests || ''
           ];
 
@@ -314,6 +318,7 @@ class GoogleSheetsAPI {
             guestToken,
             guestName,
             email,
+            whatsappNumber,
             attending,
             mealChoice,
             dietaryRestrictions,
@@ -321,6 +326,7 @@ class GoogleSheetsAPI {
             plusOneMealChoice,
             plusOneDietaryRestrictions,
             wantsEmailConfirmation,
+            wantsWhatsAppConfirmation,
             specialRequests
           ] = existingRSVP;
 
@@ -329,6 +335,7 @@ class GoogleSheetsAPI {
             token: guestToken,
             guestName: guestName,
             email: email || undefined,
+            whatsappNumber: whatsappNumber || undefined,
             isAttending: attending === 'Yes',
             mealChoice: mealChoice || undefined,
             dietaryRestrictions: dietaryRestrictions || undefined,
@@ -336,6 +343,7 @@ class GoogleSheetsAPI {
             plusOneMealChoice: plusOneMealChoice || undefined,
             plusOneDietaryRestrictions: plusOneDietaryRestrictions || undefined,
             wantsEmailConfirmation: wantsEmailConfirmation === 'Yes',
+            wantsWhatsAppConfirmation: wantsWhatsAppConfirmation === 'Yes',
             specialRequests: specialRequests || undefined
           };
 
@@ -360,7 +368,7 @@ export default GoogleSheetsAPI;
 const defaultConfig: GoogleSheetsConfig = {
   sheetId: process.env.REACT_APP_GOOGLE_SHEET_ID || '',
   apiKey: process.env.REACT_APP_GOOGLE_API_KEY || '',
-  range: 'RSVP!A2:L'
+  range: 'RSVP_Individual!A2:N'
 };
 
 const sheetsAPI = new GoogleSheetsAPI(defaultConfig);
