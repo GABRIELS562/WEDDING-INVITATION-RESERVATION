@@ -88,10 +88,12 @@ export default defineConfig(({ command, mode }) => {
     
     // Development server
     server: {
-      port: 3000,
-      host: true,
+      port: parseInt(process.env.PORT || '5555'),
+      host: '0.0.0.0',
+      strictPort: true, // Exit if port is already in use
       hmr: {
-        overlay: true
+        overlay: true,
+        port: parseInt(process.env.PORT || '5555') + 1
       }
     },
     
@@ -123,7 +125,15 @@ export default defineConfig(({ command, mode }) => {
     define: {
       __APP_VERSION__: JSON.stringify(process.env.npm_package_version),
       __BUILD_TIME__: JSON.stringify(new Date().toISOString()),
-      __PRODUCTION__: JSON.stringify(mode === 'production')
+      __PRODUCTION__: JSON.stringify(mode === 'production'),
+      'process.env': {
+        REACT_APP_GOOGLE_SPREADSHEET_ID: JSON.stringify(env.REACT_APP_GOOGLE_SPREADSHEET_ID),
+        REACT_APP_GOOGLE_SHEETS_API_KEY: JSON.stringify(env.REACT_APP_GOOGLE_SHEETS_API_KEY),
+        REACT_APP_EMAILJS_SERVICE_ID: JSON.stringify(env.REACT_APP_EMAILJS_SERVICE_ID),
+        REACT_APP_EMAILJS_TEMPLATE_ID: JSON.stringify(env.REACT_APP_EMAILJS_TEMPLATE_ID),
+        REACT_APP_EMAILJS_PUBLIC_KEY: JSON.stringify(env.REACT_APP_EMAILJS_PUBLIC_KEY),
+        REACT_APP_GOOGLE_SHEETS_RANGE: JSON.stringify(env.REACT_APP_GOOGLE_SHEETS_RANGE)
+      }
     },
     
     // Optimize dependencies

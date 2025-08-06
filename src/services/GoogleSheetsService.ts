@@ -1,6 +1,7 @@
 import axios, { type AxiosResponse, type AxiosError } from 'axios';
 import type { RSVPSubmission, IndividualGuest } from '../types';
 import { validateToken } from '../utils/guestSecurity';
+import { config } from '../config/env';
 
 // Google Sheets API configuration interface
 interface GoogleSheetsConfig {
@@ -787,9 +788,9 @@ class GoogleSheetsService {
 
 // Export configured service instance
 const defaultConfig: GoogleSheetsConfig = {
-  spreadsheetId: process.env.REACT_APP_GOOGLE_SPREADSHEET_ID || '',
-  apiKey: process.env.REACT_APP_GOOGLE_SHEETS_API_KEY || '',
-  range: 'RSVP_Individual!A1:N',
+  spreadsheetId: config.googleSheets.spreadsheetId,
+  apiKey: config.googleSheets.apiKey,
+  range: config.googleSheets.range,
   retryAttempts: 3,
   retryDelay: 1000
 };
