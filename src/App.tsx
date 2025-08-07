@@ -7,7 +7,7 @@ const WeddingWebsite = () => {
   const guestToken = params.token;
   return (
     <div style={{ 
-      fontFamily: "'Playfair Display', 'Georgia', serif",
+      fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
       color: '#8B7355',
       lineHeight: '1.6'
     }}>
@@ -20,82 +20,55 @@ const WeddingWebsite = () => {
         backdropFilter: 'blur(10px)',
         boxShadow: '0 2px 20px rgba(139, 115, 85, 0.1)', 
         zIndex: 1000,
-        padding: window.innerWidth <= 768 ? '1rem 0' : '1.5rem 0',
+        padding: '1rem 0',
         transition: 'all 0.3s ease'
       }}>
         <div style={{ 
           maxWidth: '1200px', 
           margin: '0 auto', 
-          padding: window.innerWidth <= 768 ? '0 1rem' : '0 2rem', 
+          padding: '0 1rem', 
           display: 'flex', 
           justifyContent: 'space-between', 
           alignItems: 'center' 
         }}>
           <h1 style={{ 
             margin: 0, 
-            fontSize: window.innerWidth <= 768 ? '1.4rem' : '1.8rem', 
+            fontSize: '1.4rem', 
             color: '#C9A96E',
             fontWeight: '400',
             fontStyle: 'italic',
-            letterSpacing: window.innerWidth <= 768 ? '1px' : '2px'
+            letterSpacing: '2px'
           }}>Kirsten & Dale</h1>
           
-          {/* Desktop Navigation */}
+          {/* Navigation Links */}
           <div className="nav-links" style={{ 
-            display: window.innerWidth <= 768 ? 'none' : 'flex', 
-            gap: '3rem' 
+            display: 'flex', 
+            gap: '1.5rem',
+            flexWrap: 'wrap'
           }}>
             <a href="#story" style={{ 
               textDecoration: 'none', 
               color: '#8B7355',
-              fontSize: '1.1rem',
-              fontWeight: '300',
+              fontSize: '0.9rem',
+              fontWeight: '400',
               letterSpacing: '1px',
               transition: 'color 0.3s ease'
             }}>Our Story</a>
             <a href="#rsvp" style={{ 
               textDecoration: 'none', 
               color: '#8B7355',
-              fontSize: '1.1rem',
-              fontWeight: '300',
+              fontSize: '0.9rem',
+              fontWeight: '400',
               letterSpacing: '1px',
               transition: 'color 0.3s ease'
             }}>RSVP</a>
             <a href="#venue" style={{ 
               textDecoration: 'none', 
               color: '#8B7355',
-              fontSize: '1.1rem',
-              fontWeight: '300',
+              fontSize: '0.9rem',
+              fontWeight: '400',
               letterSpacing: '1px',
               transition: 'color 0.3s ease'
-            }}>Venue</a>
-          </div>
-          
-          {/* Mobile Navigation */}
-          <div className="mobile-nav" style={{ 
-            display: window.innerWidth <= 768 ? 'flex' : 'none', 
-            gap: '1.5rem' 
-          }}>
-            <a href="#story" style={{ 
-              textDecoration: 'none', 
-              color: '#8B7355',
-              fontSize: '0.9rem',
-              fontWeight: '400',
-              letterSpacing: '0.5px'
-            }}>Story</a>
-            <a href="#rsvp" style={{ 
-              textDecoration: 'none', 
-              color: '#8B7355',
-              fontSize: '0.9rem',
-              fontWeight: '400',
-              letterSpacing: '0.5px'
-            }}>RSVP</a>
-            <a href="#venue" style={{ 
-              textDecoration: 'none', 
-              color: '#8B7355',
-              fontSize: '0.9rem',
-              fontWeight: '400',
-              letterSpacing: '0.5px'
             }}>Venue</a>
           </div>
         </div>
@@ -120,7 +93,7 @@ const WeddingWebsite = () => {
       }}>
         <div style={{
           backgroundColor: 'rgba(255, 255, 255, 0.02)',
-          padding: window.innerWidth <= 768 ? '2.5rem 2rem' : '4rem 3rem',
+          padding: '3rem 2rem',
           borderRadius: '20px',
           boxShadow: '0 20px 60px rgba(139, 115, 85, 0.08)',
           backdropFilter: 'blur(8px)',
@@ -140,12 +113,12 @@ const WeddingWebsite = () => {
           }}>Save the Date</div>
           
           <h1 style={{ 
-            fontSize: window.innerWidth <= 768 ? '2.8rem' : '4.5rem', 
+            fontSize: 'clamp(2.5rem, 5vw, 4.5rem)', 
             margin: '0 0 1rem 0', 
             color: '#1A0F08',
             fontWeight: '800',
             fontStyle: 'italic',
-            letterSpacing: window.innerWidth <= 768 ? '2px' : '3px',
+            letterSpacing: '3px',
             textShadow: '3px 3px 6px rgba(255,255,255,0.95), 2px 2px 4px rgba(0,0,0,0.7)',
             lineHeight: '1.2'
           }}>Kirsten & Dale</h1>
@@ -211,19 +184,19 @@ const WeddingWebsite = () => {
 
       {/* Our Story Section */}
       <section id="story" className="section-padding" style={{ 
-        padding: window.innerWidth <= 768 ? '4rem 1rem' : '8rem 2rem', 
+        padding: '6rem 2rem', 
         background: 'linear-gradient(135deg, #F8F6F0 0%, #FEFCF7 100%)',
         position: 'relative'
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: window.innerWidth <= 768 ? '3rem' : '5rem' }}>
+          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
             <h2 className="section-title" style={{ 
-              fontSize: window.innerWidth <= 768 ? '2.5rem' : '3.5rem', 
+              fontSize: 'clamp(2rem, 4vw, 3.5rem)', 
               color: '#C9A96E',
               fontWeight: '400',
               fontStyle: 'italic',
               marginBottom: '1rem',
-              letterSpacing: window.innerWidth <= 768 ? '1px' : '2px'
+              letterSpacing: '2px'
             }}>Our Love Story</h2>
             <div style={{
               width: '100px',
@@ -247,18 +220,14 @@ const WeddingWebsite = () => {
           
           <div className="grid-responsive" style={{ 
             display: 'grid', 
-            gridTemplateColumns: window.innerWidth <= 768 ? '1fr' : 'repeat(auto-fit, minmax(350px, 1fr))', 
-            gap: window.innerWidth <= 768 ? '2rem' : '4rem',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', 
+            gap: '2rem',
             alignItems: 'center'
           }}>
             <div style={{ 
               textAlign: 'center',
-              padding: '3rem',
-              minHeight: window.innerWidth <= 768 ? '300px' : '450px',
-              backgroundImage: `
-                linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2)),
-                url('/images/ceremony.jpg')
-              `,
+              minHeight: '450px',
+              backgroundImage: `url('/images/ceremony.jpg?v=1')`,
               backgroundSize: 'cover',
               backgroundPosition: 'center 30%',
               backgroundRepeat: 'no-repeat',
@@ -270,41 +239,50 @@ const WeddingWebsite = () => {
               overflow: 'hidden',
               display: 'flex',
               flexDirection: 'column',
-              justifyContent: 'center'
+              justifyContent: 'flex-end'
+            }}>
+            <div style={{
+              background: 'linear-gradient(transparent, rgba(0,0,0,0.7))',
+              padding: '3rem 2rem 2rem 2rem',
+              textAlign: 'center'
             }}>
               <h3 style={{ 
-                fontSize: '2rem', 
-                marginBottom: '1.5rem', 
-                color: '#1A0F08',
-                fontWeight: '800',
-                fontStyle: 'italic',
-                textShadow: '3px 3px 6px rgba(255,255,255,0.95), 2px 2px 4px rgba(0,0,0,0.7)'
+                fontSize: 'clamp(1.6rem, 2.5vw, 2rem)', 
+                marginBottom: '0.5rem', 
+                color: 'white',
+                fontWeight: '700',
+                fontStyle: 'normal',
+                fontFamily: "'Inter', -apple-system, sans-serif",
+                letterSpacing: '0.5px',
+                lineHeight: '1.2',
+                margin: '0 0 0.5rem 0',
+                textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
               }}>The Ceremony</h3>
               <p style={{ 
-                color: '#2C1810', 
-                margin: '1rem 0',
-                fontSize: '1.3rem',
+                color: '#FFD700', 
+                margin: '0 0 0.5rem 0',
+                fontSize: 'clamp(1.1rem, 2vw, 1.4rem)',
                 fontWeight: '700',
-                textShadow: '2px 2px 4px rgba(255,255,255,0.95), 1px 1px 2px rgba(0,0,0,0.8)'
+                fontFamily: "'Inter', -apple-system, sans-serif",
+                textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
               }}>4:00 PM</p>
               <p style={{ 
-                color: '#1A0F08', 
-                margin: '1rem 0',
-                fontSize: '1.1rem',
-                fontStyle: 'italic',
-                fontWeight: '700',
-                textShadow: '3px 3px 6px rgba(255,255,255,0.95), 2px 2px 4px rgba(0,0,0,0.8)'
+                color: 'rgba(255, 255, 255, 0.9)', 
+                margin: 0,
+                fontSize: 'clamp(0.9rem, 1.8vw, 1rem)',
+                fontStyle: 'normal',
+                fontWeight: '400',
+                fontFamily: "'Inter', -apple-system, sans-serif",
+                lineHeight: '1.4',
+                textShadow: '1px 1px 2px rgba(0,0,0,0.8)'
               }}>Surrounded by vineyards with Table Mountain as our backdrop</p>
+            </div>
             </div>
             
             <div style={{ 
               textAlign: 'center',
-              padding: '3rem',
-              minHeight: window.innerWidth <= 768 ? '300px' : '450px',
-              backgroundImage: `
-                linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.2)),
-                url('/images/celebration.jpg')
-              `,
+              minHeight: '450px',
+              backgroundImage: `url('/images/celebration.jpg?v=1')`,
               backgroundSize: 'cover',
               backgroundPosition: 'center 40%',
               backgroundRepeat: 'no-repeat',
@@ -316,31 +294,44 @@ const WeddingWebsite = () => {
               overflow: 'hidden',
               display: 'flex',
               flexDirection: 'column',
-              justifyContent: 'center'
+              justifyContent: 'flex-end'
+            }}>
+            <div style={{
+              background: 'linear-gradient(transparent, rgba(0,0,0,0.7))',
+              padding: '3rem 2rem 2rem 2rem',
+              textAlign: 'center'
             }}>
               <h3 style={{ 
-                fontSize: '2rem', 
-                marginBottom: '1.5rem', 
-                color: '#1A0F08',
-                fontWeight: '800',
-                fontStyle: 'italic',
-                textShadow: '3px 3px 6px rgba(255,255,255,0.95), 2px 2px 4px rgba(0,0,0,0.7)'
+                fontSize: 'clamp(1.6rem, 2.5vw, 2rem)', 
+                marginBottom: '0.5rem', 
+                color: 'white',
+                fontWeight: '700',
+                fontStyle: 'normal',
+                fontFamily: "'Inter', -apple-system, sans-serif",
+                letterSpacing: '0.5px',
+                lineHeight: '1.2',
+                margin: '0 0 0.5rem 0',
+                textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
               }}>The Celebration</h3>
               <p style={{ 
-                color: '#2C1810', 
-                margin: '1rem 0',
-                fontSize: '1.3rem',
+                color: '#FFD700', 
+                margin: '0 0 0.5rem 0',
+                fontSize: 'clamp(1.1rem, 2vw, 1.4rem)',
                 fontWeight: '700',
-                textShadow: '2px 2px 4px rgba(255,255,255,0.95), 1px 1px 2px rgba(0,0,0,0.8)'
+                fontFamily: "'Inter', -apple-system, sans-serif",
+                textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
               }}>6:00 PM</p>
               <p style={{ 
-                color: '#1A0F08', 
-                margin: '1rem 0',
-                fontSize: '1.1rem',
-                fontStyle: 'italic',
-                fontWeight: '700',
-                textShadow: '3px 3px 6px rgba(255,255,255,0.95), 2px 2px 4px rgba(0,0,0,0.8)'
+                color: 'rgba(255, 255, 255, 0.9)', 
+                margin: 0,
+                fontSize: 'clamp(0.9rem, 1.8vw, 1rem)',
+                fontStyle: 'normal',
+                fontWeight: '400',
+                fontFamily: "'Inter', -apple-system, sans-serif",
+                lineHeight: '1.4',
+                textShadow: '1px 1px 2px rgba(0,0,0,0.8)'
               }}>Dinner, dancing, and award-winning wines under the stars</p>
+            </div>
             </div>
           </div>
           
@@ -417,19 +408,19 @@ const WeddingWebsite = () => {
 
       {/* RSVP Section */}
       <section id="rsvp" className="section-padding" style={{ 
-        padding: window.innerWidth <= 768 ? '4rem 1rem' : '8rem 2rem', 
+        padding: '6rem 2rem', 
         backgroundColor: 'white',
         position: 'relative'
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <div style={{ textAlign: 'center', marginBottom: window.innerWidth <= 768 ? '3rem' : '5rem' }}>
+          <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
             <h2 className="section-title" style={{ 
-              fontSize: window.innerWidth <= 768 ? '2.5rem' : '3.5rem', 
+              fontSize: 'clamp(2rem, 4vw, 3.5rem)', 
               color: '#C9A96E',
               fontWeight: '400',
               fontStyle: 'italic',
               marginBottom: '1rem',
-              letterSpacing: window.innerWidth <= 768 ? '1px' : '2px'
+              letterSpacing: '2px'
             }}>RSVP</h2>
             <div style={{
               width: '100px',
@@ -466,18 +457,18 @@ const WeddingWebsite = () => {
 
       {/* Venue Section */}
       <section id="venue" className="section-padding" style={{ 
-        padding: window.innerWidth <= 768 ? '4rem 1rem' : '8rem 2rem', 
+        padding: '6rem 2rem', 
         background: 'linear-gradient(135deg, #F8F6F0 0%, #FEFCF7 100%)',
         position: 'relative'
       }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
           <h2 className="section-title" style={{ 
-            fontSize: window.innerWidth <= 768 ? '2.5rem' : '3.5rem', 
+            fontSize: 'clamp(2rem, 4vw, 3.5rem)', 
             marginBottom: '2rem', 
             color: '#C9A96E',
             fontWeight: '400',
             fontStyle: 'italic',
-            letterSpacing: window.innerWidth <= 768 ? '1px' : '2px'
+            letterSpacing: '2px'
           }}>The Venue</h2>
           
           <div style={{
@@ -508,39 +499,52 @@ const WeddingWebsite = () => {
             border: '3px solid rgba(201, 169, 110, 0.3)'
           }}>
             <div style={{
-              backgroundImage: `url('https://cpv.co.za/wp-content/uploads/2024/03/image-91-2.jpg')`,
+              backgroundImage: `url('/images/cape-point-vista.jpg')`,
               backgroundSize: 'cover',
               backgroundPosition: 'center center',
-              height: window.innerWidth <= 768 ? '350px' : '600px',
-              position: 'relative'
+              backgroundRepeat: 'no-repeat',
+              height: 'clamp(400px, 60vw, 700px)',
+              position: 'relative',
+              imageRendering: 'crisp-edges',
+              WebkitBackfaceVisibility: 'hidden',
+              backfaceVisibility: 'hidden'
             }}>
               <div style={{
                 position: 'absolute',
                 inset: 0,
-                background: 'linear-gradient(transparent 60%, rgba(0,0,0,0.4))',
+                background: 'linear-gradient(rgba(0,0,0,0.7) 0%, transparent 50%)',
                 display: 'flex',
-                alignItems: 'flex-end',
-                padding: '2rem'
+                alignItems: 'flex-start',
+                justifyContent: 'center',
+                padding: '3rem 2rem 0 2rem'
               }}>
                 <div style={{
-                  color: 'white',
                   textAlign: 'center',
                   width: '100%'
                 }}>
                   <h3 style={{ 
-                    fontSize: window.innerWidth <= 768 ? '2rem' : '2.8rem', 
+                    fontSize: 'clamp(1.8rem, 3vw, 2.4rem)', 
                     marginBottom: '0.5rem', 
-                    fontWeight: '400',
-                    fontStyle: 'italic',
-                    textShadow: '2px 2px 4px rgba(0,0,0,0.6)',
-                    margin: 0
+                    fontWeight: '700',
+                    fontStyle: 'normal',
+                    fontFamily: "'Inter', -apple-system, sans-serif",
+                    letterSpacing: '1px',
+                    margin: '0 0 0.5rem 0',
+                    color: 'white',
+                    lineHeight: '1.2',
+                    textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
                   }}>Cape Point Vineyards</h3>
                   <p style={{
-                    fontSize: window.innerWidth <= 768 ? '1rem' : '1.2rem',
-                    fontStyle: 'italic',
-                    textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
-                    margin: '0.5rem 0 0 0',
-                    opacity: '0.95'
+                    fontSize: 'clamp(0.9rem, 2vw, 1.1rem)',
+                    fontStyle: 'normal',
+                    fontWeight: '400',
+                    fontFamily: "'Inter', -apple-system, sans-serif",
+                    letterSpacing: '0.5px',
+                    margin: 0,
+                    color: 'rgba(255, 255, 255, 0.9)',
+                    textAlign: 'center',
+                    lineHeight: '1.5',
+                    textShadow: '1px 1px 2px rgba(0,0,0,0.8)'
                   }}>Table Mountain & Atlantic Ocean Views</p>
                 </div>
               </div>
@@ -568,8 +572,8 @@ const WeddingWebsite = () => {
             
             <div className="grid-responsive" style={{
               display: 'grid',
-              gridTemplateColumns: window.innerWidth <= 768 ? '1fr' : 'repeat(auto-fit, minmax(250px, 1fr))',
-              gap: window.innerWidth <= 768 ? '1.5rem' : '2rem',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+              gap: '1.5rem',
               marginBottom: '3rem'
             }}>
               <div>
@@ -600,10 +604,9 @@ const WeddingWebsite = () => {
           
           <div style={{ 
             display: 'flex', 
-            gap: window.innerWidth <= 768 ? '1rem' : '2rem', 
+            gap: '1.5rem', 
             justifyContent: 'center', 
             flexWrap: 'wrap',
-            flexDirection: window.innerWidth <= 480 ? 'column' : 'row',
             alignItems: 'center'
           }}>
             <button 

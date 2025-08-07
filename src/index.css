@@ -1,5 +1,6 @@
 /* Import Design System */
 @import './styles/design-system.css';
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -194,6 +195,83 @@ select:focus-visible {
 
 .meal-card:hover .ingredients-list li {
   color: rgb(55 65 81);
+}
+
+/* Image sharpening and quality improvements */
+* {
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Background image optimization */
+[style*="background-image"] {
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  .nav-links {
+    gap: 1rem !important;
+  }
+  
+  .nav-links a {
+    font-size: 0.8rem !important;
+  }
+  
+  h1 {
+    font-size: 1.2rem !important;
+  }
+  
+  .section-padding {
+    padding: 3rem 1rem !important;
+  }
+  
+  .grid-responsive {
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem !important;
+  }
+  
+  .ceremony-celebration-card {
+    min-height: 300px !important;
+    padding: 2rem !important;
+  }
+  
+  .ceremony-celebration-card h3 {
+    font-size: 1.6rem !important;
+  }
+  
+  .ceremony-celebration-card p {
+    font-size: 1rem !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-links {
+    flex-direction: column;
+    gap: 0.5rem !important;
+  }
+  
+  .hero-content {
+    padding: 2rem 1rem !important;
+  }
+  
+  .hero-title {
+    font-size: 2rem !important;
+  }
+  
+  button {
+    width: 100% !important;
+    margin-bottom: 1rem !important;
+  }
+  
+  .venue-buttons {
+    flex-direction: column !important;
+  }
 }
 
 /* Print styles */
