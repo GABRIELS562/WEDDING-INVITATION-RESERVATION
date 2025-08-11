@@ -1,7 +1,7 @@
 {
   "version": 2,
   "name": "wedding-website",
-  "alias": ["sarah-michael-wedding.com", "www.sarah-michael-wedding.com"],
+  "alias": ["kirsten-dale-wedding.com", "www.kirsten-dale-wedding.com"],
   "build": {
     "env": {
       "NODE_ENV": "production"
@@ -81,7 +81,7 @@
     }
   ],
   "env": {
-    "VITE_APP_URL": "https://sarah-michael-wedding.com",
+    "VITE_APP_URL": "https://kirsten-dale-wedding.com",
     "VITE_VERCEL_ENV": "@vercel-env"
   },
   "regions": ["iad1"],

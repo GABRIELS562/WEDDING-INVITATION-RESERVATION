@@ -1,8 +1,8 @@
 {
-  "name": "sarah-michael-wedding",
+  "name": "kirsten-dale-wedding",
   "private": true,
   "version": "1.0.0",
-  "description": "Sarah Johnson & Michael Chen's Wedding Website",
+  "description": "Kirsten & Dale's Wedding Website",
   "type": "module",
   "scripts": {
     "dev": "cross-env PORT=5555 vite --port 5555 --host 0.0.0.0",

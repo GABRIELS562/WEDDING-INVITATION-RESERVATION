@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 import type { RSVPSubmission, IndividualGuest } from '../types';
 import { googleSheetsService } from '../services/GoogleSheetsService';
 import { emailService } from '../utils/emailService';
-import { validateToken } from '../utils/guestSecurity';
+import { validateToken, getGuestInfo } from '../utils/guestSecurity';
 
 // Form data interface for the hook
 export interface RSVPFormData {
@@ -267,12 +267,26 @@ export const useRSVPForm = (): UseRSVPFormReturn => {
         
         return true;
       } else {
+        // No existing RSVP found - try to auto-populate guest name from token
+        const guestInfo = getGuestInfo(token);
+        if (guestInfo) {
+          // Auto-populate the guest name
+          setFormData(prev => ({
+            ...prev,
+            guestName: guestInfo.fullName
+          }));
+        }
+        
         // Try to load from local storage
         const stored = localStorage.getItem(getStorageKey(token));
         if (stored) {
           try {
             const parsedData = JSON.parse(stored);
-            setFormData(parsedData);
+            // Merge stored data but prioritize guest name from token if it exists
+            setFormData(prev => ({
+              ...parsedData,
+              guestName: guestInfo?.fullName || parsedData.guestName
+            }));
           } catch (error) {
             console.warn('Failed to parse stored form data:', error);
           }

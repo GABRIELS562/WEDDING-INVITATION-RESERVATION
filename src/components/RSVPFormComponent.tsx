@@ -249,11 +249,19 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
                 padding: '1rem 1.2rem', 
                 border: `2px solid ${errors.attendance ? '#F44336' : '#E5D5B7'}`, 
                 borderRadius: '12px',
-                fontSize: '1.1rem',
-                fontFamily: "'Playfair Display', 'Georgia', serif",
+                fontSize: window.innerWidth <= 768 ? '1rem' : '1.1rem',
+                fontFamily: "'Inter', sans-serif",
                 color: '#8B7355',
                 backgroundColor: '#FEFCF7',
-                cursor: 'pointer'
+                cursor: 'pointer',
+                appearance: 'none',
+                backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23C9A96E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e")`,
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'right 1rem center',
+                backgroundSize: '16px',
+                paddingRight: '3rem',
+                lineHeight: '1.4',
+                minHeight: '48px'
               }}
             >
               <option value="">Please select...</option>
@@ -295,11 +303,10 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
                 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
                   {[
-                    { value: 'beef', label: '🥩 Beef Tenderloin', desc: 'Grilled beef tenderloin with roasted vegetables and red wine jus' },
-                    { value: 'chicken', label: '🐔 Free-Range Chicken', desc: 'Herb-crusted chicken breast with seasonal vegetables and lemon butter sauce' },
-                    { value: 'fish', label: '🐟 Line Fish', desc: 'Fresh Cape line fish with Mediterranean vegetables and white wine reduction' },
-                    { value: 'vegetarian', label: '🥕 Vegetarian Delight', desc: 'Roasted vegetable tart with goat\'s cheese and herb salad' },
-                    { value: 'vegan', label: '🌱 Vegan Option', desc: 'Plant-based protein with quinoa, roasted vegetables, and tahini dressing' }
+                    { value: 'fish', label: 'Market Fish', desc: 'Line fish (may vary depending on seasonality) - Confit potato, Sauce Vierge, wild Rocket, Kalamata olives' },
+                    { value: 'prawns', label: 'Mozambican Style Prawns', desc: 'Homemade Peri-Peri or Garlic Lemon butter, citrus basmati rice' },
+                    { value: 'lamb', label: 'Tasting of Karoo Lamb', desc: 'Roasted Cauliflower Pomme, Minted Peas, Thyme tossed Patty Pans, Tomato compote' },
+                    { value: 'steak', label: 'Steak', desc: 'Premium steak prepared to your preference (details to be confirmed)' }
                   ].map((meal) => (
                     <label key={meal.value} style={{
                       display: 'flex',
@@ -393,7 +400,8 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
                 color: '#8B7355',
                 backgroundColor: '#FEFCF7',
                 minHeight: '120px',
-                resize: 'vertical'
+                resize: 'none',
+                transition: 'border-color 0.3s ease'
               }}
               placeholder="Share your excitement, song requests, or any special messages for the happy couple..."
             />

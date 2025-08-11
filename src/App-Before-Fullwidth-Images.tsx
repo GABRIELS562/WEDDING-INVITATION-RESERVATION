@@ -44,34 +44,26 @@ const CountdownTimer = () => {
         <div key={unit} style={{
           backgroundColor: 'rgba(255, 255, 255, 0.95)',
           borderRadius: '16px',
+          padding: 'clamp(1rem, 4vw, 1.5rem)',
           textAlign: 'center',
           boxShadow: '0 8px 32px rgba(139, 115, 85, 0.15)',
           border: '1px solid rgba(201, 169, 110, 0.2)',
           backdropFilter: 'blur(10px)',
-          transition: 'transform 0.3s ease',
-          width: '100%',
-          height: 'clamp(90px, 20vw, 120px)',
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          padding: '0.5rem'
+          transition: 'transform 0.3s ease'
         }}>
           <div style={{
             fontSize: 'clamp(1.5rem, 5vw, 2rem)',
             fontWeight: '700',
             color: '#8B4513',
-            marginBottom: '0.25rem',
-            fontFamily: "'Playfair Display', serif",
-            lineHeight: '1'
+            marginBottom: '0.5rem',
+            fontFamily: "'Playfair Display', serif"
           }}>{value}</div>
           <div style={{
             fontSize: 'clamp(0.7rem, 2vw, 0.9rem)',
             color: '#8B7355',
             textTransform: 'uppercase',
             letterSpacing: '1px',
-            fontWeight: '500',
-            lineHeight: '1'
+            fontWeight: '500'
           }}>{unit}</div>
         </div>
       ))}
@@ -241,61 +233,45 @@ const WeddingWebsite = () => {
             >RSVP</a>
           </div>
 
-          {/* Enhanced Mobile Menu Button */}
+          {/* Mobile Hamburger Menu */}
           <button 
             onClick={toggleMobileMenu}
             style={{
               display: 'none',
-              background: 'rgba(201, 169, 110, 0.1)',
-              border: '1px solid rgba(201, 169, 110, 0.2)',
-              borderRadius: '8px',
+              background: 'none',
+              border: 'none',
               cursor: 'pointer',
               flexDirection: 'column',
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: '40px',
-              height: '36px',
-              padding: '8px',
-              transition: 'all 0.3s ease',
-              backdropFilter: 'blur(10px)'
+              justifyContent: 'space-around',
+              width: '24px',
+              height: '24px',
+              padding: 0
             }}
             className="mobile-menu-button"
-            onMouseEnter={(e) => {
-              e.target.style.backgroundColor = 'rgba(201, 169, 110, 0.2)';
-              e.target.style.borderColor = 'rgba(201, 169, 110, 0.4)';
-            }}
-            onMouseLeave={(e) => {
-              e.target.style.backgroundColor = 'rgba(201, 169, 110, 0.1)';
-              e.target.style.borderColor = 'rgba(201, 169, 110, 0.2)';
-            }}
           >
             <span style={{
               display: 'block',
               height: '2px',
-              width: mobileMenuOpen ? '18px' : '20px',
+              width: '100%',
               backgroundColor: '#8B7355',
-              borderRadius: '1px',
               transition: 'all 0.3s ease',
-              transform: mobileMenuOpen ? 'rotate(45deg) translate(3px, 3px)' : 'none'
+              transform: mobileMenuOpen ? 'rotate(45deg) translate(5px, 5px)' : 'none'
             }}></span>
             <span style={{
               display: 'block',
               height: '2px',
-              width: mobileMenuOpen ? '18px' : '16px',
+              width: '100%',
               backgroundColor: '#8B7355',
-              borderRadius: '1px',
               transition: 'all 0.3s ease',
-              opacity: mobileMenuOpen ? 0 : 1,
-              margin: '3px 0'
+              opacity: mobileMenuOpen ? 0 : 1
             }}></span>
             <span style={{
               display: 'block',
               height: '2px',
-              width: mobileMenuOpen ? '18px' : '20px',
+              width: '100%',
               backgroundColor: '#8B7355',
-              borderRadius: '1px',
               transition: 'all 0.3s ease',
-              transform: mobileMenuOpen ? 'rotate(-45deg) translate(3px, -3px)' : 'none'
+              transform: mobileMenuOpen ? 'rotate(-45deg) translate(7px, -6px)' : 'none'
             }}></span>
           </button>
         </div>
@@ -407,6 +383,7 @@ const WeddingWebsite = () => {
             onClick={(e) => handleNavClick(e, 'rsvp')}
             href="#rsvp"
             style={{
+              display: 'inline-block',
               backgroundColor: '#C9A96E',
               color: 'white',
               textDecoration: 'none',
@@ -418,6 +395,7 @@ const WeddingWebsite = () => {
               textTransform: 'uppercase',
               transition: 'all 0.3s ease',
               boxShadow: '0 8px 25px rgba(201, 169, 110, 0.4)',
+              marginTop: '2rem',
               minHeight: '44px',
               display: 'flex',
               alignItems: 'center',
@@ -448,6 +426,35 @@ const WeddingWebsite = () => {
         position: 'relative'
       }}>
         <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: 'clamp(3rem, 8vw, 5rem)', padding: '0 1rem' }}>
+            <h2 className="section-title" style={{ 
+              fontSize: 'clamp(2.5rem, 6vw, 4rem)', 
+              color: '#8B4513',
+              fontWeight: '300',
+              fontStyle: 'italic',
+              marginBottom: '1rem',
+              letterSpacing: '1px',
+              fontFamily: "'Playfair Display', serif"
+            }}>Our Love Story</h2>
+            <div style={{
+              width: '60px',
+              height: '2px',
+              backgroundColor: '#C9A96E',
+              margin: '2rem auto',
+              position: 'relative'
+            }}>
+              <div style={{
+                position: 'absolute',
+                top: '-3px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                width: '8px',
+                height: '8px',
+                backgroundColor: '#C9A96E',
+                borderRadius: '50%'
+              }}></div>
+            </div>
+          </div>
           
           {/* Bible Verses Section - Enhanced */}
           <div style={{
@@ -560,82 +567,59 @@ const WeddingWebsite = () => {
             </div>
           </div>
           
-        </div>
-      </section>
-
-      {/* Full-Width Venue Section */}
-      <section style={{ 
-        minHeight: 'clamp(50vh, 70vw, 80vh)', 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center', 
-        backgroundImage: `
-          linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-          url('/images/cape-point-vista.jpg')
-        `,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center center',
-        backgroundAttachment: 'scroll',
-        textAlign: 'center',
-        padding: 'clamp(1rem, 4vw, 2rem)',
-        position: 'relative',
-        width: '100%'
-      }}>
-        <div style={{
-          maxWidth: '700px',
-          width: '100%'
-        }}>
-          <h3 style={{ 
-            fontSize: 'clamp(2.5rem, 6vw, 4rem)', 
-            marginBottom: '1rem', 
-            color: 'white',
-            fontWeight: '300',
-            fontStyle: 'italic',
-            fontFamily: "'Playfair Display', serif",
-            letterSpacing: '1px',
-            lineHeight: '1.2',
-            textShadow: '3px 3px 6px rgba(0,0,0,0.8)'
-          }}>Cape Point Vineyards</h3>
-          
+          {/* Enhanced venue photo showcase */}
           <div style={{
-            width: '80px',
-            height: '1px',
-            backgroundColor: 'rgba(255, 255, 255, 0.7)',
-            margin: '2rem auto',
-            position: 'relative'
+            marginBottom: '4rem',
+            maxWidth: '1000px',
+            margin: '0 auto 4rem auto',
+            borderRadius: '24px',
+            overflow: 'hidden',
+            boxShadow: '0 20px 60px rgba(139, 115, 85, 0.15)',
+            border: '1px solid rgba(201, 169, 110, 0.2)'
           }}>
             <div style={{
-              position: 'absolute',
-              top: '-3px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: '6px',
-              height: '6px',
-              backgroundColor: 'rgba(255, 255, 255, 0.7)',
-              borderRadius: '50%'
-            }}></div>
+              backgroundImage: `url('/images/cape-point-vista.jpg')`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center center',
+              backgroundRepeat: 'no-repeat',
+              height: 'clamp(300px, 50vw, 500px)',
+              position: 'relative'
+            }}>
+              <div style={{
+                position: 'absolute',
+                inset: 0,
+                background: 'linear-gradient(rgba(0,0,0,0.4) 0%, transparent 50%, rgba(0,0,0,0.6) 100%)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexDirection: 'column',
+                padding: '2rem'
+              }}>
+                <h3 style={{ 
+                  fontSize: 'clamp(2rem, 5vw, 2.8rem)', 
+                  marginBottom: '0.5rem', 
+                  fontWeight: '300',
+                  fontStyle: 'italic',
+                  fontFamily: "'Playfair Display', serif",
+                  margin: '0 0 0.5rem 0',
+                  color: 'white',
+                  lineHeight: '1.2',
+                  textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
+                }}>Cape Point Vineyards</h3>
+                <p style={{
+                  fontSize: 'clamp(1rem, 3vw, 1.2rem)',
+                  fontWeight: '300',
+                  fontFamily: "'Inter', sans-serif",
+                  letterSpacing: '0.5px',
+                  margin: 0,
+                  color: 'rgba(255, 255, 255, 0.9)',
+                  textAlign: 'center',
+                  lineHeight: '1.5',
+                  textShadow: '1px 1px 2px rgba(0,0,0,0.8)'
+                }}>Table Mountain & Atlantic Ocean Views</p>
+              </div>
+            </div>
           </div>
-          
-          <p style={{ 
-            color: 'rgba(255, 255, 255, 0.95)', 
-            margin: 0,
-            fontSize: 'clamp(1.1rem, 3vw, 1.3rem)',
-            fontWeight: '300',
-            fontFamily: "'Inter', sans-serif",
-            lineHeight: '1.6',
-            textShadow: '2px 2px 4px rgba(0,0,0,0.8)',
-            fontStyle: 'italic'
-          }}>Table Mountain & Atlantic Ocean Views</p>
-        </div>
-      </section>
-
-      {/* Venue Details Section */}
-      <section style={{ 
-        padding: 'clamp(4rem, 10vw, 8rem) 1rem', 
-        backgroundColor: 'white',
-        position: 'relative'
-      }}>
-        <div style={{ maxWidth: '1200px', margin: '0 auto', textAlign: 'center' }}>
 
           {/* Venue details */}
           <div style={{
@@ -776,194 +760,118 @@ const WeddingWebsite = () => {
             </div>
           </div>
           
-        </div>
-      </section>
-
-      {/* The Ceremony - Partial Width with Elegance */}
-      <section style={{ 
-        padding: 'clamp(4rem, 8vw, 6rem) 1rem',
-        backgroundColor: '#F8F6F0',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-        <div style={{
-          width: '90%',
-          maxWidth: '1400px',
-          minHeight: 'clamp(60vh, 70vw, 80vh)',
-          backgroundImage: `
-            linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.45)),
-            url('/images/ceremony.jpg?v=1')
-          `,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center center',
-          borderRadius: '24px',
-          boxShadow: '0 20px 60px rgba(139, 115, 85, 0.2), 0 8px 25px rgba(0, 0, 0, 0.1)',
-          border: '3px solid rgba(201, 169, 110, 0.2)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          textAlign: 'center',
-          position: 'relative',
-          overflow: 'hidden'
-        }}>
-        <div style={{
-          maxWidth: '900px',
-          width: '100%',
-          backgroundColor: 'rgba(255, 255, 255, 0.02)',
-          backdropFilter: 'blur(5px)',
-          borderRadius: '20px',
-          padding: 'clamp(3rem, 6vw, 5rem) clamp(2rem, 4vw, 3rem)',
-          border: '1px solid rgba(255, 255, 255, 0.05)'
-        }}>
-          <div style={{
-            fontSize: 'clamp(0.9rem, 2.5vw, 1.1rem)',
-            color: 'rgba(255, 255, 255, 0.8)',
-            textTransform: 'uppercase',
-            letterSpacing: 'clamp(2px, 1vw, 4px)',
-            fontWeight: '400',
-            marginBottom: '1.5rem',
-            fontFamily: "'Inter', sans-serif"
-          }}>THE CEREMONY</div>
-          
-          <h3 style={{ 
-            fontSize: 'clamp(3rem, 7vw, 5.5rem)', 
-            marginBottom: '2rem', 
-            color: 'white',
-            fontWeight: '700',
-            fontStyle: 'normal',
-            fontFamily: "'Playfair Display', serif",
-            letterSpacing: 'clamp(-1px, 0.5vw, 2px)',
-            lineHeight: '1.1',
-            textShadow: '2px 2px 8px rgba(0,0,0,0.7), 0 0 20px rgba(0,0,0,0.3)',
-            textTransform: 'uppercase'
-          }}>4:00 PM</h3>
-          
-          <div style={{
-            width: '120px',
-            height: '2px',
-            backgroundColor: 'rgba(201, 169, 110, 0.8)',
-            margin: '2.5rem auto',
-            position: 'relative'
+          {/* Enhanced Ceremony Image */}
+          <div style={{ 
+            textAlign: 'center',
+            minHeight: 'clamp(350px, 50vw, 450px)',
+            backgroundImage: `url('/images/ceremony.jpg?v=1')`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center 30%',
+            backgroundRepeat: 'no-repeat',
+            borderRadius: '24px',
+            boxShadow: '0 20px 60px rgba(139, 115, 85, 0.15)',
+            border: '1px solid rgba(201, 169, 110, 0.2)',
+            position: 'relative',
+            overflow: 'hidden',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
+            marginBottom: '3rem',
+            maxWidth: '800px',
+            margin: '0 auto 3rem auto'
           }}>
             <div style={{
-              position: 'absolute',
-              top: '-4px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: '10px',
-              height: '10px',
-              backgroundColor: 'rgba(201, 169, 110, 0.8)',
-              borderRadius: '50%'
-            }}></div>
+              background: 'linear-gradient(transparent, rgba(0,0,0,0.7))',
+              padding: 'clamp(2rem, 5vw, 3rem) clamp(1.5rem, 4vw, 2rem)',
+              textAlign: 'center'
+            }}>
+              <h3 style={{ 
+                fontSize: 'clamp(1.6rem, 4vw, 2rem)', 
+                marginBottom: '0.5rem', 
+                color: 'white',
+                fontWeight: '300',
+                fontStyle: 'italic',
+                fontFamily: "'Playfair Display', serif",
+                letterSpacing: '0.5px',
+                lineHeight: '1.2',
+                margin: '0 0 0.5rem 0',
+                textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
+              }}>The Ceremony</h3>
+              <p style={{ 
+                color: '#FFD700', 
+                margin: '0 0 0.5rem 0',
+                fontSize: 'clamp(1.1rem, 3vw, 1.4rem)',
+                fontWeight: '600',
+                fontFamily: "'Inter', sans-serif",
+                textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
+              }}>4:00 PM</p>
+              <p style={{ 
+                color: 'rgba(255, 255, 255, 0.9)', 
+                margin: 0,
+                fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
+                fontWeight: '300',
+                fontFamily: "'Inter', sans-serif",
+                lineHeight: '1.4',
+                textShadow: '1px 1px 2px rgba(0,0,0,0.8)'
+              }}>Surrounded by vineyards with Table Mountain as our backdrop</p>
+            </div>
           </div>
 
-          <p style={{ 
-            color: 'rgba(255, 255, 255, 0.9)', 
-            fontSize: 'clamp(1.2rem, 3.5vw, 1.6rem)',
-            fontWeight: '300',
-            fontFamily: "'Playfair Display', serif",
-            lineHeight: '1.7',
-            textShadow: '1px 1px 4px rgba(0,0,0,0.6)',
-            fontStyle: 'italic',
-            maxWidth: '600px',
+          {/* Enhanced Celebration Image */}
+          <div style={{ 
+            textAlign: 'center',
+            minHeight: 'clamp(350px, 50vw, 450px)',
+            backgroundImage: `url('/images/celebration.jpg?v=1')`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center 40%',
+            backgroundRepeat: 'no-repeat',
+            borderRadius: '24px',
+            boxShadow: '0 20px 60px rgba(139, 115, 85, 0.15)',
+            border: '1px solid rgba(201, 169, 110, 0.2)',
+            position: 'relative',
+            overflow: 'hidden',
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
+            maxWidth: '800px',
             margin: '0 auto'
-          }}>Surrounded by vineyards with Table Mountain as our breathtaking backdrop</p>
-        </div>
-        </div>
-      </section>
-
-      {/* The Celebration - Partial Width with Elegance */}
-      <section style={{ 
-        padding: 'clamp(4rem, 8vw, 6rem) 1rem',
-        backgroundColor: '#FEFCF9',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center'
-      }}>
-        <div style={{
-          width: '90%',
-          maxWidth: '1400px',
-          minHeight: 'clamp(60vh, 70vw, 80vh)',
-          backgroundImage: `
-            linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.45)),
-            url('/images/celebration.jpg?v=1')
-          `,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center center',
-          borderRadius: '24px',
-          boxShadow: '0 20px 60px rgba(139, 115, 85, 0.2), 0 8px 25px rgba(0, 0, 0, 0.1)',
-          border: '3px solid rgba(201, 169, 110, 0.2)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          textAlign: 'center',
-          position: 'relative',
-          overflow: 'hidden'
-        }}>
-        <div style={{
-          maxWidth: '900px',
-          width: '100%',
-          backgroundColor: 'rgba(255, 255, 255, 0.02)',
-          backdropFilter: 'blur(5px)',
-          borderRadius: '20px',
-          padding: 'clamp(3rem, 6vw, 5rem) clamp(2rem, 4vw, 3rem)',
-          border: '1px solid rgba(255, 255, 255, 0.05)'
-        }}>
-          <div style={{
-            fontSize: 'clamp(0.9rem, 2.5vw, 1.1rem)',
-            color: 'rgba(255, 255, 255, 0.8)',
-            textTransform: 'uppercase',
-            letterSpacing: 'clamp(2px, 1vw, 4px)',
-            fontWeight: '400',
-            marginBottom: '1.5rem',
-            fontFamily: "'Inter', sans-serif"
-          }}>THE CELEBRATION</div>
-          
-          <h3 style={{ 
-            fontSize: 'clamp(3rem, 7vw, 5.5rem)', 
-            marginBottom: '2rem', 
-            color: 'white',
-            fontWeight: '700',
-            fontStyle: 'normal',
-            fontFamily: "'Playfair Display', serif",
-            letterSpacing: 'clamp(-1px, 0.5vw, 2px)',
-            lineHeight: '1.1',
-            textShadow: '2px 2px 8px rgba(0,0,0,0.7), 0 0 20px rgba(0,0,0,0.3)',
-            textTransform: 'uppercase'
-          }}>6:00 PM</h3>
-          
-          <div style={{
-            width: '120px',
-            height: '2px',
-            backgroundColor: 'rgba(201, 169, 110, 0.8)',
-            margin: '2.5rem auto',
-            position: 'relative'
           }}>
             <div style={{
-              position: 'absolute',
-              top: '-4px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: '10px',
-              height: '10px',
-              backgroundColor: 'rgba(201, 169, 110, 0.8)',
-              borderRadius: '50%'
-            }}></div>
+              background: 'linear-gradient(transparent, rgba(0,0,0,0.7))',
+              padding: 'clamp(2rem, 5vw, 3rem) clamp(1.5rem, 4vw, 2rem)',
+              textAlign: 'center'
+            }}>
+              <h3 style={{ 
+                fontSize: 'clamp(1.6rem, 4vw, 2rem)', 
+                marginBottom: '0.5rem', 
+                color: 'white',
+                fontWeight: '300',
+                fontStyle: 'italic',
+                fontFamily: "'Playfair Display', serif",
+                letterSpacing: '0.5px',
+                lineHeight: '1.2',
+                margin: '0 0 0.5rem 0',
+                textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
+              }}>The Celebration</h3>
+              <p style={{ 
+                color: '#FFD700', 
+                margin: '0 0 0.5rem 0',
+                fontSize: 'clamp(1.1rem, 3vw, 1.4rem)',
+                fontWeight: '600',
+                fontFamily: "'Inter', sans-serif",
+                textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
+              }}>6:00 PM</p>
+              <p style={{ 
+                color: 'rgba(255, 255, 255, 0.9)', 
+                margin: 0,
+                fontSize: 'clamp(0.9rem, 2.5vw, 1rem)',
+                fontWeight: '300',
+                fontFamily: "'Inter', sans-serif",
+                lineHeight: '1.4',
+                textShadow: '1px 1px 2px rgba(0,0,0,0.8)'
+              }}>Dinner, dancing, and exquisite wines under the stars</p>
+            </div>
           </div>
-
-          <p style={{ 
-            color: 'rgba(255, 255, 255, 0.9)', 
-            fontSize: 'clamp(1.2rem, 3.5vw, 1.6rem)',
-            fontWeight: '300',
-            fontFamily: "'Playfair Display', serif",
-            lineHeight: '1.7',
-            textShadow: '1px 1px 4px rgba(0,0,0,0.6)',
-            fontStyle: 'italic',
-            maxWidth: '600px',
-            margin: '0 auto'
-          }}>Dinner, dancing, and exquisite wines under the African stars</p>
-        </div>
         </div>
       </section>
 
@@ -1015,45 +923,6 @@ const WeddingWebsite = () => {
           </div>
           
           <RSVPFormComponent guestToken={guestToken} />
-          
-          {/* Gift Message Section */}
-          <div style={{
-            marginTop: '4rem',
-            padding: 'clamp(3rem, 6vw, 4rem) clamp(2rem, 5vw, 3rem)',
-            backgroundColor: 'rgba(248, 246, 240, 0.7)',
-            borderRadius: '24px',
-            border: '1px solid rgba(201, 169, 110, 0.15)',
-            boxShadow: '0 10px 40px rgba(139, 115, 85, 0.08)',
-            backdropFilter: 'blur(10px)',
-            textAlign: 'center'
-          }}>
-            <div style={{
-              maxWidth: '600px',
-              margin: '0 auto'
-            }}>
-              <p style={{
-                fontSize: 'clamp(1.2rem, 3.5vw, 1.4rem)',
-                color: '#8B7355',
-                lineHeight: '1.8',
-                marginBottom: '2rem',
-                fontFamily: "'Playfair Display', serif",
-                fontWeight: '600'
-              }}>
-                Your presence at our wedding is the greatest gift we could ask for. As we begin our new chapter together, we are saving for our future. If you wish to honour us with a gift, a monetary contribution to our future would be deeply appreciated.
-              </p>
-              
-              <div style={{
-                fontSize: 'clamp(1rem, 2.5vw, 1.1rem)',
-                color: '#C9A96E',
-                fontWeight: '500',
-                fontFamily: "'Playfair Display', serif",
-                fontStyle: 'italic'
-              }}>
-                With all our love,<br/>
-                Dale & Kirsten
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -1130,7 +999,7 @@ const WeddingWebsite = () => {
         </div>
       </footer>
 
-      <style>{`
+      <style jsx>{`
         @keyframes fadeInUp {
           from {
             opacity: 0;

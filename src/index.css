@@ -23,7 +23,7 @@
 
 html {
   scroll-behavior: smooth;
-  scroll-padding-top: 5rem;
+  scroll-padding-top: 120px;
 }
 
 body {
@@ -50,12 +50,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #e11d48;
+  background: #C9A96E;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #be185d;
+  background: #B8956A;
 }
 
 /* Smooth transitions for all interactive elements */
