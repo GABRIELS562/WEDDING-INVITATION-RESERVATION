@@ -9,7 +9,7 @@
     "dev:wedding": "cross-env PORT=5555 vite --port 5555 --host 0.0.0.0",
     "dev:alt": "cross-env PORT=8080 vite --port 8080 --host 0.0.0.0",
     "dev:safe": "cross-env PORT=9999 vite --port 9999 --host 0.0.0.0",
-    "build": "tsc -b && vite build",
+    "build": "vite build",
     "build:analyze": "npm run build && npx vite-bundle-analyzer dist/stats.html",
     "preview": "vite preview",
     "preview:prod": "npm run build && vite preview --host",
@@ -35,11 +35,13 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.12",
+    "g": "^2.0.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-helmet-async": "^2.0.5",
     "react-router-dom": "^7.7.1",
-    "react-scroll": "^1.9.3"
+    "react-scroll": "^1.9.3",
+    "vercel": "^44.7.3"
   },
   "devDependencies": {
     "@eslint/js": "^9.30.1",
