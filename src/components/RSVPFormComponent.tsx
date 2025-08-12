@@ -36,17 +36,6 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
       currentGuestName: formData.guestName
     });
     
-    // Add global debug info for component state
-    if (typeof window !== 'undefined') {
-      (window as any).rsvpComponentDebug = {
-        guestToken,
-        isInitialized,
-        formData,
-        canSubmit,
-        errors
-      };
-    }
-    
     if (guestToken && !isInitialized) {
       console.log('Processing guest token:', guestToken);
       

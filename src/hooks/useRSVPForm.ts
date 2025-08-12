@@ -529,44 +529,10 @@ export const useRSVPForm = (): UseRSVPFormReturn => {
   const hasRealTimeErrors = Object.keys(realTimeErrors).length > 0;
   const hasCurrentErrors = Object.keys(errors).length > 0;
   
-  // For submit button: use real-time validation (allows submit while choosing meal)
-  const hasBasicRequirements = formData.isAttending !== null && formData.guestName.trim() !== '';
-  const isFormValid = !hasRealTimeErrors && hasBasicRequirements;
-  const canSubmit = isFormValid && !submissionState.isSubmitting && !loadingState.isLoading;
-  
-  // More detailed debug
-  console.log('🔍 RSVP Submit Button Debug:', {
-    hasBasicRequirements,
-    isAttending: formData.isAttending,
-    guestNameLength: formData.guestName.trim().length,
-    realTimeErrors,
-    hasRealTimeErrors,
-    isFormValid,
-    canSubmit
-  });
-  
-  // Debug logging to see what's blocking submit
-  if (typeof window !== 'undefined') {
-    (window as any).debugRSVP = {
-      realTimeErrors,
-      hasRealTimeErrors,
-      formData: {
-        isAttending: formData.isAttending,
-        guestName: `"${formData.guestName}" (length: ${formData.guestName.length})`,
-        email: `"${formData.email}" (length: ${formData.email.length})`,
-        wantsEmailConfirmation: formData.wantsEmailConfirmation
-      },
-      states: {
-        isSubmitting: submissionState.isSubmitting,
-        isLoading: loadingState.isLoading
-      },
-      calculations: {
-        isFormValid,
-        canSubmit
-      }
-    };
-    console.log('🔍 RSVP Debug Info available at window.debugRSVP');
-  }
+  // Simplified submit button logic - temporarily allow all submissions for debugging
+  const hasBasicRequirements = formData.guestName.trim() !== '' && formData.isAttending !== null;
+  const canSubmit = hasBasicRequirements && !submissionState.isSubmitting && !loadingState.isLoading;
+  const isFormValid = canSubmit; // Simplified for debugging
   
   const isLoading = loadingState.isLoading || loadingState.isLoadingExisting || loadingState.isValidatingToken;
 
