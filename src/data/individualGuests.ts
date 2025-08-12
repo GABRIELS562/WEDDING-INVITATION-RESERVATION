@@ -11,7 +11,7 @@ export const individualGuests: IndividualGuest[] = [
     fullName: 'Jamie',
     email: 'test@example.com',
     phone: '+27722108714',
-    token: 'jamie-test.1754978658803.654a68120c58c97c',
+    token: 'jamie-test-abc12345',
     hasUsedToken: false,
     plusOneEligible: false,
     invitationGroup: 'test',
