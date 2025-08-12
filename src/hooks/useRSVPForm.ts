@@ -340,7 +340,13 @@ export const useRSVPForm = (): UseRSVPFormReturn => {
 
     try {
       // Step 1: Basic validation (component handles detailed validation)
+      console.log('🔧 Step 1: Validating basic requirements');
+      console.log('🔧 Guest name:', `"${formData.guestName}" (length: ${formData.guestName.trim().length})`);
+      console.log('🔧 Is attending:', formData.isAttending);
+      console.log('🔧 Meal choice:', `"${formData.mealChoice}"`);
+      
       if (!formData.guestName.trim() || formData.isAttending === null) {
+        console.log('🔧 ❌ Basic validation failed - missing name or attendance');
         setSubmissionState(prev => ({
           ...prev,
           isSubmitting: false,
@@ -351,6 +357,7 @@ export const useRSVPForm = (): UseRSVPFormReturn => {
       }
       
       if (formData.isAttending && !formData.mealChoice) {
+        console.log('🔧 ❌ Meal choice validation failed');
         setSubmissionState(prev => ({
           ...prev,
           isSubmitting: false,
@@ -359,10 +366,16 @@ export const useRSVPForm = (): UseRSVPFormReturn => {
         }));
         return false;
       }
+      
+      console.log('🔧 ✅ Basic validation passed');
 
       // Step 2: Validate token
+      console.log('🔧 Step 2: Validating token');
       const tokenValidation = validateToken(token);
+      console.log('🔧 Token validation result:', tokenValidation);
+      
       if (!tokenValidation.isValid) {
+        console.log('🔧 ❌ Token validation failed');
         setErrors({ token: tokenValidation.error || 'Invalid guest token' });
         setSubmissionState(prev => ({
           ...prev,
@@ -372,6 +385,8 @@ export const useRSVPForm = (): UseRSVPFormReturn => {
         }));
         return false;
       }
+      
+      console.log('🔧 ✅ Token validation passed');
 
       // Step 3: Prepare RSVP data
       const rsvpData: RSVPSubmission = {
