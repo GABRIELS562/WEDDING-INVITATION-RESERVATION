@@ -102,14 +102,41 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
       return;
     }
 
-    alert('✅ Form validation passed! Submitting RSVP...\n\nData:\n' + 
-          `Name: ${formData.guestName}\n` +
-          `Attending: ${formData.isAttending ? 'Yes' : 'No'}\n` +
-          `Meal: ${formData.mealChoice || 'N/A'}\n` +
-          `Email: ${formData.email || 'Not provided'}`);
+    // Link the entered name to guest record for tracking
+    const nameLink = linkNameToGuest(formData.guestName, guestToken);
 
-    // For now, just show success without actually submitting
-    console.log('🎉 RSVP would be submitted with this data');
+    const defaultGuestInfo: IndividualGuest = {
+      id: guestToken,
+      firstName: nameLink.primaryName.split(' ')[0] || '',
+      lastName: nameLink.primaryName.split(' ').slice(1).join(' ') || '',
+      fullName: nameLink.primaryName,
+      email: formData.email || '',
+      token: guestToken,
+      hasUsedToken: false,
+      plusOneEligible: true,
+      plusOneName: formData.plusOneName || undefined,
+      plusOneEmail: undefined,
+      dietaryRestrictions: formData.dietaryRestrictions ? [formData.dietaryRestrictions] : undefined,
+      specialNotes: formData.specialRequests || undefined,
+      createdAt: new Date(),
+      lastAccessed: new Date()
+    };
+
+    try {
+      console.log('📤 Starting actual RSVP submission...');
+      const success = await submitRSVP(guestToken, guestInfo || defaultGuestInfo);
+      
+      if (success) {
+        console.log('🎉 RSVP submitted successfully!');
+        alert('🎉 RSVP submitted successfully! Thank you for confirming your attendance.');
+      } else {
+        console.error('❌ RSVP submission failed');
+        alert('❌ Failed to submit RSVP. Please try again or contact us directly.');
+      }
+    } catch (error) {
+      console.error('❌ RSVP submission error:', error);
+      alert('❌ Error submitting RSVP: ' + (error instanceof Error ? error.message : 'Unknown error'));
+    }
   };
 
   if (loadingState.isLoadingExisting) {
@@ -526,30 +553,6 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
               <>Send Our RSVP ✨</>
             )}
           </div>
-          
-          {/* Backup button for testing */}
-          <button 
-            type="button"
-            onClick={() => {
-              console.log('🚀 Backup button clicked');
-              alert('Button is clickable! Form data: ' + JSON.stringify({
-                name: formData.guestName,
-                attending: formData.isAttending
-              }));
-            }}
-            style={{
-              width: '100%',
-              marginTop: '1rem',
-              backgroundColor: '#28a745',
-              color: 'white',
-              padding: '0.8rem',
-              border: 'none',
-              borderRadius: '8px',
-              cursor: 'pointer'
-            }}
-          >
-            🧪 Test Button (Click to verify clickability)
-          </button>
         </form>
         
         <div style={{
