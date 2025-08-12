@@ -64,6 +64,17 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
     }
   }, [guestToken, isInitialized]);
 
+  // Debug button state
+  useEffect(() => {
+    console.log('🔍 BUTTON DEBUG:', {
+      canSubmit,
+      guestName: formData.guestName,
+      isAttending: formData.isAttending,
+      isSubmitting: submissionState.isSubmitting,
+      hasBasicRequirements: formData.guestName.trim() !== '' && formData.isAttending !== null
+    });
+  }, [canSubmit, formData.guestName, formData.isAttending, submissionState.isSubmitting]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log('🚀 RSVP Submit started');
@@ -503,8 +514,11 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
               cursor: 'pointer',
               transition: 'all 0.3s ease',
               boxShadow: '0 8px 25px rgba(201, 169, 110, 0.3)',
-              fontFamily: "'Playfair Display', 'Georgia', serif"
+              fontFamily: "'Playfair Display', 'Georgia', serif",
+              pointerEvents: 'auto',  // Force enable interactions
+              opacity: '1'            // Force full opacity
             }}
+            className="rsvp-submit-button"
           >
             {submissionState.isSubmitting ? (
               <>⏳ {hasExistingSubmission ? 'Updating' : 'Submitting'} RSVP...</>

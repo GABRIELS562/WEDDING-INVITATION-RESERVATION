@@ -290,3 +290,16 @@ select:focus-visible {
     border: 1px solid #e5e7eb !important;
   }
 }
+
+/* RSVP Submit Button Override - Fix for pointer-events blocking */
+.rsvp-submit-button {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  opacity: 1 !important;
+}
+
+.rsvp-submit-button:disabled {
+  opacity: 0.5 !important;
+  cursor: not-allowed !important;
+  pointer-events: none !important;
+}
