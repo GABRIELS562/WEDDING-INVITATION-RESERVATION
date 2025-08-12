@@ -530,8 +530,20 @@ export const useRSVPForm = (): UseRSVPFormReturn => {
   const hasCurrentErrors = Object.keys(errors).length > 0;
   
   // For submit button: use real-time validation (allows submit while choosing meal)
-  const isFormValid = !hasRealTimeErrors && formData.isAttending !== null && formData.guestName.trim() !== '';
+  const hasBasicRequirements = formData.isAttending !== null && formData.guestName.trim() !== '';
+  const isFormValid = !hasRealTimeErrors && hasBasicRequirements;
   const canSubmit = isFormValid && !submissionState.isSubmitting && !loadingState.isLoading;
+  
+  // More detailed debug
+  console.log('🔍 RSVP Submit Button Debug:', {
+    hasBasicRequirements,
+    isAttending: formData.isAttending,
+    guestNameLength: formData.guestName.trim().length,
+    realTimeErrors,
+    hasRealTimeErrors,
+    isFormValid,
+    canSubmit
+  });
   
   // Debug logging to see what's blocking submit
   if (typeof window !== 'undefined') {
