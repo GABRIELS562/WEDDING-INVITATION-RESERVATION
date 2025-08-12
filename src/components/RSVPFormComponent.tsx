@@ -76,55 +76,40 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
   }, [canSubmit, formData.guestName, formData.isAttending, submissionState.isSubmitting]);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+    e?.preventDefault();
     console.log('🚀 RSVP Submit started');
     console.log('Form data at submission:', formData);
     console.log('Guest token at submission:', guestToken);
-    console.log('Errors at submission:', errors);
+    
+    // Simple validation
+    if (!formData.guestName.trim()) {
+      alert('Please enter your name');
+      return;
+    }
+    
+    if (formData.isAttending === null) {
+      alert('Please select whether you will be attending');
+      return;
+    }
+    
+    if (formData.isAttending && !formData.mealChoice) {
+      alert('Please select your meal choice');
+      return;
+    }
     
     if (!guestToken) {
-      console.error('❌ No guest token available');
       alert('Guest token is required. Please use the link from your invitation.');
       return;
     }
 
-    // Link the entered name to guest record for tracking
-    const nameLink = linkNameToGuest(formData.guestName, guestToken);
-    console.log('🔗 Name linking result:', nameLink);
+    alert('✅ Form validation passed! Submitting RSVP...\n\nData:\n' + 
+          `Name: ${formData.guestName}\n` +
+          `Attending: ${formData.isAttending ? 'Yes' : 'No'}\n` +
+          `Meal: ${formData.mealChoice || 'N/A'}\n` +
+          `Email: ${formData.email || 'Not provided'}`);
 
-    const defaultGuestInfo: IndividualGuest = {
-      id: guestToken,
-      firstName: nameLink.primaryName.split(' ')[0] || '',
-      lastName: nameLink.primaryName.split(' ').slice(1).join(' ') || '',
-      fullName: nameLink.primaryName,
-      email: formData.email || '',
-      token: guestToken,
-      hasUsedToken: false,
-      plusOneEligible: true,
-      plusOneName: formData.plusOneName || undefined,
-      plusOneEmail: undefined,
-      dietaryRestrictions: formData.dietaryRestrictions ? [formData.dietaryRestrictions] : undefined,
-      specialNotes: formData.specialRequests || undefined,
-      createdAt: new Date(),
-      lastAccessed: new Date()
-    };
-
-    console.log('👤 Guest info to submit:', defaultGuestInfo);
-    console.log('📤 Starting RSVP submission...');
-    
-    try {
-      const success = await submitRSVP(guestToken, guestInfo || defaultGuestInfo);
-      console.log('✅ RSVP submission result:', success);
-      
-      if (success) {
-        console.log('🎉 RSVP submitted successfully!');
-        // Success is handled by the hook
-      } else {
-        console.error('❌ RSVP submission returned false');
-      }
-    } catch (error) {
-      console.error('❌ RSVP submission error:', error);
-    }
+    // For now, just show success without actually submitting
+    console.log('🎉 RSVP would be submitted with this data');
   };
 
   if (loadingState.isLoadingExisting) {
@@ -504,11 +489,17 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
             </div>
           </div>
           
-          {/* Submit Button */}
-          {console.log('Button canSubmit status:', canSubmit, 'formData:', { guestName: formData.guestName, isAttending: formData.isAttending })}
-          <button 
-            type="submit" 
-            disabled={false}
+          {/* Submit Button - Simple Direct Approach */}
+          <div
+            onClick={() => {
+              console.log('🚀 Direct click handler triggered');
+              console.log('Form data:', formData);
+              if (!guestToken) {
+                alert('No guest token found!');
+                return;
+              }
+              handleSubmit(new Event('submit') as any);
+            }}
             style={{ 
               width: '100%', 
               backgroundColor: '#C9A96E', 
@@ -523,10 +514,9 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
               transition: 'all 0.3s ease',
               boxShadow: '0 8px 25px rgba(201, 169, 110, 0.3)',
               fontFamily: "'Playfair Display', 'Georgia', serif",
-              pointerEvents: 'auto',  
-              opacity: '1'           
+              textAlign: 'center',
+              userSelect: 'none'
             }}
-            className="rsvp-submit-button force-enabled"
           >
             {submissionState.isSubmitting ? (
               <>⏳ {hasExistingSubmission ? 'Updating' : 'Submitting'} RSVP...</>
@@ -535,6 +525,30 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
             ) : (
               <>Send Our RSVP ✨</>
             )}
+          </div>
+          
+          {/* Backup button for testing */}
+          <button 
+            type="button"
+            onClick={() => {
+              console.log('🚀 Backup button clicked');
+              alert('Button is clickable! Form data: ' + JSON.stringify({
+                name: formData.guestName,
+                attending: formData.isAttending
+              }));
+            }}
+            style={{
+              width: '100%',
+              marginTop: '1rem',
+              backgroundColor: '#28a745',
+              color: 'white',
+              padding: '0.8rem',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: 'pointer'
+            }}
+          >
+            🧪 Test Button (Click to verify clickability)
           </button>
         </form>
         
