@@ -5,6 +5,7 @@ import { emailService } from '../utils/emailService';
 import { validateToken, getGuestInfo } from '../utils/guestSecurity';
 import { sendClientWhatsAppConfirmations } from '../utils/whatsappService';
 import { normalizePhoneNumber } from '../utils/phoneUtils';
+import { config } from '../config/env';
 
 // Form data interface for the hook
 export interface RSVPFormData {
@@ -420,6 +421,20 @@ export const useRSVPForm = (): UseRSVPFormReturn => {
           sheetsResult = await googleSheetsService.updateGuestRSVP(rsvpData, guestInfo);
         } else {
           console.log('🔧 Creating new RSVP...');
+          
+          // First test if we can access the sheet at all
+          console.log('🔧 Testing sheet access with a simple read...');
+          try {
+            const testUrl = `https://sheets.googleapis.com/v4/spreadsheets/${config.googleSheets.spreadsheetId}/values/${config.googleSheets.range}?key=${config.googleSheets.apiKey}`;
+            console.log('🔧 Test URL:', testUrl);
+            const testResponse = await fetch(testUrl);
+            console.log('🔧 Test response status:', testResponse.status);
+            const testData = await testResponse.text();
+            console.log('🔧 Test response data:', testData.substring(0, 500));
+          } catch (testError) {
+            console.error('🔧 ❌ Sheet access test failed:', testError);
+          }
+          
           sheetsResult = await googleSheetsService.submitGuestRSVP(rsvpData, guestInfo);
         }
         console.log('🔧 Sheets result:', sheetsResult);
