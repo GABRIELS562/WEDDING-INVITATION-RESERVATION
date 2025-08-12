@@ -533,6 +533,29 @@ export const useRSVPForm = (): UseRSVPFormReturn => {
   const isFormValid = !hasRealTimeErrors && formData.isAttending !== null && formData.guestName.trim() !== '';
   const canSubmit = isFormValid && !submissionState.isSubmitting && !loadingState.isLoading;
   
+  // Debug logging to see what's blocking submit
+  if (typeof window !== 'undefined') {
+    (window as any).debugRSVP = {
+      realTimeErrors,
+      hasRealTimeErrors,
+      formData: {
+        isAttending: formData.isAttending,
+        guestName: `"${formData.guestName}" (length: ${formData.guestName.length})`,
+        email: `"${formData.email}" (length: ${formData.email.length})`,
+        wantsEmailConfirmation: formData.wantsEmailConfirmation
+      },
+      states: {
+        isSubmitting: submissionState.isSubmitting,
+        isLoading: loadingState.isLoading
+      },
+      calculations: {
+        isFormValid,
+        canSubmit
+      }
+    };
+    console.log('🔍 RSVP Debug Info available at window.debugRSVP');
+  }
+  
   const isLoading = loadingState.isLoading || loadingState.isLoadingExisting || loadingState.isValidatingToken;
 
   return {
