@@ -292,14 +292,30 @@ select:focus-visible {
 }
 
 /* RSVP Submit Button Override - Fix for pointer-events blocking */
-.rsvp-submit-button {
+/* Override ALL possible disabled states and classes */
+.rsvp-submit-button,
+button.rsvp-submit-button,
+button[type="submit"].rsvp-submit-button {
   pointer-events: auto !important;
   cursor: pointer !important;
   opacity: 1 !important;
+  background-color: #C9A96E !important;
 }
 
-.rsvp-submit-button:disabled {
+/* Override design system .btn-disabled class */
+.btn-disabled.rsvp-submit-button,
+button.btn-disabled.rsvp-submit-button {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  opacity: 1 !important;
+  background-color: #C9A96E !important;
+}
+
+/* Only apply disabled styles when explicitly disabled */
+.rsvp-submit-button:disabled,
+.rsvp-submit-button[disabled="true"] {
   opacity: 0.5 !important;
   cursor: not-allowed !important;
   pointer-events: none !important;
+  background-color: #ccc !important;
 }

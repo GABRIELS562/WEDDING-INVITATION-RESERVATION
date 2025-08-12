@@ -139,6 +139,14 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
 
   return (
     <div style={{ maxWidth: '500px', margin: '0 auto', width: '100%' }}>
+      <style>{`
+        .force-enabled {
+          pointer-events: auto !important;
+          cursor: pointer !important;
+          opacity: 1 !important;
+          background-color: #C9A96E !important;
+        }
+      `}</style>
       <div style={{
         backgroundColor: 'rgba(248, 246, 240, 0.8)',
         padding: window.innerWidth <= 768 ? '2.5rem 1.5rem' : '4rem 3rem',
@@ -515,10 +523,10 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
               transition: 'all 0.3s ease',
               boxShadow: '0 8px 25px rgba(201, 169, 110, 0.3)',
               fontFamily: "'Playfair Display', 'Georgia', serif",
-              pointerEvents: 'auto',  // Force enable interactions
-              opacity: '1'            // Force full opacity
+              pointerEvents: 'auto',  
+              opacity: '1'           
             }}
-            className="rsvp-submit-button"
+            className="rsvp-submit-button force-enabled"
           >
             {submissionState.isSubmitting ? (
               <>⏳ {hasExistingSubmission ? 'Updating' : 'Submitting'} RSVP...</>
