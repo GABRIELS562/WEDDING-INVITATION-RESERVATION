@@ -81,7 +81,13 @@ const CountdownTimer = () => {
 
 const WeddingWebsite = () => {
   const params = useParams();
-  const guestToken = params.token;
+  // Support both URL path parameter (/guest/token) and query parameter (?guest=token)
+  const urlParams = new URLSearchParams(window.location.search);
+  const guestToken = params.token || urlParams.get('guest');
+  
+  console.log('WeddingWebsite - URL params:', params);
+  console.log('WeddingWebsite - Query params:', Object.fromEntries(urlParams));
+  console.log('WeddingWebsite - Final guest token:', guestToken);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
