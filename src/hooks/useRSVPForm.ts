@@ -2,7 +2,8 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 import type { RSVPSubmission, IndividualGuest } from '../types';
 import { googleSheetsService } from '../services/GoogleSheetsService';
 import { emailService } from '../utils/emailService';
-import { validateToken, getGuestInfo } from '../utils/guestSecurity';\nimport { sendClientWhatsAppConfirmations } from '../utils/whatsappService';
+import { validateToken, getGuestInfo } from '../utils/guestSecurity';
+import { sendClientWhatsAppConfirmations } from '../utils/whatsappService';
 
 // Form data interface for the hook
 export interface RSVPFormData {
