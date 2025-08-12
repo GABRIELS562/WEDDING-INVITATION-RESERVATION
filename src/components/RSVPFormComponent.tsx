@@ -283,10 +283,11 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
               onChange={(e) => updateField('isAttending', e.target.value ? e.target.value === 'yes' : null)}
               style={{ 
                 width: '100%', 
-                padding: '1rem 1.2rem', 
+                padding: window.innerWidth <= 768 ? '1.2rem 1.5rem' : '1rem 1.2rem', 
                 border: `2px solid ${errors.attendance ? '#F44336' : '#E5D5B7'}`, 
                 borderRadius: '12px',
-                fontSize: window.innerWidth <= 768 ? '1rem' : '1.1rem',
+                fontSize: window.innerWidth <= 768 ? '1.1rem' : '1.1rem',
+                fontWeight: '500',
                 fontFamily: "'Inter', sans-serif",
                 color: '#8B7355',
                 backgroundColor: '#FEFCF7',
@@ -298,12 +299,12 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
                 backgroundSize: '16px',
                 paddingRight: '3rem',
                 lineHeight: '1.4',
-                minHeight: '48px'
+                minHeight: window.innerWidth <= 768 ? '56px' : '48px'
               }}
             >
-              <option value="">Please select...</option>
-              <option value="yes">✨ Yes, I'll be there with bells on!</option>
-              <option value="no">💔 Unfortunately, I can't make it</option>
+              <option value="">👆 Tap to select your attendance</option>
+              <option value="yes">✅ YES - I'll be there!</option>
+              <option value="no">❌ NO - Sorry, can't make it</option>
             </select>
             {errors.attendance && (
               <div style={{ color: '#F44336', fontSize: '0.9rem', marginTop: '0.5rem' }}>

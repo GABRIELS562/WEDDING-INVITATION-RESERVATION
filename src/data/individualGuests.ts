@@ -1,8 +1,23 @@
 import type { IndividualGuest } from '../types';
 
 // Individual guest authentication system - each guest gets their own unique token
-// Format: "firstname-lastname-8randomchars"
+// Format: "firstname-lastname-8randomchars" or "name.timestamp.signature"
 export const individualGuests: IndividualGuest[] = [
+  // Test Guests
+  {
+    id: 'jamie-test',
+    firstName: 'Jamie',
+    lastName: 'Test',
+    fullName: 'Jamie',
+    email: 'test@example.com',
+    phone: '+27722108714',
+    token: 'jamie-test.1754978658803.654a68120c58c97c',
+    hasUsedToken: false,
+    plusOneEligible: false,
+    invitationGroup: 'test',
+    createdAt: new Date('2025-01-15'),
+    specialNotes: 'Test guest for system validation'
+  },
   // Family & Close Friends with Plus-One
   {
     id: 'guest-001',
