@@ -423,6 +423,7 @@ export const useRSVPForm = (): UseRSVPFormReturn => {
           sheetsResult = await googleSheetsService.submitGuestRSVP(rsvpData, guestInfo);
         }
         console.log('🔧 Sheets result:', sheetsResult);
+        console.log('🔧 Sheets result JSON:', JSON.stringify(sheetsResult, null, 2));
       } catch (sheetsError) {
         console.error('🔧 ❌ Google Sheets error:', sheetsError);
         throw sheetsError;
