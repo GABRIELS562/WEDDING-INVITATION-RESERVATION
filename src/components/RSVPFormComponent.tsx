@@ -66,15 +66,20 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('🚀 RSVP Submit started');
+    console.log('Form data at submission:', formData);
+    console.log('Guest token at submission:', guestToken);
+    console.log('Errors at submission:', errors);
     
     if (!guestToken) {
+      console.error('❌ No guest token available');
       alert('Guest token is required. Please use the link from your invitation.');
       return;
     }
 
     // Link the entered name to guest record for tracking
     const nameLink = linkNameToGuest(formData.guestName, guestToken);
-    console.log('Name linking result:', nameLink);
+    console.log('🔗 Name linking result:', nameLink);
 
     const defaultGuestInfo: IndividualGuest = {
       id: guestToken,
@@ -93,10 +98,21 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
       lastAccessed: new Date()
     };
 
-    const success = await submitRSVP(guestToken, guestInfo || defaultGuestInfo);
+    console.log('👤 Guest info to submit:', defaultGuestInfo);
+    console.log('📤 Starting RSVP submission...');
     
-    if (success) {
-      // Success is handled by the hook
+    try {
+      const success = await submitRSVP(guestToken, guestInfo || defaultGuestInfo);
+      console.log('✅ RSVP submission result:', success);
+      
+      if (success) {
+        console.log('🎉 RSVP submitted successfully!');
+        // Success is handled by the hook
+      } else {
+        console.error('❌ RSVP submission returned false');
+      }
+    } catch (error) {
+      console.error('❌ RSVP submission error:', error);
     }
   };
 

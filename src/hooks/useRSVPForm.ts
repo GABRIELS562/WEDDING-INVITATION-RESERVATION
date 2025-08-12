@@ -307,6 +307,8 @@ export const useRSVPForm = (): UseRSVPFormReturn => {
 
   // Submit RSVP with comprehensive workflow
   const submitRSVP = useCallback(async (token: string, guestInfo: IndividualGuest): Promise<boolean> => {
+    console.log('🔧 submitRSVP hook called with:', { token, guestInfo });
+    
     // Reset states
     setSubmissionState({
       isSubmitting: true,
@@ -325,8 +327,13 @@ export const useRSVPForm = (): UseRSVPFormReturn => {
 
     try {
       // Step 1: Validate form
+      console.log('📝 Validating form...');
       const isValid = validateForm();
+      console.log('📝 Form validation result:', isValid);
+      console.log('📝 Current errors:', errors);
+      
       if (!isValid) {
+        console.error('❌ Form validation failed');
         setSubmissionState(prev => ({
           ...prev,
           isSubmitting: false,
