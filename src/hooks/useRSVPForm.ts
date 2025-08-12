@@ -2,7 +2,7 @@ import { useState, useCallback, useEffect, useRef } from 'react';
 import type { RSVPSubmission, IndividualGuest } from '../types';
 import { googleSheetsService } from '../services/GoogleSheetsService';
 import { emailService } from '../utils/emailService';
-import { validateToken, getGuestInfo } from '../utils/guestSecurity';
+import { validateToken, getGuestInfo } from '../utils/guestSecurity';\nimport { sendClientWhatsAppConfirmations } from '../utils/whatsappService';
 
 // Form data interface for the hook
 export interface RSVPFormData {
@@ -118,15 +118,11 @@ const validateFormData = (data: RSVPFormData): RSVPValidationErrors => {
     errors.guestName = 'Guest name is too long';
   }
 
-  // Email validation if confirmation is requested
-  if (data.wantsEmailConfirmation) {
-    if (!data.email.trim()) {
-      errors.email = 'Email is required for confirmation';
-    } else {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(data.email)) {
-        errors.email = 'Please enter a valid email address';
-      }
+  // Email validation if confirmation is requested and email is provided
+  if (data.wantsEmailConfirmation && data.email.trim()) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(data.email)) {
+      errors.email = 'Please enter a valid email address';
     }
   }
 
@@ -426,7 +422,24 @@ export const useRSVPForm = (): UseRSVPFormReturn => {
         }
       }
 
-      // Step 6: Update submission state
+      // Step 6: Send WhatsApp confirmation to wedding clients
+      try {
+        sendClientWhatsAppConfirmations({
+          guestName: formData.guestName,
+          email: formData.email || undefined,
+          attendance: formData.isAttending ? 'yes' : 'no',
+          mealChoice: formData.isAttending ? formData.mealChoice : undefined,
+          dietaryRestrictions: formData.isAttending ? formData.dietaryRestrictions : undefined,
+          specialRequests: formData.specialRequests || undefined,
+          submittedAt: new Date(),
+          token
+        });
+      } catch (whatsappError) {
+        console.warn('WhatsApp client notification failed:', whatsappError);
+        // Don't fail the whole submission if WhatsApp notification fails
+      }
+
+      // Step 7: Update submission state
       setSubmissionState(prev => ({
         ...prev,
         isSubmitting: false,
@@ -436,7 +449,7 @@ export const useRSVPForm = (): UseRSVPFormReturn => {
         submissionId: sheetsResult.data || `RSVP_${Date.now()}`
       }));
 
-      // Step 7: Update local state
+      // Step 8: Update local state
       setHasExistingSubmission(true);
       
       // Persist form data

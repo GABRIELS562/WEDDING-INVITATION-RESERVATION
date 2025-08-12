@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRSVPForm } from '../hooks/useRSVPForm';
 import type { IndividualGuest } from '../types';
+import { getGuestNameFromToken } from '../utils/guestMapping';
 
 interface RSVPFormComponentProps {
   guestToken?: string;
@@ -26,16 +27,22 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
 
   const [isInitialized, setIsInitialized] = useState(false);
 
-  // Load existing RSVP if token is provided
+  // Load existing RSVP if token is provided and auto-populate name
   useEffect(() => {
     if (guestToken && !isInitialized) {
+      // Auto-populate guest name from token
+      const guestName = getGuestNameFromToken(guestToken);
+      if (guestName && !formData.guestName) {
+        updateField('guestName', guestName);
+      }
+      
       loadExistingRSVP(guestToken).then(() => {
         setIsInitialized(true);
       });
     } else if (!guestToken) {
       setIsInitialized(true);
     }
-  }, [guestToken, loadExistingRSVP, isInitialized]);
+  }, [guestToken, loadExistingRSVP, isInitialized, formData.guestName, updateField]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -174,7 +181,7 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
               fontSize: '1.1rem',
               fontWeight: '400',
               letterSpacing: '0.5px'
-            }}>Email Address *</label>
+            }}>Email Address</label>
             <input 
               type="email"
               value={formData.email}
@@ -190,7 +197,7 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
                 backgroundColor: '#FEFCF7',
                 transition: 'border-color 0.3s ease'
               }}
-              placeholder="your.email@example.com"
+              placeholder="your.email@example.com (optional - if not provided, we'll contact you via WhatsApp)"
             />
             {errors.email && (
               <div style={{ color: '#F44336', fontSize: '0.9rem', marginTop: '0.5rem' }}>
@@ -407,51 +414,32 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
             />
           </div>
 
-          {/* Confirmation Options */}
+          {/* Email Confirmation Option */}
           <div>
-            <label style={{ 
-              display: 'block', 
-              marginBottom: '0.8rem', 
-              color: '#8B7355',
-              fontSize: '1.1rem',
-              fontWeight: '400',
-              letterSpacing: '0.5px'
-            }}>Confirmation Preferences</label>
-            
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
-                <input
-                  type="checkbox"
-                  id="emailConfirmation"
-                  checked={formData.wantsEmailConfirmation}
-                  onChange={(e) => updateField('wantsEmailConfirmation', e.target.checked)}
-                  style={{ accentColor: '#C9A96E' }}
-                />
-                <label htmlFor="emailConfirmation" style={{
-                  color: '#8B7355',
-                  fontSize: '1rem',
-                  cursor: 'pointer'
-                }}>
-                  📧 Send me an email confirmation
-                </label>
-              </div>
-              
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
-                <input
-                  type="checkbox"
-                  id="whatsappConfirmation"
-                  checked={formData.wantsWhatsAppConfirmation || false}
-                  onChange={(e) => updateField('wantsWhatsAppConfirmation', e.target.checked)}
-                  style={{ accentColor: '#C9A96E' }}
-                />
-                <label htmlFor="whatsappConfirmation" style={{
-                  color: '#8B7355',
-                  fontSize: '1rem',
-                  cursor: 'pointer'
-                }}>
-                  📱 Send me a WhatsApp confirmation
-                </label>
-              </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem' }}>
+              <input
+                type="checkbox"
+                id="emailConfirmation"
+                checked={formData.wantsEmailConfirmation}
+                onChange={(e) => updateField('wantsEmailConfirmation', e.target.checked)}
+                style={{ accentColor: '#C9A96E' }}
+              />
+              <label htmlFor="emailConfirmation" style={{
+                color: '#8B7355',
+                fontSize: '1rem',
+                cursor: 'pointer'
+              }}>
+                📧 Send me an email confirmation
+              </label>
+            </div>
+            <div style={{ 
+              fontSize: '0.9rem', 
+              color: '#8B7355', 
+              marginTop: '0.5rem', 
+              fontStyle: 'italic',
+              marginLeft: '2rem'
+            }}>
+              If you don't provide an email or uncheck this, we'll send your confirmation via WhatsApp
             </div>
           </div>
           
