@@ -389,6 +389,7 @@ export const useRSVPForm = (): UseRSVPFormReturn => {
       console.log('🔧 ✅ Token validation passed');
 
       // Step 3: Prepare RSVP data
+      console.log('🔧 Step 3: Preparing RSVP data');
       const rsvpData: RSVPSubmission = {
         token,
         guestName: formData.guestName,
@@ -405,13 +406,26 @@ export const useRSVPForm = (): UseRSVPFormReturn => {
         specialRequests: formData.specialRequests || undefined,
         submittedAt: new Date().toISOString()
       };
+      
+      console.log('🔧 RSVP data prepared:', rsvpData);
 
       // Step 4: Submit to Google Sheets
+      console.log('🔧 Step 4: Submitting to Google Sheets');
+      console.log('🔧 Has existing submission:', hasExistingSubmission);
+      
       let sheetsResult: any;
-      if (hasExistingSubmission) {
-        sheetsResult = await googleSheetsService.updateGuestRSVP(rsvpData, guestInfo);
-      } else {
-        sheetsResult = await googleSheetsService.submitGuestRSVP(rsvpData, guestInfo);
+      try {
+        if (hasExistingSubmission) {
+          console.log('🔧 Updating existing RSVP...');
+          sheetsResult = await googleSheetsService.updateGuestRSVP(rsvpData, guestInfo);
+        } else {
+          console.log('🔧 Creating new RSVP...');
+          sheetsResult = await googleSheetsService.submitGuestRSVP(rsvpData, guestInfo);
+        }
+        console.log('🔧 Sheets result:', sheetsResult);
+      } catch (sheetsError) {
+        console.error('🔧 ❌ Google Sheets error:', sheetsError);
+        throw sheetsError;
       }
 
       if (!sheetsResult.success) {
@@ -423,18 +437,24 @@ export const useRSVPForm = (): UseRSVPFormReturn => {
         }));
         return false;
       }
+      
+      console.log('🔧 ✅ Google Sheets submission successful');
 
       // Step 5: Send email confirmation
+      console.log('🔧 Step 5: Sending email confirmation');
+      console.log('🔧 Wants email:', formData.wantsEmailConfirmation);
+      console.log('🔧 Has email:', !!formData.email);
+      
       setEmailState(prev => ({ ...prev, isSendingEmail: true }));
       
       try {
         let emailResult;
         
         if (formData.wantsEmailConfirmation && formData.email) {
-          // Send to guest if they provided email and want confirmation
+          console.log('🔧 Sending confirmation to guest:', formData.email);
           emailResult = await emailService.sendConfirmationEmail(rsvpData);
         } else {
-          // Send to wedding clients if guest didn't provide email
+          console.log('🔧 Sending notification to wedding clients');
           const clientRsvpData = {
             ...rsvpData,
             email: 'gabrielsgabriels300@gmail.com', // Client email
@@ -442,6 +462,8 @@ export const useRSVPForm = (): UseRSVPFormReturn => {
           };
           emailResult = await emailService.sendClientNotificationEmail(clientRsvpData);
         }
+        
+        console.log('🔧 Email result:', emailResult);
         
         if (emailResult.success) {
           // Update email status in sheets
