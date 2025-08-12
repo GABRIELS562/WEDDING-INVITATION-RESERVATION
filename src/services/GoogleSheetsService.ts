@@ -471,13 +471,23 @@ class GoogleSheetsService {
       } catch (error) {
         lastError = error;
         
+        console.error(`🚨 Google Sheets API error (attempt ${attempt}):`, error);
+        if (axios.isAxiosError(error)) {
+          console.error('🚨 Response status:', error.response?.status);
+          console.error('🚨 Response data:', error.response?.data);
+          console.error('🚨 Request URL:', error.config?.url);
+          console.error('🚨 API Key used:', this.config.apiKey?.substring(0, 10) + '...');
+          console.error('🚨 Spreadsheet ID:', this.config.spreadsheetId);
+        }
+        
         if (this.isRetryableError(error)) {
           if (attempt < this.config.retryAttempts) {
+            console.warn(`Attempt ${attempt} failed, retrying in ${this.config.retryDelay * attempt}ms`);
             await this.delay(this.config.retryDelay * attempt);
             continue;
           }
         } else {
-          // Non-retryable error, fail immediately
+          console.error('🚨 Non-retryable error, failing immediately');
           break;
         }
       }
