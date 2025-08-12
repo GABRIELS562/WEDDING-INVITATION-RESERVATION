@@ -120,8 +120,9 @@ const validateFormData = (data: RSVPFormData): RSVPValidationErrors => {
     errors.guestName = 'Guest name is too long';
   }
 
-  // Email validation if confirmation is requested and email is provided
-  if (data.wantsEmailConfirmation && data.email.trim()) {
+  // Email validation - only validate format if email is provided
+  // Email is optional, but if provided, must be valid format
+  if (data.email.trim()) {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(data.email)) {
       errors.email = 'Please enter a valid email address';
