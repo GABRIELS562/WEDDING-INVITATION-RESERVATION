@@ -1,6 +1,7 @@
 import emailjs from '@emailjs/browser';
 import type { EmailJSConfig, RSVPFormData, RSVPSubmission, APIResponse } from '../types';
 import { weddingInfo } from '../data/weddingInfo';
+import { generateConfirmationHTML, rsvpToConfirmationData } from './pdfGenerator';
 
 interface EmailTemplateData extends Record<string, unknown> {
   // Header Information
@@ -391,6 +392,46 @@ class EmailService {
 
   private delay(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  /**
+   * Send client notification email when guest doesn't provide email
+   */
+  async sendClientNotificationEmail(rsvpData: RSVPSubmission & { isClientNotification?: boolean }): Promise<APIResponse<boolean>> {
+    try {
+      const configValidation = this.validateConfiguration();
+      if (!configValidation.isValid) {
+        return {
+          success: false,
+          error: `Email configuration invalid: ${configValidation.errors.join(', ')}`
+        };
+      }
+
+      // Generate confirmation HTML for attachment
+      const confirmationData = rsvpToConfirmationData(rsvpData);
+      const confirmationHTML = generateConfirmationHTML(confirmationData);
+      
+      // Create client notification template data
+      const templateData = {
+        ...this.buildEmailTemplateData(rsvpData, 'new'),
+        to_name: 'Wedding Team',
+        to_email: 'gabrielsgabriels300@gmail.com',
+        subject: `New RSVP from ${rsvpData.guestName}`,
+        client_notification: 'true',
+        guest_whatsapp: rsvpData.whatsappNumber || 'Not provided',
+        guest_email_provided: rsvpData.email ? 'Yes' : 'No',
+        confirmation_html: confirmationHTML,
+        attachment_filename: `RSVP-${rsvpData.guestName.replace(/\s+/g, '-')}-Confirmation.html`
+      };
+
+      return await this.sendEmailWithRetry(this.config.serviceId, this.config.templateId, templateData);
+    } catch (error) {
+      console.error('Error in sendClientNotificationEmail:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to send client notification email'
+      };
+    }
   }
 }
 

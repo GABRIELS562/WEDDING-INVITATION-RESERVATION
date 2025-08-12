@@ -4,6 +4,7 @@ import { googleSheetsService } from '../services/GoogleSheetsService';
 import { emailService } from '../utils/emailService';
 import { validateToken, getGuestInfo } from '../utils/guestSecurity';
 import { sendClientWhatsAppConfirmations } from '../utils/whatsappService';
+import { normalizePhoneNumber } from '../utils/phoneUtils';
 
 // Form data interface for the hook
 export interface RSVPFormData {
@@ -353,7 +354,7 @@ export const useRSVPForm = (): UseRSVPFormReturn => {
         token,
         guestName: formData.guestName,
         email: formData.email || undefined,
-        whatsappNumber: formData.whatsappNumber || undefined,
+        whatsappNumber: formData.whatsappNumber ? normalizePhoneNumber(formData.whatsappNumber) : undefined,
         isAttending: formData.isAttending!,
         mealChoice: formData.isAttending ? formData.mealChoice || undefined : undefined,
         dietaryRestrictions: formData.isAttending ? formData.dietaryRestrictions || undefined : undefined,
@@ -384,43 +385,58 @@ export const useRSVPForm = (): UseRSVPFormReturn => {
         return false;
       }
 
-      // Step 5: Send email if requested
-      if (formData.wantsEmailConfirmation && formData.email) {
-        setEmailState(prev => ({ ...prev, isSendingEmail: true }));
+      // Step 5: Send email confirmation
+      setEmailState(prev => ({ ...prev, isSendingEmail: true }));
+      
+      try {
+        let emailResult;
         
-        try {
-          const emailResult = await emailService.sendConfirmationEmail(rsvpData);
+        if (formData.wantsEmailConfirmation && formData.email) {
+          // Send to guest if they provided email and want confirmation
+          emailResult = await emailService.sendConfirmationEmail(rsvpData);
+        } else {
+          // Send to wedding clients if guest didn't provide email
+          const clientRsvpData = {
+            ...rsvpData,
+            email: 'gabrielsgabriels300@gmail.com', // Client email
+            isClientNotification: true
+          };
+          emailResult = await emailService.sendClientNotificationEmail(clientRsvpData);
+        }
+        
+        if (emailResult.success) {
+          // Update email status in sheets
+          await googleSheetsService.updateEmailStatus(token, true);
           
-          if (emailResult.success) {
-            // Update email status in sheets
-            await googleSheetsService.updateEmailStatus(token, true);
-            
-            setEmailState(prev => ({
-              ...prev,
-              isSendingEmail: false,
-              isEmailSent: true,
-              isEmailError: false,
-              emailError: null
-            }));
-          } else {
-            setEmailState(prev => ({
-              ...prev,
-              isSendingEmail: false,
-              isEmailSent: false,
-              isEmailError: true,
-              emailError: emailResult.error || 'Failed to send confirmation email'
-            }));
-          }
-        } catch (emailError) {
-          console.warn('Email sending failed:', emailError);
+          const emailMessage = formData.email ? 
+            'Confirmation email sent to guest' : 
+            'Notification sent to wedding clients';
+          
+          setEmailState(prev => ({
+            ...prev,
+            isSendingEmail: false,
+            isEmailSent: true,
+            isEmailError: false,
+            emailError: null
+          }));
+        } else {
           setEmailState(prev => ({
             ...prev,
             isSendingEmail: false,
             isEmailSent: false,
             isEmailError: true,
-            emailError: emailError instanceof Error ? emailError.message : 'Failed to send email'
+            emailError: emailResult.error || 'Failed to send email'
           }));
         }
+      } catch (emailError) {
+        console.warn('Email sending failed:', emailError);
+        setEmailState(prev => ({
+          ...prev,
+          isSendingEmail: false,
+          isEmailSent: false,
+          isEmailError: true,
+          emailError: emailError instanceof Error ? emailError.message : 'Failed to send email'
+        }));
       }
 
       // Step 6: Send WhatsApp confirmation to wedding clients

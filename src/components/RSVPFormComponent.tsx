@@ -231,10 +231,10 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
                 backgroundColor: '#FEFCF7',
                 transition: 'border-color 0.3s ease'
               }}
-              placeholder="+27722108714 (your test number for WhatsApp confirmations)"
+              placeholder="0722108714 (for contact if email not provided)"
             />
             <div style={{ fontSize: '0.9rem', color: '#8B7355', marginTop: '0.5rem', fontStyle: 'italic' }}>
-              Include country code (e.g., +27 for South Africa)
+              South African format: 0722108714 (we'll add +27 automatically)
             </div>
           </div>
           
