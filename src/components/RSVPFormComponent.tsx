@@ -124,6 +124,9 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
 
     try {
       console.log('📤 Starting actual RSVP submission...');
+      console.log('📊 Guest info:', defaultGuestInfo);
+      console.log('📊 Form data:', formData);
+      
       const success = await submitRSVP(guestToken, guestInfo || defaultGuestInfo);
       
       if (success) {
@@ -135,7 +138,12 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
       }
     } catch (error) {
       console.error('❌ RSVP submission error:', error);
-      alert('❌ Error submitting RSVP: ' + (error instanceof Error ? error.message : 'Unknown error'));
+      console.error('❌ Error details:', {
+        message: error instanceof Error ? error.message : String(error),
+        stack: error instanceof Error ? error.stack : undefined,
+        name: error instanceof Error ? error.name : undefined
+      });
+      alert('❌ Error submitting RSVP: ' + (error instanceof Error ? error.message : 'Unknown error') + '\n\nCheck console for details.');
     }
   };
 
