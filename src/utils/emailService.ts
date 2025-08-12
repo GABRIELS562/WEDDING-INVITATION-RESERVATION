@@ -413,7 +413,7 @@ class EmailService {
       
       // Create client notification template data
       const templateData = {
-        ...this.buildEmailTemplateData(rsvpData, 'new'),
+        ...this.prepareTemplateData(rsvpData, 'new'),
         to_name: 'Wedding Team',
         to_email: 'gabrielsgabriels300@gmail.com',
         subject: `New RSVP from ${rsvpData.guestName}`,
@@ -424,7 +424,7 @@ class EmailService {
         attachment_filename: `RSVP-${rsvpData.guestName.replace(/\s+/g, '-')}-Confirmation.html`
       };
 
-      return await this.sendEmailWithRetry(this.config.serviceId, this.config.templateId, templateData);
+      return await this.sendEmailWithRetry(templateData);
     } catch (error) {
       console.error('Error in sendClientNotificationEmail:', error);
       return {

@@ -39,7 +39,7 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
     if (guestToken && !isInitialized) {
       console.log('Processing guest token:', guestToken);
       
-      // Auto-populate guest name from token (be more aggressive)
+      // Auto-populate guest name from token
       const guestName = getGuestNameFromToken(guestToken);
       console.log('Guest name from token:', guestName);
       
@@ -51,24 +51,18 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
       loadExistingRSVP(guestToken).then(() => {
         console.log('Finished loading existing RSVP');
         setIsInitialized(true);
+        
+        // Double-check name setting after load
+        if (!formData.guestName && guestName) {
+          console.log('Setting guest name after RSVP load:', guestName);
+          updateField('guestName', guestName);
+        }
       });
     } else if (!guestToken) {
       console.log('No guest token, setting initialized');
       setIsInitialized(true);
     }
-  }, [guestToken, loadExistingRSVP, isInitialized, updateField]);
-  
-  // Separate effect to ensure name gets set even after form loads
-  useEffect(() => {
-    if (guestToken && isInitialized && !formData.guestName) {
-      console.log('Form initialized but no name set, trying again');
-      const guestName = getGuestNameFromToken(guestToken);
-      if (guestName) {
-        console.log('Setting guest name on second attempt:', guestName);
-        updateField('guestName', guestName);
-      }
-    }
-  }, [guestToken, isInitialized, formData.guestName, updateField]);
+  }, [guestToken, isInitialized]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -283,10 +277,10 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
               onChange={(e) => updateField('isAttending', e.target.value ? e.target.value === 'yes' : null)}
               style={{ 
                 width: '100%', 
-                padding: window.innerWidth <= 768 ? '1.2rem 1.5rem' : '1rem 1.2rem', 
+                padding: '1.2rem 3rem 1.2rem 1.5rem', 
                 border: `2px solid ${errors.attendance ? '#F44336' : '#E5D5B7'}`, 
                 borderRadius: '12px',
-                fontSize: window.innerWidth <= 768 ? '1.1rem' : '1.1rem',
+                fontSize: '1.1rem',
                 fontWeight: '500',
                 fontFamily: "'Inter', sans-serif",
                 color: '#8B7355',
@@ -296,10 +290,11 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
                 backgroundImage: `url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23C9A96E' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e")`,
                 backgroundRepeat: 'no-repeat',
                 backgroundPosition: 'right 1rem center',
-                backgroundSize: '16px',
-                paddingRight: '3rem',
+                backgroundSize: '18px',
                 lineHeight: '1.4',
-                minHeight: window.innerWidth <= 768 ? '56px' : '48px'
+                minHeight: '56px',
+                WebkitAppearance: 'none',
+                MozAppearance: 'none'
               }}
             >
               <option value="">👆 Tap to select your attendance</option>

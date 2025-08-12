@@ -303,7 +303,7 @@ export const useRSVPForm = (): UseRSVPFormReturn => {
     } finally {
       setLoadingState(prev => ({ ...prev, isLoadingExisting: false }));
     }
-  }, [formData]);
+  }, []);
 
   // Submit RSVP with comprehensive workflow
   const submitRSVP = useCallback(async (token: string, guestInfo: IndividualGuest): Promise<boolean> => {
