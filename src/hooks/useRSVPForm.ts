@@ -319,6 +319,9 @@ export const useRSVPForm = (): UseRSVPFormReturn => {
 
   // Submit RSVP with comprehensive workflow
   const submitRSVP = useCallback(async (token: string, guestInfo: IndividualGuest): Promise<boolean> => {
+    console.log('🔧 submitRSVP hook called with:', { token, guestInfo });
+    console.log('🔧 Current form data:', formData);
+    
     // Reset states
     setSubmissionState({
       isSubmitting: true,
@@ -336,15 +339,23 @@ export const useRSVPForm = (): UseRSVPFormReturn => {
     });
 
     try {
-      // Step 1: Validate form
-      const isValid = validateForm();
-      
-      if (!isValid) {
+      // Step 1: Basic validation (component handles detailed validation)
+      if (!formData.guestName.trim() || formData.isAttending === null) {
         setSubmissionState(prev => ({
           ...prev,
           isSubmitting: false,
           isSubmitError: true,
-          submitError: 'Please fix the form errors before submitting'
+          submitError: 'Missing required information'
+        }));
+        return false;
+      }
+      
+      if (formData.isAttending && !formData.mealChoice) {
+        setSubmissionState(prev => ({
+          ...prev,
+          isSubmitting: false,
+          isSubmitError: true,
+          submitError: 'Please select a meal choice'
         }));
         return false;
       }
@@ -488,7 +499,11 @@ export const useRSVPForm = (): UseRSVPFormReturn => {
       return true;
 
     } catch (error) {
-      console.error('RSVP submission error:', error);
+      console.error('🚨 RSVP submission error in hook:', error);
+      console.error('🚨 Error type:', typeof error);
+      console.error('🚨 Error message:', error instanceof Error ? error.message : String(error));
+      console.error('🚨 Error stack:', error instanceof Error ? error.stack : 'No stack trace');
+      
       setSubmissionState(prev => ({
         ...prev,
         isSubmitting: false,
