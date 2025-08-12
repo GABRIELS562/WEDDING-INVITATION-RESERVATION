@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useRSVPForm } from '../hooks/useRSVPForm';
 import type { IndividualGuest } from '../types';
 import { getGuestNameFromToken } from '../utils/guestMapping';
+import { linkNameToGuest } from '../data/guestDatabase';
 
 interface RSVPFormComponentProps {
   guestToken?: string;
@@ -29,20 +30,45 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
 
   // Load existing RSVP if token is provided and auto-populate name
   useEffect(() => {
+    console.log('RSVPFormComponent useEffect triggered', {
+      guestToken,
+      isInitialized,
+      currentGuestName: formData.guestName
+    });
+    
     if (guestToken && !isInitialized) {
-      // Auto-populate guest name from token
+      console.log('Processing guest token:', guestToken);
+      
+      // Auto-populate guest name from token (be more aggressive)
       const guestName = getGuestNameFromToken(guestToken);
-      if (guestName && !formData.guestName) {
+      console.log('Guest name from token:', guestName);
+      
+      if (guestName) {
+        console.log('Setting guest name:', guestName);
         updateField('guestName', guestName);
       }
       
       loadExistingRSVP(guestToken).then(() => {
+        console.log('Finished loading existing RSVP');
         setIsInitialized(true);
       });
     } else if (!guestToken) {
+      console.log('No guest token, setting initialized');
       setIsInitialized(true);
     }
-  }, [guestToken, loadExistingRSVP, isInitialized, formData.guestName, updateField]);
+  }, [guestToken, loadExistingRSVP, isInitialized, updateField]);
+  
+  // Separate effect to ensure name gets set even after form loads
+  useEffect(() => {
+    if (guestToken && isInitialized && !formData.guestName) {
+      console.log('Form initialized but no name set, trying again');
+      const guestName = getGuestNameFromToken(guestToken);
+      if (guestName) {
+        console.log('Setting guest name on second attempt:', guestName);
+        updateField('guestName', guestName);
+      }
+    }
+  }, [guestToken, isInitialized, formData.guestName, updateField]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -52,11 +78,15 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
       return;
     }
 
+    // Link the entered name to guest record for tracking
+    const nameLink = linkNameToGuest(formData.guestName, guestToken);
+    console.log('Name linking result:', nameLink);
+
     const defaultGuestInfo: IndividualGuest = {
       id: guestToken,
-      firstName: formData.guestName.split(' ')[0] || '',
-      lastName: formData.guestName.split(' ').slice(1).join(' ') || '',
-      fullName: formData.guestName,
+      firstName: nameLink.primaryName.split(' ')[0] || '',
+      lastName: nameLink.primaryName.split(' ').slice(1).join(' ') || '',
+      fullName: nameLink.primaryName,
       email: formData.email || '',
       token: guestToken,
       hasUsedToken: false,
