@@ -102,7 +102,7 @@ const getDefaultFormData = (): RSVPFormData => ({
   specialRequests: ''
 });
 
-// Validation rules
+// Real-time validation rules (for enabling/disabling submit button)
 const validateFormData = (data: RSVPFormData): RSVPValidationErrors => {
   const errors: RSVPValidationErrors = {};
 
@@ -127,6 +127,17 @@ const validateFormData = (data: RSVPFormData): RSVPValidationErrors => {
       errors.email = 'Please enter a valid email address';
     }
   }
+
+  // Note: Meal choice validation is done at submission time, not real-time
+  // This allows users to select "YES" and still have an enabled submit button
+  // while they're choosing their meal
+
+  return errors;
+};
+
+// Comprehensive validation for submission (includes meal requirements)
+const validateForSubmission = (data: RSVPFormData): RSVPValidationErrors => {
+  const errors = validateFormData(data);
 
   // Meal choice validation for attending guests
   if (data.isAttending) {
@@ -189,9 +200,9 @@ export const useRSVPForm = (): UseRSVPFormReturn => {
     }
   }, [errors]);
 
-  // Validate form and return boolean
+  // Validate form and return boolean (comprehensive validation for submission)
   const validateForm = useCallback(() => {
-    const validationErrors = validateFormData(formData);
+    const validationErrors = validateForSubmission(formData);
     setErrors(validationErrors);
     return Object.keys(validationErrors).length === 0;
   }, [formData]);
@@ -518,9 +529,25 @@ export const useRSVPForm = (): UseRSVPFormReturn => {
     }
   }, [formData]);
 
-  // Derived state
-  const isFormValid = Object.keys(errors).length === 0 && formData.isAttending !== null;
+  // Derived state with debugging
+  const realTimeErrors = validateFormData(formData);
+  const hasRealTimeErrors = Object.keys(realTimeErrors).length > 0;
+  const hasCurrentErrors = Object.keys(errors).length > 0;
+  
+  // For submit button: use real-time validation (allows submit while choosing meal)
+  const isFormValid = !hasRealTimeErrors && formData.isAttending !== null && formData.guestName.trim() !== '';
   const canSubmit = isFormValid && !submissionState.isSubmitting && !loadingState.isLoading;
+  
+  // Debug logging for form validation (temporary)
+  console.log('🔍 Form Validation Debug:', {
+    canSubmit,
+    isFormValid,
+    hasRealTimeErrors,
+    isAttending: formData.isAttending,
+    guestName: formData.guestName.length,
+    isSubmitting: submissionState.isSubmitting,
+    isLoading: loadingState.isLoading
+  });
   const isLoading = loadingState.isLoading || loadingState.isLoadingExisting || loadingState.isValidatingToken;
 
   return {
