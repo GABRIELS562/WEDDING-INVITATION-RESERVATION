@@ -486,12 +486,13 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
           </div>
           
           {/* Submit Button */}
+          {console.log('Button canSubmit status:', canSubmit, 'formData:', { guestName: formData.guestName, isAttending: formData.isAttending })}
           <button 
             type="submit" 
-            disabled={!canSubmit}
+            disabled={false}
             style={{ 
               width: '100%', 
-              backgroundColor: canSubmit ? '#C9A96E' : '#ccc', 
+              backgroundColor: '#C9A96E', 
               color: 'white', 
               padding: '1.2rem 2rem', 
               border: 'none', 
@@ -499,9 +500,9 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
               fontSize: '1.2rem',
               fontWeight: '400',
               letterSpacing: '1px',
-              cursor: canSubmit ? 'pointer' : 'not-allowed',
+              cursor: 'pointer',
               transition: 'all 0.3s ease',
-              boxShadow: canSubmit ? '0 8px 25px rgba(201, 169, 110, 0.3)' : 'none',
+              boxShadow: '0 8px 25px rgba(201, 169, 110, 0.3)',
               fontFamily: "'Playfair Display', 'Georgia', serif"
             }}
           >
