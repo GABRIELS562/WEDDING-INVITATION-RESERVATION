@@ -4,15 +4,15 @@ import { realWeddingGuests } from './realWeddingGuests';
 // Individual guest authentication system - each guest gets their own unique token
 // Format: "firstname-lastname-8randomchars"
 export const individualGuests: IndividualGuest[] = [
-  // Keep Jamie as test guest for development
+  // Test guest for development (no real personal data)
   {
-    id: 'jamie-test',
-    firstName: 'Jamie',
-    lastName: 'Test',
-    fullName: 'Jamie',
+    id: 'test-guest',
+    firstName: 'Test',
+    lastName: 'Guest',
+    fullName: 'Test Guest',
     email: 'test@example.com',
-    phone: '+27722108714',
-    token: 'jamie-test-abc12345',
+    phone: '+27000000000',
+    token: 'test-guest-abc12345',
     hasUsedToken: false,
     plusOneEligible: false,
     invitationGroup: 'test',
