@@ -12,6 +12,18 @@ dist
 dist-ssr
 *.local
 
+# Environment files (contains sensitive data)
+.env
+.env.local
+.env.production
+
+# Guest data (sensitive personal information)
+populate-guests.js
+import-csv-guests.js
+guests.csv
+guest-tokens-data.csv
+*.sql
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

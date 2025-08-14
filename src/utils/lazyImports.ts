@@ -67,7 +67,7 @@ export const preloadComponent = (importFunction: () => Promise<any>) => {
 export const preloadRSVPComponents = () => {
   preloadComponent(() => import('../components/forms/SmartRSVPForm'));
   preloadComponent(() => import('../hooks/useRSVPForm'));
-  preloadComponent(() => import('../services/GoogleSheetsService'));
+  preloadComponent(() => import('../services/supabaseService'));
   preloadComponent(() => import('../utils/emailService'));
 };
 

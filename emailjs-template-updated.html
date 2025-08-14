@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wedding RSVP Confirmation</title>
+    <style>
+        body { 
+            font-family: 'Georgia', serif; 
+            line-height: 1.6; 
+            color: #333; 
+            max-width: 600px; 
+            margin: 0 auto; 
+            padding: 20px; 
+        }
+        .header { 
+            text-align: center; 
+            border-bottom: 2px solid #d4af37; 
+            padding-bottom: 20px; 
+            margin-bottom: 30px; 
+        }
+        .couple-names { 
+            font-size: 28px; 
+            color: #d4af37; 
+            margin-bottom: 10px; 
+        }
+        .confirmation { 
+            background: #f9f9f9; 
+            padding: 20px; 
+            border-left: 4px solid #d4af37; 
+            margin: 20px 0; 
+        }
+        .section { 
+            margin: 20px 0; 
+            padding: 15px; 
+            background: #fafafa; 
+            border-radius: 5px; 
+        }
+        .highlight { 
+            color: #d4af37; 
+            font-weight: bold; 
+        }
+        .footer { 
+            text-align: center; 
+            margin-top: 30px; 
+            padding-top: 20px; 
+            border-top: 1px solid #ddd; 
+            color: #666; 
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="couple-names">{{couple_names}}</div>
+        <div>{{wedding_date}} at {{wedding_time}}</div>
+    </div>
+
+    <!-- Personal Greeting -->
+    <div style="font-size: 20px; margin-bottom: 20px;">
+        Dear {{guest_name}},
+    </div>
+
+    <!-- RSVP Confirmation -->
+    <div class="confirmation">
+        <strong>Thank you for your RSVP!</strong>
+        <br><br>
+        <strong>Your Response:</strong> <span class="highlight">{{attending}}</span>
+        <br>
+        <strong>Submitted:</strong> {{timestamp}}
+        <br>
+        <strong>Confirmation ID:</strong> {{submission_id}}
+    </div>
+
+    <!-- Meal Information (only if attending) -->
+    <div class="section">
+        <h3>🍽️ Your Details</h3>
+        <p><strong>Meal Choice:</strong> {{meal_choice}}</p>
+        <p><strong>Dietary Restrictions:</strong> {{dietary_restrictions}}</p>
+        <p><strong>Email:</strong> {{email_address}}</p>
+        <p><strong>WhatsApp:</strong> {{whatsapp_number}}</p>
+    </div>
+
+    <!-- Wedding Information -->
+    <div class="section">
+        <h3>📅 Wedding Details</h3>
+        <p><strong>Date:</strong> {{wedding_date}}</p>
+        <p><strong>Time:</strong> {{wedding_time}}</p>
+        <p><strong>Venue:</strong> {{ceremony_venue}}</p>
+        <p><strong>Address:</strong> {{ceremony_address}}</p>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>We can't wait to celebrate with you!</p>
+        <p>With love,<br>{{couple_names}}</p>
+        <hr style="margin: 20px 0;">
+        <p style="font-size: 12px; color: #999;">
+            Email Confirmation Status: {{email_confirmation_sent}}<br>
+            Guest Token: {{guest_token}}
+        </p>
+    </div>
+</body>
+</html>

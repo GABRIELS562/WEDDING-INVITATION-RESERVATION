@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useRSVPForm } from '../hooks/useRSVPForm';
 import type { IndividualGuest } from '../types';
-import { getGuestNameFromToken } from '../utils/guestMapping';
-import { linkNameToGuest } from '../data/guestDatabase';
+import { getGuestNameFromToken, isValidToken } from '../utils/guestTokens';
+import { supabaseService } from '../services/supabaseService';
 
 interface RSVPFormComponentProps {
   guestToken?: string;
@@ -27,131 +27,98 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
   } = useRSVPForm();
 
   const [isInitialized, setIsInitialized] = useState(false);
+  const [dbGuestInfo, setDbGuestInfo] = useState<any>(null);
 
-  // Load existing RSVP if token is provided and auto-populate name
+  // Load guest info and existing RSVP if token is provided
   useEffect(() => {
-    console.log('RSVPFormComponent useEffect triggered', {
-      guestToken,
-      isInitialized,
-      currentGuestName: formData.guestName
-    });
-    
-    if (guestToken && !isInitialized) {
-      console.log('Processing guest token:', guestToken);
-      
-      // Auto-populate guest name from token
-      const guestName = getGuestNameFromToken(guestToken);
-      console.log('Guest name from token:', guestName);
-      
-      if (guestName) {
-        console.log('Setting guest name:', guestName);
-        updateField('guestName', guestName);
-      }
-      
-      loadExistingRSVP(guestToken).then(() => {
-        console.log('Finished loading existing RSVP');
-        setIsInitialized(true);
+    const loadGuestData = async () => {
+      if (guestToken && !isInitialized) {
+        console.log('🔄 Loading guest data for token:', guestToken);
         
-        // Double-check name setting after load
-        if (!formData.guestName && guestName) {
-          console.log('Setting guest name after RSVP load:', guestName);
-          updateField('guestName', guestName);
+        // First, try to get guest info from database
+        const { data: guestData, error: guestError } = await supabaseService.getGuestInfo(guestToken);
+        
+        if (!guestError && guestData) {
+          console.log('👤 Found guest in database:', guestData);
+          setDbGuestInfo(guestData);
+          
+          // Pre-populate name and phone from database
+          updateField('guestName', guestData.guest_name || '');
+          if (guestData.phone) {
+            updateField('whatsappNumber', guestData.phone);
+          }
+        } else {
+          // Fallback to token-based name extraction
+          const guestName = getGuestNameFromToken(guestToken);
+          if (guestName) {
+            updateField('guestName', guestName);
+          }
         }
-      });
-    } else if (!guestToken) {
-      console.log('No guest token, setting initialized');
-      setIsInitialized(true);
-    }
+        
+        // Then load existing RSVP
+        await loadExistingRSVP(guestToken);
+        setIsInitialized(true);
+      } else if (!guestToken) {
+        setIsInitialized(true);
+      }
+    };
+    
+    loadGuestData();
   }, [guestToken, isInitialized]);
 
-  // Debug button state
-  useEffect(() => {
-    console.log('🔍 BUTTON DEBUG:', {
-      canSubmit,
-      guestName: formData.guestName,
-      isAttending: formData.isAttending,
-      isSubmitting: submissionState.isSubmitting,
-      hasBasicRequirements: formData.guestName.trim() !== '' && formData.isAttending !== null
-    });
-  }, [canSubmit, formData.guestName, formData.isAttending, submissionState.isSubmitting]);
+  // Form state validation
 
   const handleSubmit = async (e: React.FormEvent) => {
     e?.preventDefault();
-    console.log('🚀 RSVP Submit started');
-    console.log('Form data at submission:', formData);
-    console.log('Guest token at submission:', guestToken);
     
-    // Simple validation
-    if (!formData.guestName.trim()) {
-      alert('Please enter your name');
-      return;
-    }
+    // Allow submissions without guest token for public access
+    const actualToken = guestToken || 'public-' + Date.now();
     
-    if (formData.isAttending === null) {
-      alert('Please select whether you will be attending');
-      return;
-    }
-    
-    if (formData.isAttending && !formData.mealChoice) {
-      alert('Please select your meal choice');
-      return;
-    }
-    
-    if (!guestToken) {
-      alert('Guest token is required. Please use the link from your invitation.');
-      return;
-    }
-
-    // Link the entered name to guest record for tracking
-    const nameLink = linkNameToGuest(formData.guestName, guestToken);
-
     const defaultGuestInfo: IndividualGuest = {
-      id: guestToken,
-      firstName: nameLink.primaryName.split(' ')[0] || '',
-      lastName: nameLink.primaryName.split(' ').slice(1).join(' ') || '',
-      fullName: nameLink.primaryName,
+      id: actualToken,
+      firstName: formData.guestName.split(' ')[0] || '',
+      lastName: formData.guestName.split(' ').slice(1).join(' ') || '',
+      fullName: formData.guestName,
       email: formData.email || '',
-      token: guestToken,
+      token: actualToken,
       hasUsedToken: false,
-      plusOneEligible: true,
-      plusOneName: formData.plusOneName || undefined,
-      plusOneEmail: undefined,
+      plusOneEligible: false,
       dietaryRestrictions: formData.dietaryRestrictions ? [formData.dietaryRestrictions] : undefined,
       specialNotes: formData.specialRequests || undefined,
       createdAt: new Date(),
       lastAccessed: new Date()
     };
 
-    try {
-      console.log('📤 Starting actual RSVP submission...');
-      console.log('📊 Guest info:', defaultGuestInfo);
-      console.log('📊 Form data:', formData);
-      
-      const success = await submitRSVP(guestToken, guestInfo || defaultGuestInfo);
-      
-      if (success) {
-        console.log('🎉 RSVP submitted successfully!');
-        alert('🎉 RSVP submitted successfully! Thank you for confirming your attendance.');
-      } else {
-        console.error('❌ RSVP submission failed');
-        alert('❌ Failed to submit RSVP. Please try again or contact us directly.');
-      }
-    } catch (error) {
-      console.error('❌ RSVP submission error:', error);
-      console.error('❌ Error details:', {
-        message: error instanceof Error ? error.message : String(error),
-        stack: error instanceof Error ? error.stack : undefined,
-        name: error instanceof Error ? error.name : undefined
-      });
-      alert('❌ Error submitting RSVP: ' + (error instanceof Error ? error.message : 'Unknown error') + '\n\nCheck console for details.');
-    }
+    // Use the proper submitRSVP function from the hook
+    await submitRSVP(actualToken, guestInfo || defaultGuestInfo);
   };
 
   if (loadingState.isLoadingExisting) {
     return (
       <div style={{ textAlign: 'center', padding: '2rem' }}>
-        <div style={{ fontSize: '1.2rem', color: '#8B7355' }}>
-          Loading your RSVP information...
+        <div style={{ 
+          fontSize: '1.2rem', 
+          color: '#8B7355',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '1rem'
+        }}>
+          <div style={{
+            width: '40px',
+            height: '40px',
+            border: '3px solid #f3f3f3',
+            borderTop: '3px solid #C9A96E',
+            borderRadius: '50%',
+            animation: 'spin 1s linear infinite'
+          }}></div>
+          <div>Preparing your RSVP form...</div>
+          <style>{`
+            @keyframes spin {
+              0% { transform: rotate(0deg); }
+              100% { transform: rotate(360deg); }
+            }
+          `}</style>
         </div>
       </div>
     );
@@ -174,6 +141,25 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
         boxShadow: '0 20px 60px rgba(139, 115, 85, 0.15)',
         border: '1px solid rgba(201, 169, 110, 0.2)'
       }}>
+        {/* Already Submitted Message */}
+        {hasExistingSubmission && !submissionState.isSubmitSuccess && guestToken && (
+          <div style={{
+            backgroundColor: 'rgba(255, 193, 7, 0.1)',
+            border: '2px solid rgba(255, 193, 7, 0.3)',
+            borderRadius: '12px',
+            padding: '1.5rem',
+            marginBottom: '2rem',
+            textAlign: 'center'
+          }}>
+            <div style={{ fontSize: '1.3rem', color: '#FF8F00', marginBottom: '0.5rem' }}>
+              ✅ RSVP Already Submitted
+            </div>
+            <div style={{ fontSize: '1rem', color: '#8B7355' }}>
+              Thank you! Your RSVP has been received. You can view your current response below, but you cannot submit again.
+            </div>
+          </div>
+        )}
+
         {/* Success Message */}
         {submissionState.isSubmitSuccess && (
           <div style={{
@@ -185,7 +171,7 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
             textAlign: 'center'
           }}>
             <div style={{ fontSize: '1.3rem', color: '#4CAF50', marginBottom: '0.5rem' }}>
-              ✅ RSVP {hasExistingSubmission ? 'Updated' : 'Submitted'} Successfully!
+              ✅ RSVP Submitted Successfully!
             </div>
             {emailState.isEmailSent && (
               <div style={{ fontSize: '1rem', color: '#8B7355' }}>
@@ -310,10 +296,10 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
                 backgroundColor: '#FEFCF7',
                 transition: 'border-color 0.3s ease'
               }}
-              placeholder="0722108714 (for contact if email not provided)"
+              placeholder="Your WhatsApp number (optional)"
             />
             <div style={{ fontSize: '0.9rem', color: '#8B7355', marginTop: '0.5rem', fontStyle: 'italic' }}>
-              South African format: 0722108714 (we'll add +27 automatically)
+              We'll contact you here if needed (we'll add +27 for SA numbers automatically)
             </div>
           </div>
           
@@ -352,7 +338,7 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
                 MozAppearance: 'none'
               }}
             >
-              <option value="">👆 Tap to select your attendance</option>
+              <option value="">Select your attendance</option>
               <option value="yes">✅ YES - I'll be there!</option>
               <option value="no">❌ NO - Sorry, can't make it</option>
             </select>
@@ -394,7 +380,7 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
                     { value: 'fish', label: 'Market Fish', desc: 'Line fish (may vary depending on seasonality) - Confit potato, Sauce Vierge, wild Rocket, Kalamata olives' },
                     { value: 'prawns', label: 'Mozambican Style Prawns', desc: 'Homemade Peri-Peri or Garlic Lemon butter, citrus basmati rice' },
                     { value: 'lamb', label: 'Tasting of Karoo Lamb', desc: 'Roasted Cauliflower Pomme, Minted Peas, Thyme tossed Patty Pans, Tomato compote' },
-                    { value: 'steak', label: 'Steak', desc: 'Premium steak prepared to your preference (details to be confirmed)' }
+                    { value: 'steak', label: 'Sirloin or Rump Steak', desc: 'Served with onion rings, fries and a sauce' }
                   ].map((meal) => (
                     <label key={meal.value} style={{
                       display: 'flex',
@@ -524,20 +510,77 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
             </div>
           </div>
           
-          {/* Submit Button - Simple Direct Approach */}
+          {/* Submit Button - With Proper Validation */}
           <div
-            onClick={() => {
-              console.log('🚀 Direct click handler triggered');
-              console.log('Form data:', formData);
-              if (!guestToken) {
-                alert('No guest token found!');
+            onClick={async () => {
+              // Form submission handler
+              console.log('🎯 Submit button clicked!');
+              console.log('📊 Form state:', {
+                guestName: formData.guestName,
+                isAttending: formData.isAttending,
+                canSubmit,
+                hasBasicRequirements: formData.guestName.trim() !== '' && formData.isAttending !== null,
+                isSubmitting: submissionState.isSubmitting,
+                isLoading: loadingState.isLoading
+              });
+              
+              // Prevent resubmission for authenticated guests (DISABLED FOR TESTING)
+              if (hasExistingSubmission && guestToken && guestToken !== 'jamie-test-abc12345') {
+                console.log('❌ Cannot submit - RSVP already exists for this guest');
                 return;
               }
-              handleSubmit(new Event('submit') as any);
+
+              if (!canSubmit) {
+                console.log('❌ Cannot submit - validation failed');
+                return;
+              }
+              
+              console.log('✅ Validation passed, starting submission...');
+              
+              // Make the function async to properly handle submission
+              
+              // Allow submissions without guest token for public access
+              if (!guestToken) {
+                // Public submission without guest token
+                console.log('🔓 Public submission (no guest token)');
+                const publicToken = `${formData.guestName.replace(/\s+/g, '-').toUpperCase()}-${Date.now()}-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+                const publicGuestInfo: IndividualGuest = {
+                  id: publicToken,
+                  firstName: formData.guestName.split(' ')[0] || 'Guest',
+                  lastName: formData.guestName.split(' ').slice(1).join(' ') || 'User',
+                  fullName: formData.guestName,
+                  email: formData.email || '',
+                  token: publicToken,
+                  hasUsedToken: false,
+                  plusOneEligible: false,
+                  dietaryRestrictions: [],
+                  createdAt: new Date()
+                };
+                console.log('📤 Submitting with public token:', publicToken);
+                await submitRSVP(publicToken, publicGuestInfo);
+              } else {
+                console.log('🔐 Authenticated submission with guest token:', guestToken);
+                const defaultGuestInfo: IndividualGuest = {
+                  id: guestToken,
+                  firstName: formData.guestName.split(' ')[0] || '',
+                  lastName: formData.guestName.split(' ').slice(1).join(' ') || '',
+                  fullName: formData.guestName,
+                  email: formData.email || '',
+                  token: guestToken,
+                  hasUsedToken: false,
+                  plusOneEligible: false,
+                  dietaryRestrictions: formData.dietaryRestrictions ? [formData.dietaryRestrictions] : undefined,
+                  specialNotes: formData.specialRequests || undefined,
+                  createdAt: new Date(),
+                  lastAccessed: new Date()
+                };
+                console.log('📤 Submitting with guest info:', defaultGuestInfo);
+                await submitRSVP(guestToken, guestInfo || defaultGuestInfo);
+              }
             }}
             style={{ 
               width: '100%', 
-              backgroundColor: '#C9A96E', 
+              backgroundColor: (canSubmit && !(hasExistingSubmission && guestToken)) ? '#C9A96E' : '#A0A0A0', 
               color: 'white', 
               padding: '1.2rem 2rem', 
               border: 'none', 
@@ -545,18 +588,33 @@ export const RSVPFormComponent: React.FC<RSVPFormComponentProps> = ({
               fontSize: '1.2rem',
               fontWeight: '400',
               letterSpacing: '1px',
-              cursor: 'pointer',
+              cursor: (canSubmit && !(hasExistingSubmission && guestToken)) ? 'pointer' : 'not-allowed',
               transition: 'all 0.3s ease',
-              boxShadow: '0 8px 25px rgba(201, 169, 110, 0.3)',
+              boxShadow: (canSubmit && !(hasExistingSubmission && guestToken)) ? '0 8px 25px rgba(201, 169, 110, 0.3)' : '0 4px 15px rgba(160, 160, 160, 0.2)',
               fontFamily: "'Playfair Display', 'Georgia', serif",
               textAlign: 'center',
-              userSelect: 'none'
+              userSelect: 'none',
+              opacity: (canSubmit && !(hasExistingSubmission && guestToken)) ? 1 : 0.6
             }}
           >
             {submissionState.isSubmitting ? (
-              <>⏳ {hasExistingSubmission ? 'Updating' : 'Submitting'} RSVP...</>
-            ) : emailState.isSendingEmail ? (
-              <>📧 Sending confirmation email...</>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                <div style={{
+                  width: '20px',
+                  height: '20px',
+                  border: '2px solid rgba(255, 255, 255, 0.3)',
+                  borderTop: '2px solid white',
+                  borderRadius: '50%',
+                  animation: 'spin 1s linear infinite'
+                }}></div>
+                {hasExistingSubmission ? 'Updating' : 'Submitting'} RSVP...
+              </div>
+            ) : emailState.isSendingEmail && !submissionState.isSubmitSuccess ? (
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                📧 Sending confirmation email...
+              </div>
+            ) : hasExistingSubmission && guestToken ? (
+              <>RSVP Already Submitted</>
             ) : (
               <>Send Our RSVP ✨</>
             )}

@@ -1,6 +1,6 @@
 import type { RSVPSubmission } from '../types';
 import { sendConfirmationEmail } from './emailService';
-import { saveRSVPToSheets, updateRSVPInSheets, getRSVPFromSheets } from './googleSheetsAPI';
+// Note: Database operations handled via supabaseService in hooks
 
 // In-memory storage for demo (replace with actual database in production)
 const rsvpStorage = new Map<string, RSVPSubmission>();
@@ -49,13 +49,7 @@ export async function submitRSVP(rsvpData: RSVPSubmission): Promise<RSVPResult> 
     // Store RSVP (in production, this would be a database operation)
     rsvpStorage.set(rsvpData.token, rsvpData);
 
-    // Save to Google Sheets (if configured)
-    try {
-      await saveRSVPToSheets(rsvpData);
-    } catch (error) {
-      console.warn('Failed to save to Google Sheets:', error);
-      // Don't fail the submission if Google Sheets fails
-    }
+    // Database operations are handled in the useRSVP hook via supabaseService
 
     // Send confirmation email if requested
     if (rsvpData.wantsEmailConfirmation && rsvpData.email) {
@@ -110,13 +104,7 @@ export async function updateRSVP(rsvpData: RSVPSubmission): Promise<RSVPResult> 
     // Update RSVP (in production, this would be a database operation)
     rsvpStorage.set(rsvpData.token, rsvpData);
 
-    // Update in Google Sheets (if configured)
-    try {
-      await updateRSVPInSheets(rsvpData);
-    } catch (error) {
-      console.warn('Failed to update in Google Sheets:', error);
-      // Don't fail the update if Google Sheets fails
-    }
+    // Database operations are handled in the useRSVP hook via supabaseService
 
     // Send confirmation email if requested
     if (rsvpData.wantsEmailConfirmation && rsvpData.email) {
@@ -156,17 +144,8 @@ export async function getRSVPByToken(token: string): Promise<RSVPSubmission | nu
       return localRSVP;
     }
 
-    // Try to get from Google Sheets (if configured)
-    try {
-      const sheetsRSVP = await getRSVPFromSheets(token);
-      if (sheetsRSVP) {
-        // Cache in memory for future requests
-        rsvpStorage.set(token, sheetsRSVP);
-        return sheetsRSVP;
-      }
-    } catch (error) {
-      console.warn('Failed to get RSVP from Google Sheets:', error);
-    }
+    // Database operations are handled in the useRSVP hook via supabaseService
+    // This utility function now only serves in-memory cache
 
     return null;
 

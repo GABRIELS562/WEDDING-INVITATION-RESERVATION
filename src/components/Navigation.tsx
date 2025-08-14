@@ -202,7 +202,7 @@ export const Navigation: React.FC = () => {
         )}
       </AnimatePresence>
 
-      <style jsx>{`
+      <style>{`
         @media (min-width: 768px) {
           .nav-desktop {
             display: flex !important;

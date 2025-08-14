@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import type { RSVPFormData, MealChoice } from '../../types';
-import { useRSVP } from '../../hooks/useRSVP';
+import type { RSVPFormData, MealChoice, RSVPSubmission } from '../../types';
+import { useRSVPForm } from '../../hooks/useRSVPForm';
 import { useGuestAuth } from '../../hooks/useGuestAuth';
 import { Input, Button, Card, CardHeader, CardTitle, CardContent } from '../ui';
 import { GuestAttendance } from './GuestAttendance';
@@ -17,7 +17,7 @@ export const RSVPForm: React.FC<RSVPFormProps> = ({
   onSubmitSuccess
 }) => {
   const { guestToken } = useGuestAuth();
-  const { submitRSVP, updateRSVP, isLoading, errors, clearErrors } = useRSVP();
+  const { submitRSVP, formData: hookFormData, updateField, clearErrors, submissionState, canSubmit } = useRSVPForm();
 
   const [formData, setFormData] = useState<RSVPFormData>({
     guestToken: guestToken?.token || '',
@@ -34,6 +34,8 @@ export const RSVPForm: React.FC<RSVPFormProps> = ({
 
   const [currentStep, setCurrentStep] = useState(1);
   const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (existingRSVP) {
@@ -127,16 +129,22 @@ export const RSVPForm: React.FC<RSVPFormProps> = ({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    clearErrors();
+    setErrors({});
+    setIsLoading(true);
 
     if (!guestToken) return;
 
-    const submitFunction = existingRSVP ? updateRSVP : submitRSVP;
-    const result = await submitFunction(formData, guestToken.fullName);
+    try {
+      const result = await submitRSVP(guestToken.token, guestToken);
 
-    if (result.success) {
-      setSubmitSuccess(true);
-      onSubmitSuccess?.();
+      if (result) {
+        setSubmitSuccess(true);
+        onSubmitSuccess?.();
+      }
+    } catch (error) {
+      setErrors({ general: 'Failed to submit RSVP' });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -413,7 +421,7 @@ export const RSVPForm: React.FC<RSVPFormProps> = ({
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => setFormData(prev => ({ ...prev, phone: e.target.value }))}
-                    error={errors.phone}
+                    error={errors['phone']}
                   />
                 </div>
 
@@ -424,7 +432,7 @@ export const RSVPForm: React.FC<RSVPFormProps> = ({
                       value={formData.songRequest}
                       onChange={(e) => setFormData(prev => ({ ...prev, songRequest: e.target.value }))}
                       placeholder="Any special song you'd like us to play?"
-                      error={errors.songRequest}
+                      error={errors['songRequest']}
                     />
 
                     <div>
@@ -438,8 +446,8 @@ export const RSVPForm: React.FC<RSVPFormProps> = ({
                         rows={3}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-rose-500"
                       />
-                      {errors.specialRequests && (
-                        <p className="mt-1 text-sm text-red-600">{errors.specialRequests}</p>
+                      {errors['specialRequests'] && (
+                        <p className="mt-1 text-sm text-red-600">{errors['specialRequests']}</p>
                       )}
                     </div>
                   </>

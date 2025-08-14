@@ -5,7 +5,7 @@ import { useGuestAuth } from '../../hooks/useGuestAuth';
 import { useRSVP } from '../../hooks/useRSVP';
 import { Card, CardHeader, CardTitle, CardContent, LoadingSpinner } from '../ui';
 import { RSVPForm } from '../forms';
-import type { RSVPFormData } from '../../types';
+import type { RSVPFormData, MealChoice } from '../../types';
 
 export const RSVP: React.FC = () => {
   const { registerSection } = useScrollSpy();
@@ -24,7 +24,20 @@ export const RSVP: React.FC = () => {
       if (isAuthenticated && guestToken && !hasLoadedRSVP) {
         const result = await loadExistingRSVP(guestToken.token);
         if (result.success && result.data) {
-          setExistingRSVP(result.data);
+          // Convert RSVPSubmission to RSVPFormData format
+          const converted: RSVPFormData = {
+            guestToken: result.data.token,
+            isAttending: result.data.isAttending,
+            guestCount: 1,
+            guestNames: [result.data.guestName],
+            mealChoices: [],
+            dietaryRestrictions: [],
+            songRequest: '',
+            specialRequests: result.data.specialRequests || '',
+            email: result.data.email || '',
+            phone: ''
+          };
+          setExistingRSVP(converted);
         }
         setHasLoadedRSVP(true);
       }

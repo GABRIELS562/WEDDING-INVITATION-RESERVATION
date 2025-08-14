@@ -10,11 +10,10 @@ const requiredEnvVars = {
   VITE_APP_URL: 'Production website URL',
   VITE_APP_NAME: 'Application name',
   
-  // Google Sheets API
-  VITE_GOOGLE_SHEETS_API_KEY: 'Google Sheets API key for browser requests',
-  VITE_GOOGLE_SHEETS_SPREADSHEET_ID: 'Google Sheets spreadsheet ID',
-  GOOGLE_SHEETS_PRIVATE_KEY: 'Service account private key',
-  GOOGLE_SHEETS_CLIENT_EMAIL: 'Service account email',
+  // Supabase Database
+  VITE_SUPABASE_URL: 'Supabase project URL',
+  VITE_SUPABASE_ANON_KEY: 'Supabase anonymous API key',
+  VITE_SUPABASE_SERVICE_ROLE_KEY: 'Supabase service role key (optional)',
   
   // EmailJS
   VITE_EMAILJS_SERVICE_ID: 'EmailJS service ID',

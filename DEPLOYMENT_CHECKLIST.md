@@ -10,13 +10,20 @@ Your wedding website is fully prepared for Vercel deployment\!
 Add these in Vercel Dashboard → Settings → Environment Variables:
 
 ```bash
-VITE_GOOGLE_SHEETS_API_KEY=your_google_api_key
-VITE_GOOGLE_SHEETS_SPREADSHEET_ID=your_sheet_id
+# Supabase Configuration
+VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+VITE_SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+
+# EmailJS Configuration
 VITE_EMAILJS_SERVICE_ID=your_emailjs_service_id
 VITE_EMAILJS_TEMPLATE_ID=your_emailjs_template_id  
 VITE_EMAILJS_PUBLIC_KEY=your_emailjs_public_key
+
+# Application Settings
 VITE_APP_URL=https://your-domain.vercel.app
-VITE_GUEST_TOKEN_SECRET=random_secret_string_here
+VITE_BASE_URL=https://your-domain.vercel.app
+BACKUP_ENCRYPTION_KEY=your_secure_backup_key
 ```
 
 ### 2. Quick Deploy Steps

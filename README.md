@@ -6,21 +6,25 @@ A beautiful, modern wedding website with individual guest authentication and RSV
 
 - 🔐 **Individual Guest Authentication** - Each guest gets a unique token/URL for secure access
 - 📝 **Complete RSVP System** - Guest attendance, meal preferences, dietary restrictions, and special requests
-- 📊 **Google Sheets Backend** - All RSVP data automatically stored and organized in Google Sheets
+- 🗄️ **Supabase Backend** - All RSVP data automatically stored in a secure, scalable database
+- 💬 **WhatsApp Integration** - Bulk invitation campaigns with personalized messages
 - 📧 **Email Confirmations** - Automatic email confirmations and updates via EmailJS
 - 🎨 **Beautiful Design** - Modern, elegant design with smooth animations and transitions
 - 📱 **Mobile Responsive** - Perfect experience on all devices (phone, tablet, desktop)
-- 🚀 **Zero Hosting Costs** - Deploy for free on Vercel/Netlify with custom domain support
-- 🎉 **Real-time Updates** - Live RSVP tracking and guest management
-- 🛡️ **Secure & Private** - Guest data protection with token-based authentication
+- 🚀 **Production Ready** - Deploy for free on Vercel/Netlify with custom domain support
+- 📊 **Analytics & Reporting** - Real-time RSVP tracking, engagement metrics, and guest management
+- 🛡️ **Enterprise Security** - Advanced security features, rate limiting, and fraud protection
+- 💾 **Backup & Recovery** - Automated backup system with encryption and disaster recovery
 
 ## Tech Stack
 
-- **Frontend**: React 18 + TypeScript + Vite
+- **Frontend**: Next.js 14 + TypeScript
 - **Styling**: Tailwind CSS + Framer Motion
-- **Routing**: React Router DOM
-- **Backend**: Google Sheets API
+- **Database**: Supabase (PostgreSQL)
 - **Email**: EmailJS
+- **WhatsApp**: Custom campaign management system
+- **Security**: Crypto-secure token generation, rate limiting, fraud protection
+- **Analytics**: Real-time tracking and engagement metrics
 - **Deployment**: Vercel (recommended)
 
 ## Quick Start
@@ -42,9 +46,9 @@ cp .env.example .env
 ```
 
 Fill in your API keys:
-- Google Sheets API key
-- Google Sheet ID  
+- Supabase URL and keys
 - EmailJS credentials
+- WhatsApp campaign settings
 
 ### 3. Configure Guest Tokens
 
@@ -91,15 +95,14 @@ Visit `http://localhost:5173` to see your wedding website!
 
 ## Setup Guide
 
-### Google Sheets Setup
+### Supabase Database Setup
 
-1. Create a new Google Sheet
-2. Set up headers in row 1:
-   ```
-   Timestamp | Guest Token | Attending | Guest Count | Guest Names | Dietary Restrictions | Meal Choices | Song Request | Special Requests | Email | Phone
-   ```
-3. Get your Google Sheets API key from Google Cloud Console
-4. Copy the Sheet ID from the URL
+1. Create a Supabase project at [supabase.com](https://supabase.com)
+2. Run the provided SQL schema to create your tables
+3. Get your project URL and API keys from Settings → API
+4. Configure Row Level Security policies for data protection
+
+See `RSVP_SETUP_GUIDE.md` for complete setup instructions.
 
 ### EmailJS Setup
 
@@ -198,12 +201,12 @@ Update in `src/App.css`:
    - Guest count & names
    - Meal selections
    - Contact info & special requests
-4. Data saved to Google Sheets
+4. Data saved to Supabase database
 5. Email confirmation sent
 
 ### Admin Features
 
-- View all RSVPs in Google Sheets
+- View all RSVPs in Supabase dashboard
 - Export data for planning
 - Update guest information
 - Track RSVP completion rates

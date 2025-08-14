@@ -301,13 +301,13 @@ export const trackPerformanceMetrics = () => {
         }
         
         // DOM content loaded
-        const domContentLoaded = navigation.domContentLoadedEventEnd - navigation.navigationStart;
+        const domContentLoaded = navigation.domContentLoadedEventEnd - navigation.fetchStart;
         if (domContentLoaded > 3000) {
           weddingAnalytics.performanceIssue('slow_dom_load', domContentLoaded);
         }
         
         // Total page load time
-        const totalLoadTime = navigation.loadEventEnd - navigation.navigationStart;
+        const totalLoadTime = navigation.loadEventEnd - navigation.fetchStart;
         trackEvent({
           event_name: 'page_load_time',
           event_category: 'performance',

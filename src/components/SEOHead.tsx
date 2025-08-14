@@ -1,5 +1,5 @@
 import React from 'react';
-import { Helmet } from 'react-helmet-async';
+import Head from 'next/head';
 
 interface SEOHeadProps {
   title?: string;
@@ -37,7 +37,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
   const currentUrl = typeof window !== 'undefined' ? window.location.href : url;
   
   return (
-    <Helmet>
+    <Head>
       {/* Basic Meta Tags */}
       <title>{title}</title>
       <meta name="description" content={description} />
@@ -223,7 +223,7 @@ const SEOHead: React.FC<SEOHeadProps> = ({
         as="image" 
         type="image/webp"
       />
-    </Helmet>
+    </Head>
   );
 };
 

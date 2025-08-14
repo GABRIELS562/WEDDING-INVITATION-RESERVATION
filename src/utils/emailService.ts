@@ -11,9 +11,22 @@ interface EmailTemplateData extends Record<string, unknown> {
   wedding_date: string;
   wedding_time: string;
   
-  // Guest Information
+  // Database Column Data (matches exactly)
+  timestamp: string; // A1: Timestamp
+  guest_token: string; // B1: Guest Token
+  guest_name: string; // C1: Guest Name
+  attending: string; // D1: Attending (YES/NO)
+  meal_choice: string; // E1: Meal Choice
+  dietary_restrictions: string; // F1: Dietary Restrictions
+  email_address: string; // J1: Email Address
+  whatsapp_number: string; // WhatsApp Number
+  email_confirmation_sent: string; // K1: Email Confirmation Sent
+  submission_id: string; // L1: Submission ID
+  
+  // Legacy Guest Information (for compatibility)
   to_name: string;
   to_email: string;
+  email: string; // Standard EmailJS recipient field
   
   // RSVP Details
   attendance_status: string;
@@ -56,12 +69,23 @@ interface EmailTemplateData extends Record<string, unknown> {
 
 class EmailService {
   private config: EmailJSConfig;
-  private readonly MAX_RETRIES = 3;
-  private readonly RETRY_DELAY = 2000; // 2 seconds
+  private readonly MAX_RETRIES = 2;
+  private readonly RETRY_DELAY = 1000; // 1 second
 
   constructor(config: EmailJSConfig) {
     this.config = config;
-    emailjs.init(this.config.publicKey);
+    
+    // Initialize EmailJS with public key if available
+    if (this.config.publicKey) {
+      try {
+        emailjs.init(this.config.publicKey);
+        console.log('EmailJS initialized successfully');
+      } catch (error) {
+        console.error('Failed to initialize EmailJS:', error);
+      }
+    } else {
+      console.warn('EmailJS public key not provided');
+    }
   }
 
   /**
@@ -93,9 +117,12 @@ class EmailService {
    */
   async sendConfirmationEmail(rsvpData: RSVPSubmission): Promise<APIResponse<boolean>> {
     try {
+      // Starting email send process
+      
       // Validate configuration first
       const configValidation = this.validateConfiguration();
       if (!configValidation.isValid) {
+        console.error('EmailJS config validation failed:', configValidation.errors);
         return {
           success: false,
           error: `Email configuration invalid: ${configValidation.errors.join(', ')}`
@@ -158,23 +185,66 @@ class EmailService {
   }
 
   /**
-   * Prepare comprehensive template data with conditional content
+   * Prepare template data to match your EmailJS template exactly
    */
-  private prepareTemplateData(rsvpData: RSVPSubmission, submissionType: 'new' | 'update' = 'new'): EmailTemplateData {
+  private prepareTemplateData(rsvpData: RSVPSubmission, submissionType: 'new' | 'update' = 'new'): any {
+    const isAttending = rsvpData.isAttending;
+    
+    // Simple template data matching your EmailJS template exactly
+    const templateData = {
+      // Core variables from your EmailJS template screenshot
+      guest_name: rsvpData.guestName,
+      bride_name: 'Kirsten',
+      groom_name: 'Dale', 
+      email_address: rsvpData.email || 'kirstendale583@gmail.com',
+      
+      // RSVP details
+      attending: isAttending ? 'YES' : 'NO',
+      meal_choice: rsvpData.mealChoice || 'Not selected',
+      dietary_restrictions: rsvpData.dietaryRestrictions || 'None',
+      special_requests: rsvpData.specialRequests || 'None',
+      
+      // Wedding details
+      wedding_date: 'October 31st, 2025'
+    };
+    
+    console.log('🎉 Final template data for EmailJS:', templateData);
+    return templateData;
+  }
+  
+  /**
+   * OLD complex template data (keeping for reference)
+   */
+  private prepareComplexTemplateData(rsvpData: RSVPSubmission, submissionType: 'new' | 'update' = 'new'): EmailTemplateData {
     const isAttending = rsvpData.isAttending;
     const hasPlusOne = isAttending && rsvpData.plusOneName && rsvpData.plusOneName.trim() !== '';
     
     return {
-      // Header Information
+      // Match your EmailJS template variables exactly
+      guest_name: rsvpData.guestName,
       bride_name: weddingInfo.bride.name,
       groom_name: weddingInfo.groom.name,
+      email_address: rsvpData.email || 'jgabriels26@gmail.com',
+      
+      // Additional template data for compatibility
       couple_names: `${weddingInfo.bride.name} & ${weddingInfo.groom.name}`,
       wedding_date: this.formatWeddingDate(),
       wedding_time: this.formatWeddingTime(),
       
-      // Guest Information
+      // Guest Information - Match Database columns exactly
+      timestamp: new Date().toISOString(), // A1: Timestamp
+      guest_token: rsvpData.token, // B1: Guest Token
+      attending: isAttending ? 'YES' : 'NO', // D1: Attending
+      meal_choice: rsvpData.mealChoice || '', // E1: Meal Choice
+      dietary_restrictions: rsvpData.dietaryRestrictions || '', // F1: Dietary Restrictions
+      whatsapp_number: rsvpData.whatsappNumber || '', // WhatsApp Number
+      email_confirmation_sent: rsvpData.wantsEmailConfirmation ? 'SENT' : 'NO', // K1: Email Confirmation Sent
+      submission_id: this.generateSubmissionId(rsvpData.token), // L1: Submission ID
+      
+      // Legacy fields for backward compatibility
       to_name: rsvpData.guestName,
-      to_email: rsvpData.email || '',
+      to_email: rsvpData.email || 'kirstendale583@gmail.com',
+      email: rsvpData.email || 'kirstendale583@gmail.com', // Standard EmailJS recipient field with fallback
       
       // RSVP Details
       attendance_status: isAttending ? 'attending' : 'not attending',
@@ -182,8 +252,6 @@ class EmailService {
       
       // Meal Information (conditional)
       show_meal_info: isAttending ? 'yes' : 'no',
-      meal_choice: isAttending ? (rsvpData.mealChoice || 'Not yet selected') : '',
-      dietary_restrictions: isAttending ? (rsvpData.dietaryRestrictions || 'None specified') : '',
       
       // Plus-One Information (conditional)
       show_plus_one: hasPlusOne ? 'yes' : 'no',
@@ -210,8 +278,7 @@ class EmailService {
       website_url: weddingInfo.website || '',
       hashtag: weddingInfo.hashtag || `#${weddingInfo.bride.name}${weddingInfo.groom.name}Wedding`,
       
-      // Submission Details
-      submission_id: this.generateSubmissionId(rsvpData.token),
+      // Submission Type
       submission_type: submissionType
     };
   }
@@ -222,13 +289,31 @@ class EmailService {
   private async sendEmailWithRetry(templateData: EmailTemplateData): Promise<APIResponse<boolean>> {
     let lastError: any;
     
+    // Attempting to send email
+    
     for (let attempt = 1; attempt <= this.MAX_RETRIES; attempt++) {
       try {
+        // Email send attempt
+        // Calling EmailJS API
+        
+        console.log('📧 EmailJS Configuration:', {
+          serviceId: this.config.serviceId,
+          templateId: this.config.templateId,
+          publicKey: this.config.publicKey || 'MISSING',
+          publicKeyLength: this.config.publicKey?.length || 0
+        });
+        console.log('📧 Template data being sent:', JSON.stringify(templateData, null, 2));
+        
         const response = await emailjs.send(
           this.config.serviceId,
           this.config.templateId,
-          templateData
+          templateData,
+          this.config.publicKey
         );
+        
+        console.log('📧 EmailJS response:', response);
+        
+        // EmailJS response received
 
         if (response.status === 200) {
           return { success: true, data: true };
@@ -238,13 +323,31 @@ class EmailService {
         
       } catch (error) {
         lastError = error;
-        console.warn(`Email send attempt ${attempt} failed:`, error);
+        
+        // Multiple ways to ensure error is visible
+        console.error(`📧 EmailService: Attempt ${attempt} failed with error:`, error);
+        console.error(`📧 EmailService: Error message: ${error instanceof Error ? error.message : String(error)}`);
+        console.error(`📧 EmailService: Error name: ${error instanceof Error ? error.name : 'Unknown'}`);
+        console.log(`🚨 EMAIL ATTEMPT ${attempt} FAILED:`, JSON.stringify(error, null, 2));
+        console.warn(`💥 EMAIL ERROR DETAILS:`, {
+          message: error instanceof Error ? error.message : 'No message',
+          toString: String(error),
+          type: typeof error,
+          errorObject: error
+        });
+        
+        if (error instanceof Error && error.stack) {
+          console.error(`📧 EmailService: Error stack:`, error.stack);
+        }
         
         if (attempt < this.MAX_RETRIES) {
+          console.log(`📧 EmailService: Retrying in ${this.RETRY_DELAY * attempt}ms...`);
           await this.delay(this.RETRY_DELAY * attempt);
         }
       }
     }
+    
+    console.error('📧 EmailService: All retry attempts failed. Final error:', lastError);
     
     return {
       success: false,
@@ -395,9 +498,9 @@ class EmailService {
   }
 
   /**
-   * Send client notification email when guest doesn't provide email
+   * Send notification to bride/groom when guest doesn't provide email
    */
-  async sendClientNotificationEmail(rsvpData: RSVPSubmission & { isClientNotification?: boolean }): Promise<APIResponse<boolean>> {
+  async sendBrideGroomNotification(rsvpData: RSVPSubmission & any): Promise<APIResponse<boolean>> {
     try {
       const configValidation = this.validateConfiguration();
       if (!configValidation.isValid) {
@@ -407,29 +510,26 @@ class EmailService {
         };
       }
 
-      // Generate confirmation HTML for attachment
-      const confirmationData = rsvpToConfirmationData(rsvpData);
-      const confirmationHTML = generateConfirmationHTML(confirmationData);
-      
-      // Create client notification template data
+      // Match your EmailJS template variables exactly
       const templateData = {
-        ...this.prepareTemplateData(rsvpData, 'new'),
-        to_name: 'Wedding Team',
-        to_email: 'gabrielsgabriels300@gmail.com',
-        subject: `New RSVP from ${rsvpData.guestName}`,
-        client_notification: 'true',
-        guest_whatsapp: rsvpData.whatsappNumber || 'Not provided',
-        guest_email_provided: rsvpData.email ? 'Yes' : 'No',
-        confirmation_html: confirmationHTML,
-        attachment_filename: `RSVP-${rsvpData.guestName.replace(/\s+/g, '-')}-Confirmation.html`
+        guest_name: rsvpData.guestName,
+        bride_name: weddingInfo.bride.name,
+        groom_name: weddingInfo.groom.name,
+        email_address: rsvpData.to_email || 'jgabriels26@gmail.com',
+        attending: rsvpData.isAttending ? 'YES' : 'NO',
+        meal_choice: rsvpData.mealChoice || 'Not selected',
+        dietary_restrictions: rsvpData.dietaryRestrictions || 'None',
+        special_requests: rsvpData.specialRequests || 'None',
+        guest_email_provided: rsvpData.guest_email || 'No email provided',
+        notification_type: 'Bride/Groom Notification'
       };
 
       return await this.sendEmailWithRetry(templateData);
     } catch (error) {
-      console.error('Error in sendClientNotificationEmail:', error);
+      console.error('Error in sendBrideGroomNotification:', error);
       return {
         success: false,
-        error: error instanceof Error ? error.message : 'Failed to send client notification email'
+        error: error instanceof Error ? error.message : 'Failed to send bride/groom notification'
       };
     }
   }
@@ -437,11 +537,19 @@ class EmailService {
 
 export default EmailService;
 
+// Debug environment variables
+console.log('🔧 EmailJS Environment Variables:', {
+  VITE_EMAILJS_SERVICE_ID: import.meta.env.VITE_EMAILJS_SERVICE_ID,
+  VITE_EMAILJS_TEMPLATE_ID: import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
+  VITE_EMAILJS_PUBLIC_KEY: import.meta.env.VITE_EMAILJS_PUBLIC_KEY,
+  VITE_EMAILJS_PUBLIC_KEY_NEW: import.meta.env.VITE_EMAILJS_PUBLIC_KEY_NEW
+});
+
 // Default email service configuration
 const defaultEmailConfig: EmailJSConfig = {
-  serviceId: import.meta.env.REACT_APP_EMAILJS_SERVICE_ID || import.meta.env.VITE_EMAILJS_SERVICE_ID || '',
-  templateId: import.meta.env.REACT_APP_EMAILJS_TEMPLATE_ID || import.meta.env.VITE_EMAILJS_TEMPLATE_ID || '',
-  publicKey: import.meta.env.REACT_APP_EMAILJS_PUBLIC_KEY || import.meta.env.VITE_EMAILJS_PUBLIC_KEY || ''
+  serviceId: (import.meta.env.REACT_APP_EMAILJS_SERVICE_ID || import.meta.env.VITE_EMAILJS_SERVICE_ID || '').trim(),
+  templateId: (import.meta.env.REACT_APP_EMAILJS_TEMPLATE_ID || import.meta.env.VITE_EMAILJS_TEMPLATE_ID_NEW || import.meta.env.VITE_EMAILJS_TEMPLATE_ID || '').trim(),
+  publicKey: (import.meta.env.REACT_APP_EMAILJS_PUBLIC_KEY || import.meta.env.VITE_EMAILJS_PUBLIC_KEY_NEW || import.meta.env.VITE_EMAILJS_PUBLIC_KEY || '').trim()
 };
 
 // Export configured service instance

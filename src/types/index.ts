@@ -280,10 +280,10 @@ export interface WeddingContact {
   availability?: string;
 }
 
-export interface GoogleSheetsConfig {
-  apiKey: string;
-  sheetId: string;
-  range: string;
+export interface SupabaseConfig {
+  url: string;
+  anonKey: string;
+  serviceRoleKey?: string;
 }
 
 export interface EmailJSConfig {

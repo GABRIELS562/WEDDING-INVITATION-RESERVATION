@@ -2,29 +2,29 @@ import type { WeddingInfo } from '../types';
 
 export const weddingInfo: WeddingInfo = {
   bride: {
-    name: 'Sarah',
-    fullName: 'Sarah Michelle Johnson',
-    email: 'sarah.johnson@email.com',
-    phone: '+1-555-0001'
+    name: 'Kirsten',
+    fullName: 'Kirsten',
+    email: 'kirstendale583@gmail.com',
+    phone: '+27722108714'
   },
   groom: {
-    name: 'Michael',
-    fullName: 'Michael David Thompson',
-    email: 'michael.thompson@email.com',
-    phone: '+1-555-0002'
+    name: 'Dale',
+    fullName: 'Dale',
+    email: 'kirstendale583@gmail.com',
+    phone: '+27722108714'
   },
   date: {
-    ceremony: new Date('2024-08-15T16:00:00'),
-    reception: new Date('2024-08-15T18:00:00'),
-    rsvpDeadline: new Date('2024-07-15T23:59:59')
+    ceremony: new Date('2025-10-31T16:00:00'),
+    reception: new Date('2025-10-31T18:00:00'),
+    rsvpDeadline: new Date('2025-09-30T23:59:59')
   },
   venue: {
     ceremony: {
-      name: 'St. Mary\'s Cathedral',
-      address: '123 Cathedral Avenue',
-      city: 'San Francisco',
-      state: 'CA',
-      zipCode: '94102',
+      name: 'Cape Point Vista',
+      address: 'Cape Point Road',
+      city: 'Cape Town',
+      state: 'Western Cape',
+      zipCode: '8001',
       coordinates: {
         lat: 37.7749,
         lng: -122.4194
@@ -52,11 +52,11 @@ export const weddingInfo: WeddingInfo = {
       dresscode: 'Formal attire requested'
     },
     reception: {
-      name: 'The Grand Ballroom at Hotel Luxe',
-      address: '456 Elegant Street',
-      city: 'San Francisco',
-      state: 'CA',
-      zipCode: '94103',
+      name: 'Cape Point Vista',
+      address: 'Cape Point Road',
+      city: 'Cape Town',
+      state: 'Western Cape',
+      zipCode: '8001',
       coordinates: {
         lat: 37.7849,
         lng: -122.4094
@@ -635,6 +635,6 @@ export const weddingInfo: WeddingInfo = {
       'Children are welcome - please include them in your guest count'
     ]
   },
-  hashtag: '#SarahMichaelSayIDo',
-  website: 'https://sarahmichael2024.wedding.com'
+  hashtag: '#KirstenDaleWedding',
+  website: 'https://kdwedding-pvqiuxtx5-gabriels-projects-036175f3.vercel.app'
 };

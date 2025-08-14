@@ -33,13 +33,18 @@ const rateMetric = (name: string, value: number): 'good' | 'needs-improvement' |
   return 'poor';
 };
 
+// Declare gtag function
+declare global {
+  function gtag(...args: any[]): void;
+}
+
 // Send analytics data to monitoring service
 const sendToAnalytics = (data: AnalyticsData) => {
   if (!import.meta.env.VITE_WEB_VITALS_ENABLED) return;
   
   // Send to Google Analytics 4
-  if (typeof gtag !== 'undefined') {
-    gtag('event', data.metric.name, {
+  if (typeof window !== 'undefined' && 'gtag' in window) {
+    (window as any).gtag('event', data.metric.name, {
       custom_map: { metric_value: 'custom_metric_value' },
       custom_metric_value: data.metric.value,
       metric_rating: data.metric.rating,
@@ -258,7 +263,8 @@ export const trackRSVPMetrics = {
   },
   formError: (error: string) => trackCustomMetric('rsvp_form_error', 1, { error }),
   emailSent: (duration: number) => trackCustomMetric('rsvp_email_duration', duration),
-  sheetsWrite: (duration: number) => trackCustomMetric('rsvp_sheets_duration', duration)
+  databaseWrite: (duration: number) => trackCustomMetric('rsvp_database_duration', duration),
+  supabaseQuery: (duration: number) => trackCustomMetric('supabase_query_duration', duration)
 };
 
 // Resource loading performance

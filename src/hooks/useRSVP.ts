@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import type { APIResponse, FormErrors, RSVPSubmission, IndividualGuest } from '../types';
-import { googleSheetsService } from '../services/GoogleSheetsService';
+import { supabaseService } from '../services/supabaseService';
 import EmailService from '../utils/emailService';
 import { validateToken } from '../utils/guestSecurity';
 
@@ -39,8 +39,8 @@ export const useRSVP = (): UseRSVPReturn => {
         return { success: false, error: 'Invalid guest token' };
       }
 
-      // Submit to Google Sheets using the robust service
-      const rsvpResponse = await googleSheetsService.submitGuestRSVP(rsvpData, guestInfo);
+      // Submit to Supabase using the robust service
+      const rsvpResponse = await supabaseService.submitGuestRSVP(rsvpData, guestInfo);
       
       if (!rsvpResponse.success) {
         setErrors({ submit: rsvpResponse.error || 'Failed to submit RSVP' });
@@ -55,8 +55,8 @@ export const useRSVP = (): UseRSVPReturn => {
         try {
           const emailResponse = await emailService.sendConfirmationEmail(rsvpData);
           if (emailResponse.success) {
-            // Update email status in sheets
-            await googleSheetsService.updateEmailStatus(rsvpData.token, true);
+            // Update email status in database
+            await supabaseService.updateEmailStatus(rsvpData.token, true);
           }
         } catch (error) {
           console.warn('RSVP submitted but confirmation email failed:', error);
@@ -88,8 +88,8 @@ export const useRSVP = (): UseRSVPReturn => {
         return { success: false, error: 'Invalid guest token' };
       }
 
-      // Update in Google Sheets using the robust service
-      const updateResponse = await googleSheetsService.updateGuestRSVP(rsvpData, guestInfo);
+      // Update in Supabase using the robust service
+      const updateResponse = await supabaseService.updateGuestRSVP(rsvpData, guestInfo);
       
       if (!updateResponse.success) {
         setErrors({ submit: updateResponse.error || 'Failed to update RSVP' });
@@ -104,8 +104,8 @@ export const useRSVP = (): UseRSVPReturn => {
         try {
           const emailResponse = await emailService.sendConfirmationEmail(rsvpData);
           if (emailResponse.success) {
-            // Update email status in sheets
-            await googleSheetsService.updateEmailStatus(rsvpData.token, true);
+            // Update email status in database
+            await supabaseService.updateEmailStatus(rsvpData.token, true);
           }
         } catch (error) {
           console.warn('RSVP updated but notification email failed:', error);
@@ -129,7 +129,7 @@ export const useRSVP = (): UseRSVPReturn => {
     setErrors({});
 
     try {
-      const response = await googleSheetsService.getGuestRSVPByToken(guestToken);
+      const response = await supabaseService.getGuestRSVPByToken(guestToken);
       
       if (!response.success) {
         setErrors({ load: response.error || 'Failed to load existing RSVP' });

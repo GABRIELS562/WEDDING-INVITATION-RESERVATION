@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom';
 import { RSVPFormComponent } from './components/RSVPFormComponent';
-import { GuestInvitationManager } from './components/GuestInvitationManager';
+import SimpleAdminDashboard from './components/SimpleAdminDashboard';
 import { useState, useEffect } from 'react';
 
 const CountdownTimer = () => {
@@ -85,16 +85,14 @@ const WeddingWebsite = () => {
   const urlParams = new URLSearchParams(window.location.search);
   const guestToken = params.token || urlParams.get('guest');
   
-  console.log('WeddingWebsite - URL params:', params);
-  console.log('WeddingWebsite - Query params:', Object.fromEntries(urlParams));
-  console.log('WeddingWebsite - Final guest token:', guestToken);
+  // URL parameter processing
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
-  const handleNavClick = (e, elementId) => {
+  const handleNavClick = (e: React.MouseEvent, elementId: string) => {
     e.preventDefault();
     const element = document.getElementById(elementId);
     if (element) {
@@ -164,12 +162,12 @@ const WeddingWebsite = () => {
                 borderBottom: '2px solid transparent'
               }}
               onMouseEnter={(e) => {
-                e.target.style.color = '#C9A96E';
-                e.target.style.borderBottomColor = '#C9A96E';
+                (e.target as HTMLElement).style.color = '#C9A96E';
+                (e.target as HTMLElement).style.borderBottomColor = '#C9A96E';
               }}
               onMouseLeave={(e) => {
-                e.target.style.color = '#8B7355';
-                e.target.style.borderBottomColor = 'transparent';
+                (e.target as HTMLElement).style.color = '#8B7355';
+                (e.target as HTMLElement).style.borderBottomColor = 'transparent';
               }}
             >Our Story</a>
             <a 
@@ -187,12 +185,12 @@ const WeddingWebsite = () => {
                 borderBottom: '2px solid transparent'
               }}
               onMouseEnter={(e) => {
-                e.target.style.color = '#C9A96E';
-                e.target.style.borderBottomColor = '#C9A96E';
+                (e.target as HTMLElement).style.color = '#C9A96E';
+                (e.target as HTMLElement).style.borderBottomColor = '#C9A96E';
               }}
               onMouseLeave={(e) => {
-                e.target.style.color = '#8B7355';
-                e.target.style.borderBottomColor = 'transparent';
+                (e.target as HTMLElement).style.color = '#8B7355';
+                (e.target as HTMLElement).style.borderBottomColor = 'transparent';
               }}
             >Venue</a>
             <a 
@@ -210,12 +208,12 @@ const WeddingWebsite = () => {
                 borderBottom: '2px solid transparent'
               }}
               onMouseEnter={(e) => {
-                e.target.style.color = '#C9A96E';
-                e.target.style.borderBottomColor = '#C9A96E';
+                (e.target as HTMLElement).style.color = '#C9A96E';
+                (e.target as HTMLElement).style.borderBottomColor = '#C9A96E';
               }}
               onMouseLeave={(e) => {
-                e.target.style.color = '#8B7355';
-                e.target.style.borderBottomColor = 'transparent';
+                (e.target as HTMLElement).style.color = '#8B7355';
+                (e.target as HTMLElement).style.borderBottomColor = 'transparent';
               }}
             >The Big Day</a>
             <a 
@@ -235,14 +233,14 @@ const WeddingWebsite = () => {
                 boxShadow: '0 4px 15px rgba(201, 169, 110, 0.3)'
               }}
               onMouseEnter={(e) => {
-                e.target.style.backgroundColor = '#B8956A';
-                e.target.style.transform = 'translateY(-2px)';
-                e.target.style.boxShadow = '0 6px 20px rgba(201, 169, 110, 0.4)';
+                (e.target as HTMLElement).style.backgroundColor = '#B8956A';
+                (e.target as HTMLElement).style.transform = 'translateY(-2px)';
+                (e.target as HTMLElement).style.boxShadow = '0 6px 20px rgba(201, 169, 110, 0.4)';
               }}
               onMouseLeave={(e) => {
-                e.target.style.backgroundColor = '#C9A96E';
-                e.target.style.transform = 'translateY(0)';
-                e.target.style.boxShadow = '0 4px 15px rgba(201, 169, 110, 0.3)';
+                (e.target as HTMLElement).style.backgroundColor = '#C9A96E';
+                (e.target as HTMLElement).style.transform = 'translateY(0)';
+                (e.target as HTMLElement).style.boxShadow = '0 4px 15px rgba(201, 169, 110, 0.3)';
               }}
             >RSVP</a>
           </div>
@@ -267,12 +265,12 @@ const WeddingWebsite = () => {
             }}
             className="mobile-menu-button"
             onMouseEnter={(e) => {
-              e.target.style.backgroundColor = 'rgba(201, 169, 110, 0.2)';
-              e.target.style.borderColor = 'rgba(201, 169, 110, 0.4)';
+              (e.target as HTMLElement).style.backgroundColor = 'rgba(201, 169, 110, 0.2)';
+              (e.target as HTMLElement).style.borderColor = 'rgba(201, 169, 110, 0.4)';
             }}
             onMouseLeave={(e) => {
-              e.target.style.backgroundColor = 'rgba(201, 169, 110, 0.1)';
-              e.target.style.borderColor = 'rgba(201, 169, 110, 0.2)';
+              (e.target as HTMLElement).style.backgroundColor = 'rgba(201, 169, 110, 0.1)';
+              (e.target as HTMLElement).style.borderColor = 'rgba(201, 169, 110, 0.2)';
             }}
           >
             <span style={{
@@ -432,14 +430,14 @@ const WeddingWebsite = () => {
               margin: '2rem auto 0'
             }}
             onMouseEnter={(e) => {
-              e.target.style.backgroundColor = '#B8956A';
-              e.target.style.transform = 'translateY(-3px)';
-              e.target.style.boxShadow = '0 12px 35px rgba(201, 169, 110, 0.5)';
+              (e.target as HTMLElement).style.backgroundColor = '#B8956A';
+              (e.target as HTMLElement).style.transform = 'translateY(-3px)';
+              (e.target as HTMLElement).style.boxShadow = '0 12px 35px rgba(201, 169, 110, 0.5)';
             }}
             onMouseLeave={(e) => {
-              e.target.style.backgroundColor = '#C9A96E';
-              e.target.style.transform = 'translateY(0)';
-              e.target.style.boxShadow = '0 8px 25px rgba(201, 169, 110, 0.4)';
+              (e.target as HTMLElement).style.backgroundColor = '#C9A96E';
+              (e.target as HTMLElement).style.transform = 'translateY(0)';
+              (e.target as HTMLElement).style.boxShadow = '0 8px 25px rgba(201, 169, 110, 0.4)';
             }}
           >
             RSVP Now
@@ -699,14 +697,14 @@ const WeddingWebsite = () => {
                 minWidth: '180px'
               }}
               onMouseEnter={(e) => {
-                e.target.style.backgroundColor = '#B8956A';
-                e.target.style.transform = 'translateY(-2px)';
-                e.target.style.boxShadow = '0 12px 30px rgba(201, 169, 110, 0.4)';
+                (e.target as HTMLElement).style.backgroundColor = '#B8956A';
+                (e.target as HTMLElement).style.transform = 'translateY(-2px)';
+                (e.target as HTMLElement).style.boxShadow = '0 12px 30px rgba(201, 169, 110, 0.4)';
               }}
               onMouseLeave={(e) => {
-                e.target.style.backgroundColor = '#C9A96E';
-                e.target.style.transform = 'translateY(0)';
-                e.target.style.boxShadow = '0 8px 25px rgba(201, 169, 110, 0.3)';
+                (e.target as HTMLElement).style.backgroundColor = '#C9A96E';
+                (e.target as HTMLElement).style.transform = 'translateY(0)';
+                (e.target as HTMLElement).style.boxShadow = '0 8px 25px rgba(201, 169, 110, 0.3)';
               }}
             >
               Visit Venue Website
@@ -729,14 +727,14 @@ const WeddingWebsite = () => {
                 minWidth: '180px'
               }}
               onMouseEnter={(e) => {
-                e.target.style.backgroundColor = '#C9A96E';
-                e.target.style.color = 'white';
-                e.target.style.transform = 'translateY(-2px)';
+                (e.target as HTMLElement).style.backgroundColor = '#C9A96E';
+                (e.target as HTMLElement).style.color = 'white';
+                (e.target as HTMLElement).style.transform = 'translateY(-2px)';
               }}
               onMouseLeave={(e) => {
-                e.target.style.backgroundColor = 'transparent';
-                e.target.style.color = '#C9A96E';
-                e.target.style.transform = 'translateY(0)';
+                (e.target as HTMLElement).style.backgroundColor = 'transparent';
+                (e.target as HTMLElement).style.color = '#C9A96E';
+                (e.target as HTMLElement).style.transform = 'translateY(0)';
               }}
             >
               Get Directions
@@ -1020,7 +1018,7 @@ const WeddingWebsite = () => {
             </p>
           </div>
           
-          <RSVPFormComponent guestToken={guestToken} />
+          <RSVPFormComponent guestToken={guestToken || undefined} />
           
           {/* Gift Message Section */}
           <div style={{
@@ -1183,24 +1181,7 @@ const WeddingWebsite = () => {
 };
 
 const AdminPage = () => {
-  return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#F8F6F0' }}>
-      <div style={{
-        padding: '2rem',
-        textAlign: 'center',
-        backgroundColor: '#fff',
-        borderBottom: '1px solid #E5D5B7'
-      }}>
-        <h1 style={{ color: '#C9A96E', fontSize: '2.5rem', margin: 0 }}>
-          Kirsten & Dale Wedding Admin
-        </h1>
-        <p style={{ color: '#8B7355', fontSize: '1.1rem', margin: '0.5rem 0 0 0' }}>
-          Guest Invitation & RSVP Management
-        </p>
-      </div>
-      <GuestInvitationManager baseUrl={window.location.origin} />
-    </div>
-  );
+  return <SimpleAdminDashboard />;
 };
 
 function App() {
