@@ -15,7 +15,7 @@ interface RSVP {
   updated_at?: string;
 }
 
-const SimpleAdminDashboard: React.FC = () => {
+const StandaloneAdmin: React.FC = () => {
   const [password, setPassword] = useState('');
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [rsvps, setRsvps] = useState<RSVP[]>([]);
@@ -47,11 +47,19 @@ const SimpleAdminDashboard: React.FC = () => {
   const loadRSVPs = async () => {
     setLoading(true);
     try {
-      // This is a simplified version - in a real app you'd have proper admin endpoints
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/rest/v1/rsvps?select=*`, {
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+      
+      if (!supabaseUrl || !supabaseKey) {
+        console.error('Supabase not configured');
+        setLoading(false);
+        return;
+      }
+
+      const response = await fetch(`${supabaseUrl}/rest/v1/rsvps?select=*`, {
         headers: {
-          'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY,
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`
         }
       });
       
@@ -94,11 +102,14 @@ const SimpleAdminDashboard: React.FC = () => {
     }
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/rest/v1/rsvps?id=eq.${rsvpId}`, {
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+      
+      const response = await fetch(`${supabaseUrl}/rest/v1/rsvps?id=eq.${rsvpId}`, {
         method: 'DELETE',
         headers: {
-          'apikey': import.meta.env.VITE_SUPABASE_ANON_KEY,
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          'apikey': supabaseKey,
+          'Authorization': `Bearer ${supabaseKey}`,
           'Content-Type': 'application/json',
           'Prefer': 'return=minimal'
         }
@@ -115,8 +126,6 @@ const SimpleAdminDashboard: React.FC = () => {
       alert('Error deleting RSVP');
     }
   };
-
-  // Removed bulk delete function for safety - individual deletes only
 
   if (!isAuthenticated) {
     return (
@@ -191,54 +200,68 @@ const SimpleAdminDashboard: React.FC = () => {
     );
   }
 
+  // Check if mobile
+  const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+
   return (
     <div style={{ 
       minHeight: '100vh', 
       backgroundColor: '#f8f6f0',
-      padding: '2rem'
+      padding: isMobile ? '0.5rem' : '2rem'
     }}>
       <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
         <div style={{
           display: 'flex',
+          flexDirection: isMobile ? 'column' : 'row',
           justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '2rem'
+          alignItems: isMobile ? 'stretch' : 'center',
+          marginBottom: '2rem',
+          gap: '1rem'
         }}>
           <h1 style={{ 
             color: '#8B7355',
             fontFamily: "'Playfair Display', serif",
-            fontSize: '2.5rem'
+            fontSize: isMobile ? '1.5rem' : '2.5rem',
+            textAlign: isMobile ? 'center' : 'left',
+            marginBottom: isMobile ? '1rem' : '0'
           }}>
             Dale & Kirsten's Wedding Admin
           </h1>
-          <div style={{ display: 'flex', gap: '1rem' }}>
+          <div style={{ 
+            display: 'flex', 
+            gap: '0.5rem',
+            flexWrap: 'wrap',
+            justifyContent: isMobile ? 'center' : 'flex-end'
+          }}>
             <button
               onClick={() => loadRSVPs()}
               style={{
-                padding: '0.8rem 1.5rem',
+                padding: isMobile ? '0.7rem 1rem' : '0.8rem 1.5rem',
                 backgroundColor: '#C9A96E',
                 color: 'white',
                 border: 'none',
                 borderRadius: '10px',
                 cursor: 'pointer',
-                fontSize: '0.9rem'
+                fontSize: isMobile ? '0.8rem' : '0.9rem',
+                minWidth: isMobile ? '100px' : 'auto'
               }}
             >
-              Refresh Data
+              Refresh
             </button>
             <button
               onClick={() => setShowWhatsAppLinks(!showWhatsAppLinks)}
               style={{
-                padding: '0.8rem 1.5rem',
+                padding: isMobile ? '0.7rem 1rem' : '0.8rem 1.5rem',
                 backgroundColor: '#4CAF50',
                 color: 'white',
                 border: 'none',
                 borderRadius: '10px',
                 cursor: 'pointer',
-                fontSize: '0.9rem'
+                fontSize: isMobile ? '0.8rem' : '0.9rem',
+                minWidth: isMobile ? '100px' : 'auto'
               }}
             >
-              WhatsApp Links
+              WhatsApp
             </button>
             <button
               onClick={() => {
@@ -246,13 +269,14 @@ const SimpleAdminDashboard: React.FC = () => {
                 setPassword('');
               }}
               style={{
-                padding: '0.8rem 1.5rem',
+                padding: isMobile ? '0.7rem 1rem' : '0.8rem 1.5rem',
                 backgroundColor: '#F44336',
                 color: 'white',
                 border: 'none',
                 borderRadius: '10px',
                 cursor: 'pointer',
-                fontSize: '0.9rem'
+                fontSize: isMobile ? '0.8rem' : '0.9rem',
+                minWidth: isMobile ? '100px' : 'auto'
               }}
             >
               Logout
@@ -264,8 +288,8 @@ const SimpleAdminDashboard: React.FC = () => {
         {!showWhatsAppLinks && (
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-          gap: '1.5rem',
+          gridTemplateColumns: isMobile ? 'repeat(2, 1fr)' : 'repeat(auto-fit, minmax(250px, 1fr))',
+          gap: isMobile ? '0.5rem' : '1.5rem',
           marginBottom: '3rem'
         }}>
           <div style={{
@@ -534,7 +558,7 @@ const SimpleAdminDashboard: React.FC = () => {
             </h2>
           </div>
           
-          <div style={{ maxHeight: '600px', overflowY: 'auto' }}>
+          <div style={{ maxHeight: '600px', overflowY: 'auto', overflowX: isMobile ? 'auto' : 'visible' }}>
             {loading ? (
               <div style={{ padding: '3rem', textAlign: 'center', color: '#8B7355' }}>
                 Loading RSVPs...
@@ -647,4 +671,4 @@ const SimpleAdminDashboard: React.FC = () => {
   );
 };
 
-export default SimpleAdminDashboard;
+export default StandaloneAdmin;

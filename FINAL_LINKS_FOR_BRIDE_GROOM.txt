@@ -1,0 +1,70 @@
+================================================
+DALE & KIRSTEN - YOUR WEDDING RSVP SYSTEM
+================================================
+
+Hi Dale & Kirsten! 
+
+Your wedding RSVP system is ready! Here's everything you need:
+
+------------------------------------------------
+YOUR PRIVATE ADMIN DASHBOARD
+------------------------------------------------
+Link: https://kdwedding.vercel.app/#/admin
+Password: dalekirsten2025
+
+Use this to:
+- See who has RSVP'd
+- Check meal choices
+- View dietary requirements  
+- Get WhatsApp invitation links for all guests
+
+------------------------------------------------
+YOUR WEDDING WEBSITE
+------------------------------------------------
+Link: https://kdwedding.vercel.app
+
+This is where guests will RSVP. Each guest needs their own unique link 
+(you'll find these in the admin dashboard under "WhatsApp Links")
+
+------------------------------------------------
+HOW TO SEND INVITATIONS
+------------------------------------------------
+1. Go to: https://kdwedding.vercel.app/#/admin
+2. Login with password: dalekirsten2025
+3. Click the green "WhatsApp Links" button
+4. For each guest, click "WhatsApp" to send their invitation
+
+------------------------------------------------
+IMPORTANT REMINDERS
+------------------------------------------------
+• Each guest has their own unique link - don't share the wrong link!
+• Check the dashboard daily for new RSVPs
+• Pay special attention to dietary restrictions
+• The system sends you emails at kirstendale583@gmail.com
+• Keep the admin password private
+• Set RSVP deadline for October 1st, 2025
+
+------------------------------------------------
+GUEST LIST
+------------------------------------------------
+Total: 110 guests
+Each has their own unique invitation link in the dashboard
+
+------------------------------------------------
+THESE LINKS WORK ON ALL DEVICES
+------------------------------------------------
+✓ Mobile phones
+✓ Tablets  
+✓ Computers
+✓ No login required for guests
+✓ Admin dashboard is password protected
+
+------------------------------------------------
+SUPPORT
+------------------------------------------------
+If you have any questions or issues, please let me know immediately.
+The system has been thoroughly tested and is ready for your guests!
+
+Wishing you both a wonderful wedding!
+
+================================================

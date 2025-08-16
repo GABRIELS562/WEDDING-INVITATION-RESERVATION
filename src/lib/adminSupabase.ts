@@ -412,6 +412,86 @@ class AdminSupabaseService {
   }
 
   /**
+   * Delete RSVP entry by guest ID
+   */
+  async deleteRSVP(guestId: string): Promise<AdminApiResponse<void>> {
+    try {
+      // First delete the RSVP entry
+      const { error: rsvpError } = await supabase
+        .from('rsvps')
+        .delete()
+        .eq('guest_id', guestId);
+
+      if (rsvpError) throw rsvpError;
+
+      return { success: true };
+    } catch (error) {
+      console.error('Error deleting RSVP:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to delete RSVP'
+      };
+    }
+  }
+
+  /**
+   * Delete multiple RSVPs at once
+   */
+  async deleteMultipleRSVPs(guestIds: string[]): Promise<AdminApiResponse<void>> {
+    try {
+      const { error } = await supabase
+        .from('rsvps')
+        .delete()
+        .in('guest_id', guestIds);
+
+      if (error) throw error;
+
+      return { success: true };
+    } catch (error) {
+      console.error('Error deleting RSVPs:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to delete RSVPs'
+      };
+    }
+  }
+
+  /**
+   * Delete test RSVPs (Jaime/Jamie entries)
+   */
+  async deleteTestRSVPs(): Promise<AdminApiResponse<{ deletedCount: number }>> {
+    try {
+      // Find all test RSVPs
+      const { data: testRsvps, error: fetchError } = await supabase
+        .from('rsvps')
+        .select('id, guest_name')
+        .or('guest_name.ilike.%jaime%,guest_name.ilike.%jamie%,guest_name.ilike.%test%');
+
+      if (fetchError) throw fetchError;
+
+      if (!testRsvps || testRsvps.length === 0) {
+        return { success: true, data: { deletedCount: 0 } };
+      }
+
+      // Delete test RSVPs
+      const { error: deleteError } = await supabase
+        .from('rsvps')
+        .delete()
+        .or('guest_name.ilike.%jaime%,guest_name.ilike.%jamie%,guest_name.ilike.%test%');
+
+      if (deleteError) throw deleteError;
+
+      return { success: true, data: { deletedCount: testRsvps.length } };
+    } catch (error) {
+      console.error('Error deleting test RSVPs:', error);
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Failed to delete test RSVPs'
+      };
+    }
+  }
+
+  /**
    * Get recent activity for notifications
    */
   async getRecentActivity(limit: number = 10): Promise<AdminApiResponse<AdminNotification[]>> {

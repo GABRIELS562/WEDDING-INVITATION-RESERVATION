@@ -1,7 +1,7 @@
 import emailjs from '@emailjs/browser';
 import type { EmailJSConfig, RSVPFormData, RSVPSubmission, APIResponse } from '../types';
 import { weddingInfo } from '../data/weddingInfo';
-import { generateConfirmationHTML, rsvpToConfirmationData } from './pdfGenerator';
+import { generateConfirmationHTML, rsvpToConfirmationData, type RSVPConfirmationData } from './pdfGenerator';
 
 interface EmailTemplateData extends Record<string, unknown> {
   // Header Information
@@ -129,22 +129,25 @@ class EmailService {
         };
       }
 
-      // Validate email address
-      if (!rsvpData.email || !this.isValidEmail(rsvpData.email)) {
-        return {
-          success: false,
-          error: 'Invalid email address provided'
-        };
-      }
+      // If no email provided or invalid, send to bride/groom email
+      const recipientEmail = (!rsvpData.email || !this.isValidEmail(rsvpData.email)) 
+        ? 'kirstendale583@gmail.com' 
+        : rsvpData.email;
+      
+      // Update rsvpData with the correct recipient email for template
+      const updatedRsvpData = {
+        ...rsvpData,
+        email: recipientEmail
+      };
 
       // Prepare template data with conditional content
-      const templateData = this.prepareTemplateData(rsvpData);
+      const templateData = this.prepareTemplateData(updatedRsvpData);
       
       // Send email with retry logic
       const result = await this.sendEmailWithRetry(templateData);
       
       if (result.success) {
-        console.log(`Confirmation email sent successfully to ${rsvpData.email}`);
+        console.log(`Confirmation email sent successfully to ${recipientEmail}`);
       }
       
       return result;
@@ -189,6 +192,7 @@ class EmailService {
    */
   private prepareTemplateData(rsvpData: RSVPSubmission, submissionType: 'new' | 'update' = 'new'): any {
     const isAttending = rsvpData.isAttending;
+    const isForBrideGroom = !rsvpData.email || rsvpData.email === '' || rsvpData.email === 'kirstendale583@gmail.com';
     
     // Simple template data matching your EmailJS template exactly
     const templateData = {
@@ -196,20 +200,71 @@ class EmailService {
       guest_name: rsvpData.guestName,
       bride_name: 'Kirsten',
       groom_name: 'Dale', 
-      email_address: rsvpData.email || 'kirstendale583@gmail.com',
+      email_address: rsvpData.email || 'kirstendale583@gmail.com', // This will be kirstendale583@gmail.com when no guest email
       
-      // RSVP details
-      attending: isAttending ? 'YES' : 'NO',
-      meal_choice: rsvpData.mealChoice || 'Not selected',
-      dietary_restrictions: rsvpData.dietaryRestrictions || 'None',
-      special_requests: rsvpData.specialRequests || 'None',
+      // RSVP details - using actual values
+      attending: isAttending ? '✅ YES - We\'ll be there!' : '❌ Unable to attend',
+      meal_choice: rsvpData.mealChoice && rsvpData.mealChoice !== '' ? rsvpData.mealChoice : 'Not selected',
+      dietary_restrictions: rsvpData.dietaryRestrictions && rsvpData.dietaryRestrictions !== '' ? rsvpData.dietaryRestrictions : 'None',
+      special_requests: rsvpData.specialRequests && rsvpData.specialRequests !== '' ? rsvpData.specialRequests : 'None',
       
       // Wedding details
-      wedding_date: 'October 31st, 2025'
+      wedding_date: 'October 31st, 2025',
+      
+      // Add note if guest didn't provide email
+      guest_note: isForBrideGroom ? '(Guest did not provide email - please forward via WhatsApp)' : ''
     };
     
     console.log('🎉 Final template data for EmailJS:', templateData);
     return templateData;
+  }
+  
+  /**
+   * Generate WhatsApp-friendly card content for email
+   */
+  private generateWhatsAppCardContent(data: RSVPConfirmationData): string {
+    const attendanceText = data.attendance === 'yes' ? '✅ ATTENDING' : '❌ NOT ATTENDING';
+    const mealText = data.attendance === 'yes' && data.mealChoice ? `\n🍽️ Meal: ${data.mealChoice}` : '';
+    const dietaryText = data.dietaryRestrictions ? `\n🥗 Dietary: ${data.dietaryRestrictions}` : '';
+    const requestText = data.specialRequests ? `\n💬 Special Request: ${data.specialRequests}` : '';
+    
+    return `
+━━━━━━━━━━━━━━━━━━━━━
+      WHATSAPP MESSAGE TO SEND
+━━━━━━━━━━━━━━━━━━━━━
+
+Copy and send this to ${data.guestName}:
+
+📬 RSVP CONFIRMATION
+Kirsten & Dale's Wedding
+October 31st, 2025
+
+Dear ${data.guestName},
+
+Your RSVP has been received!
+
+${attendanceText}${mealText}${dietaryText}${requestText}
+
+${data.attendance === 'yes' ? `
+📅 Wedding Schedule:
+• 4:00 PM - Ceremony
+• 5:00 PM - Cocktails
+• 6:00 PM - Reception
+
+📍 Cape Point Vineyards
+Silvermine Road, Noordhoek
+Cape Town
+
+We can't wait to celebrate with you! 💕
+` : `
+We're sorry you can't make it, but we understand. We'll miss having you there! 💔
+`}
+Questions? Contact:
+kirstendale583@gmail.com
+
+#DaleKirstenWedding
+━━━━━━━━━━━━━━━━━━━━━
+    `;
   }
   
   /**
@@ -224,7 +279,7 @@ class EmailService {
       guest_name: rsvpData.guestName,
       bride_name: weddingInfo.bride.name,
       groom_name: weddingInfo.groom.name,
-      email_address: rsvpData.email || 'jgabriels26@gmail.com',
+      email_address: rsvpData.email || 'kirstendale583@gmail.com',
       
       // Additional template data for compatibility
       couple_names: `${weddingInfo.bride.name} & ${weddingInfo.groom.name}`,
@@ -515,7 +570,7 @@ class EmailService {
         guest_name: rsvpData.guestName,
         bride_name: weddingInfo.bride.name,
         groom_name: weddingInfo.groom.name,
-        email_address: rsvpData.to_email || 'jgabriels26@gmail.com',
+        email_address: rsvpData.to_email || 'kirstendale583@gmail.com',
         attending: rsvpData.isAttending ? 'YES' : 'NO',
         meal_choice: rsvpData.mealChoice || 'Not selected',
         dietary_restrictions: rsvpData.dietaryRestrictions || 'None',

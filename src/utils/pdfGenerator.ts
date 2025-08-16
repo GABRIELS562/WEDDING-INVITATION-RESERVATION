@@ -17,7 +17,7 @@ export interface RSVPConfirmationData {
 export function generateConfirmationHTML(data: RSVPConfirmationData): string {
   const attendanceText = data.attendance === 'yes' ? 'ATTENDING' : 'NOT ATTENDING';
   const attendanceColor = data.attendance === 'yes' ? '#4CAF50' : '#F44336';
-  const attendanceIcon = data.attendance === 'yes' ? '✅' : '❌';
+  const attendanceIcon = data.attendance === 'yes' ? 'Yes' : 'No';
   
   return `
     <!DOCTYPE html>
@@ -221,10 +221,174 @@ export function generateConfirmationHTML(data: RSVPConfirmationData): string {
 }
 
 /**
+ * Generate WhatsApp-friendly confirmation card for sharing
+ */
+export function generateWhatsAppCard(data: RSVPConfirmationData): string {
+  const attendanceText = data.attendance === 'yes' ? 'ATTENDING' : 'NOT ATTENDING';
+  const attendanceColor = data.attendance === 'yes' ? '#4CAF50' : '#F44336';
+  
+  return `
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>RSVP Confirmation - ${data.guestName}</title>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            
+            body {
+                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+                background: #f5f5f5;
+                padding: 20px;
+            }
+            
+            .card {
+                max-width: 400px;
+                margin: 0 auto;
+                background: white;
+                border-radius: 16px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+                overflow: hidden;
+            }
+            
+            .header {
+                background: linear-gradient(135deg, #C9A96E 0%, #D4B886 100%);
+                color: white;
+                padding: 24px;
+                text-align: center;
+            }
+            
+            .title {
+                font-size: 24px;
+                font-weight: bold;
+                margin-bottom: 8px;
+            }
+            
+            .date {
+                font-size: 14px;
+                opacity: 0.9;
+            }
+            
+            .status {
+                background: ${attendanceColor};
+                color: white;
+                padding: 12px;
+                text-align: center;
+                font-weight: bold;
+                font-size: 18px;
+            }
+            
+            .content {
+                padding: 24px;
+            }
+            
+            .guest-name {
+                font-size: 20px;
+                font-weight: bold;
+                color: #333;
+                margin-bottom: 16px;
+                text-align: center;
+            }
+            
+            .detail {
+                padding: 12px;
+                background: #f8f8f8;
+                border-radius: 8px;
+                margin-bottom: 12px;
+            }
+            
+            .detail-label {
+                font-size: 12px;
+                color: #666;
+                text-transform: uppercase;
+                margin-bottom: 4px;
+            }
+            
+            .detail-value {
+                font-size: 14px;
+                color: #333;
+            }
+            
+            .footer {
+                padding: 16px;
+                background: #f8f8f8;
+                text-align: center;
+                font-size: 12px;
+                color: #666;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="card">
+            <div class="header">
+                <div class="title">Kirsten & Dale's Wedding</div>
+                <div class="date">October 31st, 2025 • Cape Point Vineyards</div>
+            </div>
+            
+            <div class="status">${attendanceText}</div>
+            
+            <div class="content">
+                <div class="guest-name">${data.guestName}</div>
+                
+                ${data.attendance === 'yes' && data.mealChoice ? `
+                <div class="detail">
+                    <div class="detail-label">Meal Selection</div>
+                    <div class="detail-value">${data.mealChoice}</div>
+                </div>
+                ` : ''}
+                
+                ${data.dietaryRestrictions ? `
+                <div class="detail">
+                    <div class="detail-label">Dietary Requirements</div>
+                    <div class="detail-value">${data.dietaryRestrictions}</div>
+                </div>
+                ` : ''}
+                
+                ${data.specialRequests ? `
+                <div class="detail">
+                    <div class="detail-label">Special Message</div>
+                    <div class="detail-value">${data.specialRequests}</div>
+                </div>
+                ` : ''}
+                
+                <div class="detail">
+                    <div class="detail-label">Submitted</div>
+                    <div class="detail-value">${data.submittedAt.toLocaleDateString('en-US', {
+                        weekday: 'short',
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric'
+                    })}</div>
+                </div>
+            </div>
+            
+            <div class="footer">
+                Thank you for your response!
+            </div>
+        </div>
+    </body>
+    </html>
+  `;
+}
+
+/**
  * Generate downloadable HTML file as Blob
  */
 export function generateConfirmationFile(data: RSVPConfirmationData): Blob {
   const htmlContent = generateConfirmationHTML(data);
+  return new Blob([htmlContent], { type: 'text/html' });
+}
+
+/**
+ * Generate WhatsApp card as Blob for email attachment
+ */
+export function generateWhatsAppCardFile(data: RSVPConfirmationData): Blob {
+  const htmlContent = generateWhatsAppCard(data);
   return new Blob([htmlContent], { type: 'text/html' });
 }
 
@@ -273,6 +437,8 @@ export function rsvpToConfirmationData(rsvp: RSVPSubmission): RSVPConfirmationDa
 export default {
   generateConfirmationHTML,
   generateConfirmationFile,
+  generateWhatsAppCard,
+  generateWhatsAppCardFile,
   createDownloadLink,
   downloadConfirmation,
   rsvpToConfirmationData

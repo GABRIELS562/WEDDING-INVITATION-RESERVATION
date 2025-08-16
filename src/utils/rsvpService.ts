@@ -51,8 +51,9 @@ export async function submitRSVP(rsvpData: RSVPSubmission): Promise<RSVPResult> 
 
     // Database operations are handled in the useRSVP hook via supabaseService
 
-    // Send confirmation email if requested
-    if (rsvpData.wantsEmailConfirmation && rsvpData.email) {
+    // Send confirmation email if requested OR if no guest email provided
+    // Always notify bride/groom when guest doesn't provide email
+    if (rsvpData.wantsEmailConfirmation || !rsvpData.email || rsvpData.email === '') {
       try {
         await sendConfirmationEmail(rsvpData);
       } catch (error) {
@@ -106,8 +107,9 @@ export async function updateRSVP(rsvpData: RSVPSubmission): Promise<RSVPResult> 
 
     // Database operations are handled in the useRSVP hook via supabaseService
 
-    // Send confirmation email if requested
-    if (rsvpData.wantsEmailConfirmation && rsvpData.email) {
+    // Send confirmation email if requested OR if no guest email provided
+    // Always notify bride/groom when guest doesn't provide email
+    if (rsvpData.wantsEmailConfirmation || !rsvpData.email || rsvpData.email === '') {
       try {
         await sendConfirmationEmail(rsvpData);
       } catch (error) {
@@ -197,8 +199,9 @@ function validateRSVPData(rsvpData: RSVPSubmission): { isValid: boolean; error?:
     return { isValid: false, error: 'Plus-one meal selection is required' };
   }
 
-  // Email validation if confirmation is requested
-  if (rsvpData.wantsEmailConfirmation && rsvpData.email) {
+  // Email validation if confirmation is requested and email is provided
+  // If no email is provided but confirmation is requested, we'll send to bride/groom
+  if (rsvpData.wantsEmailConfirmation && rsvpData.email && rsvpData.email.trim() !== '') {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(rsvpData.email)) {
       return { isValid: false, error: 'Invalid email address format' };

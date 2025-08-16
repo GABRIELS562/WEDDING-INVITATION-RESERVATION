@@ -4,14 +4,22 @@ import type { IndividualGuest } from '../types';
 // No personal information is hardcoded in the repository
 // This file generates placeholder data only - real data comes from database
 
-// Generate placeholder guest data for system functionality
-// Real guest names and details are never exposed in the code
-const generatePlaceholderGuests = (count: number): string[] => {
-  return Array.from({ length: count }, (_, i) => `Guest_${String(i + 1).padStart(3, '0')}`);
-};
-
-// Use 115 placeholder guests (matching real guest count)
-const realGuestNames = generatePlaceholderGuests(115);
+// Real guest list for Dale & Kirsten's wedding
+// Note: Some names appear twice as they are different people (e.g., Tertia 1 and Tertia 2)
+const realGuestNames = [
+  'Allison', 'Andrea', 'Angelique', 'Ashlee', 'Audrey', 'Brian', 'Bridgette', 'Candice', 
+  'Cheryl', 'Cyril', 'Debbie', 'Derrick', 'Emile', 'Eustacia', 'Gail', 'Gladys', 'Helen', 
+  'Husband Susan', 'Ian', 'Jenna', 'Jill', 'JP', 'Judy', 'Julian', 'Kim', 'Liam', 'Luca', 
+  'Lyndon', 'Mark W', 'Mark P', 'Marlene', 'Marlon M', 'Moira', 'Morgan', 'Nicci', 'Patty', 
+  'Portia', 'Robynne', 'Rylie', 'Shaun', 'Simone', 'Spencer', 'Stefan', 'Susan', 'Tania', 
+  'Tertia S', 'Trevor', 'Trixie', 'Victor', 'Vanessa', 'Duncan', 'Berenice', 'Tayla', 'Lindsay', 
+  'Amari', 'Ma', 'Attie', 'Virgy', 'Jamie', 'Tasmin', 'Zac', 'Tasneem', 'Lameez', 'Wesley', 
+  'Lindsay J', 'Marlon K', 'Rowena', 'Ushrie', 'Smiley', 'Jeremy', 'Mauvina', 'Arthur', 'Michelle', 
+  'Stephan', 'Sandra', 'Norman', 'Charmaine', 'Monray', 'Nicole', 'June', 'Dayne', 'Tatum', 
+  'Warren', 'Kelly', 'Chadwin', 'Tertia R', 'Mike', 'Liezel', 'Sulaiman', 'Thalia', 'Pastor Granville', 
+  'Denise', 'Craig', 'Jermaine', 'Toby', 'Suzanne', 'Ferdinand', 'Megan', 'Sven', 'Mikail', 
+  'Lucien', 'Dene', 'Julie', 'Tristan', 'Skye', 'Ruth', 'Kirsten', 'Dale', 'DJ', 'Photographer - Kyla'
+];
 
 // Generate secure token for each guest
 function generateSecureToken(name: string, index: number): string {

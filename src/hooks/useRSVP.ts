@@ -50,13 +50,17 @@ export const useRSVP = (): UseRSVPReturn => {
         };
       }
 
-      // Send email confirmation if requested and attending
-      if (rsvpData.wantsEmailConfirmation && rsvpData.email && rsvpData.isAttending) {
+      // Send email confirmation if requested OR if no email provided (to notify bride/groom)
+      if (rsvpData.wantsEmailConfirmation || !rsvpData.email || rsvpData.email === '') {
         try {
+          console.log('📧 Attempting to send email notification...');
           const emailResponse = await emailService.sendConfirmationEmail(rsvpData);
           if (emailResponse.success) {
+            console.log('✅ Email sent successfully!');
             // Update email status in database
             await supabaseService.updateEmailStatus(rsvpData.token, true);
+          } else {
+            console.log('❌ Email failed:', emailResponse.error);
           }
         } catch (error) {
           console.warn('RSVP submitted but confirmation email failed:', error);
@@ -99,8 +103,8 @@ export const useRSVP = (): UseRSVPReturn => {
         };
       }
 
-      // Send email notification if requested and attending
-      if (rsvpData.wantsEmailConfirmation && rsvpData.email && rsvpData.isAttending) {
+      // Send email notification if requested OR if no email provided (to notify bride/groom)
+      if (rsvpData.wantsEmailConfirmation || !rsvpData.email || rsvpData.email === '') {
         try {
           const emailResponse = await emailService.sendConfirmationEmail(rsvpData);
           if (emailResponse.success) {
@@ -108,7 +112,7 @@ export const useRSVP = (): UseRSVPReturn => {
             await supabaseService.updateEmailStatus(rsvpData.token, true);
           }
         } catch (error) {
-          console.warn('RSVP updated but notification email failed:', error);
+          console.warn('RSVP submitted but notification email failed:', error);
         }
       }
 

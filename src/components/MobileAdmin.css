@@ -1,0 +1,146 @@
+/* Mobile-responsive styles for Admin Dashboard */
+
+.admin-container {
+  min-height: 100vh;
+  background-color: #f8f6f0;
+  padding: 1rem;
+}
+
+.admin-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  gap: 1rem;
+}
+
+.admin-title {
+  color: #8B7355;
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+}
+
+.admin-buttons {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.rsvp-table-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.rsvp-table {
+  width: 100%;
+  min-width: 600px;
+  border-collapse: collapse;
+}
+
+/* Mobile styles */
+@media (max-width: 768px) {
+  .admin-container {
+    padding: 0.5rem;
+  }
+  
+  .admin-header {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+  
+  .admin-title {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .admin-buttons {
+    justify-content: center;
+  }
+  
+  .admin-buttons button {
+    flex: 1;
+    min-width: 120px;
+    font-size: 0.8rem;
+    padding: 0.6rem 1rem;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  
+  .stat-card {
+    padding: 1rem !important;
+  }
+  
+  .stat-card h3 {
+    font-size: 0.9rem !important;
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .stat-card .stat-value {
+    font-size: 1.8rem !important;
+  }
+  
+  .meal-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 0.5rem !important;
+  }
+  
+  .rsvp-table {
+    font-size: 0.8rem;
+  }
+  
+  .rsvp-table th,
+  .rsvp-table td {
+    padding: 0.5rem !important;
+  }
+  
+  /* Hide less important columns on mobile */
+  .hide-mobile {
+    display: none;
+  }
+  
+  /* Make WhatsApp links section mobile-friendly */
+  .whatsapp-links-container {
+    padding: 1rem !important;
+  }
+  
+  .guest-link-item {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 0.5rem !important;
+  }
+  
+  .guest-link-buttons {
+    justify-content: stretch !important;
+  }
+  
+  .guest-link-buttons button {
+    flex: 1;
+  }
+}
+
+/* Tablet styles */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .admin-title {
+    font-size: 2rem;
+  }
+  
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

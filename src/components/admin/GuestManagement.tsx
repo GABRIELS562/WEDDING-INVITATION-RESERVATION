@@ -21,7 +21,8 @@ import {
   ClockIcon,
   ArrowDownTrayIcon,
   PlusIcon,
-  UserPlusIcon
+  UserPlusIcon,
+  TrashIcon
 } from '@heroicons/react/24/outline';
 import { HeartIcon } from '@heroicons/react/24/solid';
 import { cn } from '@/lib/utils';
@@ -36,6 +37,7 @@ interface GuestManagementProps {
 interface GuestRowProps {
   guest: GuestListItem;
   onEdit: (guest: GuestListItem) => void;
+  onDelete: (guestId: string) => void;
   onSelect: (guestId: string) => void;
   isSelected: boolean;
 }
@@ -70,7 +72,7 @@ const StatusBadge: React.FC<{ status: string; className?: string }> = ({ status,
 };
 
 // Guest Table Row Component
-const GuestRow: React.FC<GuestRowProps> = ({ guest, onEdit, onSelect, isSelected }) => {
+const GuestRow: React.FC<GuestRowProps> = ({ guest, onEdit, onDelete, onSelect, isSelected }) => {
   const [showActions, setShowActions] = useState(false);
 
   const handleWhatsAppClick = () => {
@@ -255,6 +257,21 @@ const GuestRow: React.FC<GuestRowProps> = ({ guest, onEdit, onSelect, isSelected
                     Send Email
                   </button>
                 )}
+
+                <div className="border-t border-gray-200 my-1" />
+                
+                <button
+                  onClick={() => {
+                    if (window.confirm(`Are you sure you want to delete the RSVP for ${guest.guest_name}? This action cannot be undone.`)) {
+                      onDelete(guest.id);
+                    }
+                    setShowActions(false);
+                  }}
+                  className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center gap-2"
+                >
+                  <TrashIcon className="w-4 h-4" />
+                  Delete RSVP
+                </button>
               </motion.div>
             )}
           </AnimatePresence>
@@ -422,6 +439,7 @@ const GuestManagement: React.FC<GuestManagementProps> = ({ className }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [selectedGuests, setSelectedGuests] = useState<string[]>([]);
   const [editingGuest, setEditingGuest] = useState<GuestListItem | null>(null);
+  const [showTestCleanup, setShowTestCleanup] = useState(false);
   
   const [filters, setFilters] = useState<GuestFilters>({
     search: '',
@@ -446,6 +464,44 @@ const GuestManagement: React.FC<GuestManagementProps> = ({ className }) => {
       setIsLoading(false);
     }
   }, [filters]);
+
+  const handleDeleteRSVP = async (guestId: string) => {
+    try {
+      const result = await adminSupabase.deleteRSVP(guestId);
+      if (result.success) {
+        // Reload guests after deletion
+        await loadGuests();
+        // Show success message (you could add a toast notification here)
+        console.log('RSVP deleted successfully');
+      } else {
+        console.error('Failed to delete RSVP:', result.error);
+        alert(`Failed to delete RSVP: ${result.error}`);
+      }
+    } catch (error) {
+      console.error('Error deleting RSVP:', error);
+      alert('An error occurred while deleting the RSVP');
+    }
+  };
+
+  const handleDeleteTestRSVPs = async () => {
+    if (!window.confirm('Are you sure you want to delete all test RSVPs (Jaime/Jamie/Test entries)? This cannot be undone.')) {
+      return;
+    }
+
+    try {
+      const result = await adminSupabase.deleteTestRSVPs();
+      if (result.success && result.data) {
+        alert(`Successfully deleted ${result.data.deletedCount} test RSVP(s)`);
+        await loadGuests();
+        setShowTestCleanup(false);
+      } else {
+        alert(`Failed to delete test RSVPs: ${result.error}`);
+      }
+    } catch (error) {
+      console.error('Error deleting test RSVPs:', error);
+      alert('An error occurred while deleting test RSVPs');
+    }
+  };
 
   useEffect(() => {
     loadGuests();
@@ -561,6 +617,14 @@ const GuestManagement: React.FC<GuestManagementProps> = ({ className }) => {
         </div>
 
         <div className="flex items-center gap-3">
+          <button 
+            onClick={handleDeleteTestRSVPs}
+            className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg flex items-center gap-2 transition-colors duration-200"
+            title="Delete all test RSVPs (Jaime/Jamie/Test entries)"
+          >
+            <TrashIcon className="w-4 h-4" />
+            Clean Test Data
+          </button>
           <button className="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 flex items-center gap-2 transition-colors duration-200">
             <ArrowDownTrayIcon className="w-4 h-4" />
             Export
@@ -597,6 +661,23 @@ const GuestManagement: React.FC<GuestManagementProps> = ({ className }) => {
               </button>
               <button className="px-3 py-1 text-sm bg-white border border-rose-300 text-rose-700 rounded hover:bg-rose-50 transition-colors duration-200">
                 Export Selected
+              </button>
+              <button
+                onClick={async () => {
+                  if (window.confirm(`Are you sure you want to delete RSVPs for ${selectedGuests.length} selected guest(s)? This cannot be undone.`)) {
+                    const result = await adminSupabase.deleteMultipleRSVPs(selectedGuests);
+                    if (result.success) {
+                      alert(`Successfully deleted ${selectedGuests.length} RSVP(s)`);
+                      setSelectedGuests([]);
+                      await loadGuests();
+                    } else {
+                      alert(`Failed to delete RSVPs: ${result.error}`);
+                    }
+                  }
+                }}
+                className="px-3 py-1 text-sm bg-red-600 hover:bg-red-700 text-white rounded transition-colors duration-200"
+              >
+                Delete Selected
               </button>
               <button
                 onClick={() => setSelectedGuests([])}
@@ -653,6 +734,7 @@ const GuestManagement: React.FC<GuestManagementProps> = ({ className }) => {
                     key={guest.id}
                     guest={guest}
                     onEdit={setEditingGuest}
+                    onDelete={handleDeleteRSVP}
                     onSelect={handleGuestSelect}
                     isSelected={selectedGuests.includes(guest.id)}
                   />

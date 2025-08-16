@@ -1,7 +1,7 @@
-import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { HashRouter as Router, Routes, Route, useParams } from 'react-router-dom';
 import { RSVPFormComponent } from './components/RSVPFormComponent';
-import SimpleAdminDashboard from './components/SimpleAdminDashboard';
-import { useState, useEffect } from 'react';
+import StandaloneAdmin from './components/StandaloneAdmin';
 
 const CountdownTimer = () => {
   const [timeLeft, setTimeLeft] = useState({
@@ -905,6 +905,19 @@ const WeddingWebsite = () => {
           position: 'relative',
           overflow: 'hidden'
         }}>
+        {/* Cover the bottom-right corner on mobile */}
+        <div style={{
+          position: 'absolute',
+          bottom: 0,
+          right: 0,
+          width: '150px',
+          height: '150px',
+          background: 'linear-gradient(to top left, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.95) 30%, rgba(0, 0, 0, 0.7) 50%, transparent 80%)',
+          borderBottomRightRadius: '24px',
+          pointerEvents: 'none',
+          zIndex: 1,
+          display: 'block'
+        }} className="mobile-corner-overlay"></div>
         <div style={{
           maxWidth: '900px',
           width: '100%',
@@ -912,7 +925,9 @@ const WeddingWebsite = () => {
           backdropFilter: 'blur(5px)',
           borderRadius: '20px',
           padding: 'clamp(3rem, 6vw, 5rem) clamp(2rem, 4vw, 3rem)',
-          border: '1px solid rgba(255, 255, 255, 0.05)'
+          border: '1px solid rgba(255, 255, 255, 0.05)',
+          position: 'relative',
+          zIndex: 2
         }}>
           <div style={{
             fontSize: 'clamp(0.9rem, 2.5vw, 1.1rem)',
@@ -1123,8 +1138,10 @@ const WeddingWebsite = () => {
                 opacity: '0.7'
               }}>October 31st, 2025</span>
               <span style={{
-                fontSize: '1.5rem'
-              }}>💕</span>
+                fontSize: 'clamp(0.8rem, 2vw, 0.9rem)',
+                opacity: '0.7',
+                margin: '0 1rem'
+              }}>•</span>
               <span style={{
                 fontSize: 'clamp(0.8rem, 2vw, 0.9rem)',
                 opacity: '0.7'
@@ -1135,6 +1152,16 @@ const WeddingWebsite = () => {
       </footer>
 
       <style>{`
+        .mobile-corner-overlay {
+          display: none !important;
+        }
+        
+        @media (max-width: 768px) {
+          .mobile-corner-overlay {
+            display: block !important;
+          }
+        }
+        
         @keyframes fadeInUp {
           from {
             opacity: 0;
@@ -1181,7 +1208,7 @@ const WeddingWebsite = () => {
 };
 
 const AdminPage = () => {
-  return <SimpleAdminDashboard />;
+  return <StandaloneAdmin />;
 };
 
 function App() {
@@ -1191,6 +1218,7 @@ function App() {
         <Route path="/" element={<WeddingWebsite />} />
         <Route path="/guest/:token" element={<WeddingWebsite />} />
         <Route path="/admin" element={<AdminPage />} />
+        <Route path="/a" element={<AdminPage />} />
       </Routes>
     </Router>
   );
