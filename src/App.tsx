@@ -1147,7 +1147,7 @@ const WeddingWebsite = () => {
                       color: '#8B4513',
                       fontWeight: '600',
                       fontFamily: "'Inter', sans-serif"
-                    }}>Firstrand Bank</span>
+                    }}>FNB</span>
                   </div>
                   
                   <div style={{
