@@ -1054,12 +1054,121 @@ const WeddingWebsite = () => {
                 fontSize: 'clamp(1.2rem, 3.5vw, 1.4rem)',
                 color: '#8B7355',
                 lineHeight: '1.8',
-                marginBottom: '2rem',
+                marginBottom: '2.5rem',
                 fontFamily: "'Playfair Display', serif",
                 fontWeight: '600'
               }}>
                 Your presence at our wedding is the greatest gift we could ask for. As we begin our new chapter together, we are saving for our future. If you wish to honour us with a gift, a monetary contribution to our future would be deeply appreciated.
               </p>
+              
+              {/* Banking Details Section */}
+              <div style={{
+                backgroundColor: 'rgba(255, 255, 255, 0.8)',
+                borderRadius: '16px',
+                padding: 'clamp(1.5rem, 4vw, 2rem)',
+                marginBottom: '2.5rem',
+                border: '1px solid rgba(201, 169, 110, 0.2)',
+                boxShadow: '0 4px 15px rgba(139, 115, 85, 0.05)'
+              }}>
+                <h4 style={{
+                  fontSize: 'clamp(1.1rem, 3vw, 1.3rem)',
+                  color: '#C9A96E',
+                  marginBottom: '1.5rem',
+                  fontFamily: "'Playfair Display', serif",
+                  fontWeight: '600',
+                  letterSpacing: '1px',
+                  textTransform: 'uppercase'
+                }}>Banking Details</h4>
+                
+                <div style={{
+                  textAlign: 'left',
+                  maxWidth: '350px',
+                  margin: '0 auto'
+                }}>
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    marginBottom: '0.8rem',
+                    paddingBottom: '0.8rem',
+                    borderBottom: '1px solid rgba(201, 169, 110, 0.1)'
+                  }}>
+                    <span style={{
+                      fontSize: 'clamp(0.95rem, 2.5vw, 1.05rem)',
+                      color: '#8B7355',
+                      fontWeight: '500',
+                      fontFamily: "'Inter', sans-serif"
+                    }}>Account Number:</span>
+                    <span style={{
+                      fontSize: 'clamp(0.95rem, 2.5vw, 1.05rem)',
+                      color: '#8B4513',
+                      fontWeight: '600',
+                      fontFamily: "'Inter', sans-serif",
+                      letterSpacing: '0.5px'
+                    }}>63113403925</span>
+                  </div>
+                  
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    marginBottom: '0.8rem',
+                    paddingBottom: '0.8rem',
+                    borderBottom: '1px solid rgba(201, 169, 110, 0.1)'
+                  }}>
+                    <span style={{
+                      fontSize: 'clamp(0.95rem, 2.5vw, 1.05rem)',
+                      color: '#8B7355',
+                      fontWeight: '500',
+                      fontFamily: "'Inter', sans-serif"
+                    }}>Branch Code:</span>
+                    <span style={{
+                      fontSize: 'clamp(0.95rem, 2.5vw, 1.05rem)',
+                      color: '#8B4513',
+                      fontWeight: '600',
+                      fontFamily: "'Inter', sans-serif",
+                      letterSpacing: '0.5px'
+                    }}>250655</span>
+                  </div>
+                  
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    marginBottom: '0.8rem',
+                    paddingBottom: '0.8rem',
+                    borderBottom: '1px solid rgba(201, 169, 110, 0.1)'
+                  }}>
+                    <span style={{
+                      fontSize: 'clamp(0.95rem, 2.5vw, 1.05rem)',
+                      color: '#8B7355',
+                      fontWeight: '500',
+                      fontFamily: "'Inter', sans-serif"
+                    }}>Bank:</span>
+                    <span style={{
+                      fontSize: 'clamp(0.95rem, 2.5vw, 1.05rem)',
+                      color: '#8B4513',
+                      fontWeight: '600',
+                      fontFamily: "'Inter', sans-serif"
+                    }}>Firstrand Bank</span>
+                  </div>
+                  
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between'
+                  }}>
+                    <span style={{
+                      fontSize: 'clamp(0.95rem, 2.5vw, 1.05rem)',
+                      color: '#8B7355',
+                      fontWeight: '500',
+                      fontFamily: "'Inter', sans-serif"
+                    }}>Account Type:</span>
+                    <span style={{
+                      fontSize: 'clamp(0.95rem, 2.5vw, 1.05rem)',
+                      color: '#8B4513',
+                      fontWeight: '600',
+                      fontFamily: "'Inter', sans-serif"
+                    }}>Cheque Account</span>
+                  </div>
+                </div>
+              </div>
               
               <div style={{
                 fontSize: 'clamp(1rem, 2.5vw, 1.1rem)',
